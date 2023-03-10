@@ -1,0 +1,551 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PagniationMeta {
+  totalCount: Float!
+  currentPage: Float!
+  hasNextPage: Boolean!
+  totalPages: Float!
+}
+
+type Appointment {
+  _id: ID
+  name: String!
+  email: String!
+  phone: String!
+  subject: String!
+  serviceId: String!
+  note: String
+}
+
+type AppointmentPagination {
+  nodes: [Appointment!]
+  meta: PagniationMeta
+}
+
+type PackageBooking {
+  _id: ID
+  name: String!
+  email: String!
+  phone: String!
+  street: String!
+  city: String!
+  country: String!
+  packageId: String!
+  status: BOOKING_STATUS!
+  paymentStatus: PAYMENT_STATUS!
+  paymentMethod: PAYMENT_METHOD
+  transactionId: String
+  amount: Float!
+  paymentDateTime: DateTime!
+}
+
+enum BOOKING_STATUS {
+  PENDING
+  APPROVED
+  CANCELED
+  COMPLETED
+}
+
+enum PAYMENT_STATUS {
+  DUE
+  PAID
+}
+
+enum PAYMENT_METHOD {
+  ONLINE
+  BANK
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type PackageBookingPagination {
+  nodes: [PackageBooking!]
+  meta: PagniationMeta
+}
+
+type Service {
+  _id: ID
+  title: String!
+  shortDesc: String!
+  desc: String!
+  preRequirements: String
+  price: Float!
+  meetTime: String
+}
+
+type ServicePagination {
+  nodes: [Service!]
+  meta: PagniationMeta
+}
+
+type Team {
+  _id: ID
+  name: String!
+  post: String!
+  avatar: String
+  email: String!
+  facebook: String
+  linkedin: String
+  phone: String
+}
+
+type TeamPagination {
+  nodes: [Team!]
+  meta: PagniationMeta
+}
+
+type TravelOutline {
+  departureFrom: String
+  destinationTo: String
+  startAt: DateTime
+  endAt: DateTime
+  packageIn: PACKAGE_IN
+  description: String
+  breakfast: String
+  lunch: String
+  normalSnacks: String
+  dinner: String
+  otherFeatures: String
+}
+
+enum PACKAGE_IN {
+  DOMESTIC
+  INTERNATIONAL
+}
+
+type RatingsAndReviews {
+  rating: Float
+  email: String
+  message: String
+}
+
+type Travelers {
+  travelerEmail: String
+}
+
+type Transportation {
+  tourBy: TOURBY!
+  departureFrom: String
+  destination: String
+  startAt: String
+  transportName: String
+  stops: Float
+  journeyBreak: String
+  endAt: DateTime
+}
+
+enum TOURBY {
+  BY_AIR
+  BY_ROAD
+  BY_RAIL
+}
+
+type TravelPackage {
+  _id: ID
+  packageTitle: String!
+  regularPrice: Float!
+  salePrice: Float
+  saleStatus: SALE_STATUS!
+  isPublished: Boolean!
+  packageStatus: PACKAGE_STATUS!
+  bookingStart: DateTime
+  bookingEnd: DateTime
+  thumbnail: String
+  description: String
+  shortDescription: String
+  destination: String
+  carouselThumbnails: String
+  travelOutline: [TravelOutline!]
+  ratingsAndReviews: [RatingsAndReviews!]
+  travelers: [Travelers!]
+  transportation: [Transportation!]
+}
+
+enum SALE_STATUS {
+  FIXED
+  SALE
+}
+
+enum PACKAGE_STATUS {
+  UPCOMING
+  FINISHED
+  ALWAYS
+}
+
+type TravelPackagePagination {
+  nodes: [TravelPackage!]
+  meta: PagniationMeta
+}
+
+type User {
+  _id: ID
+  name: String
+  email: String
+  role: USER_ROLE!
+  password: String!
+  avatar: String
+}
+
+enum USER_ROLE {
+  ADMIN
+  MODERATOR
+  CUSTOMER
+}
+
+type UserPagination {
+  nodes: [User!]
+  meta: PagniationMeta
+}
+
+type Query {
+  users(input: UserListQueryDto): UserPagination!
+  user(input: CommonMatchInput!): User!
+  travelPackages(input: TravelPackageListQueryDto): TravelPackagePagination!
+  travelPackage(input: CommonMatchInput!): TravelPackage!
+  appointments(input: AppointmentListQueryDto): AppointmentPagination!
+  appointment(input: CommonMatchInput!): Appointment!
+  services(input: ServiceListQueryDto): ServicePagination!
+  service(input: CommonMatchInput!): Service!
+  teams(input: TeamListQueryDto): TeamPagination!
+  team(input: CommonMatchInput!): Team!
+  bookings(input: BookingPackageListQueryDto): PackageBookingPagination!
+  booking(input: CommonMatchInput!): PackageBooking!
+}
+
+input UserListQueryDto {
+  page: Int
+  limit: Int
+  sort: SortType
+  sortBy: String
+  where: [CommonMatchInput!]
+  whereOperator: WHERE_OPERATOR
+}
+
+enum SortType {
+  ASC
+  DESC
+}
+
+input CommonMatchInput {
+  key: String!
+  operator: MatchOperator!
+  value: String
+}
+
+enum MatchOperator {
+  eq
+  ne
+  gt
+  gte
+  lt
+  lte
+  in
+  nin
+  exists
+  contains
+}
+
+enum WHERE_OPERATOR {
+  and
+  or
+}
+
+input TravelPackageListQueryDto {
+  page: Int
+  limit: Int
+  sort: SortType
+  sortBy: String
+  where: [CommonMatchInput!]
+  whereOperator: WHERE_OPERATOR
+}
+
+input AppointmentListQueryDto {
+  page: Int
+  limit: Int
+  sort: SortType
+  sortBy: String
+  where: [CommonMatchInput!]
+  whereOperator: WHERE_OPERATOR
+}
+
+input ServiceListQueryDto {
+  page: Int
+  limit: Int
+  sort: SortType
+  sortBy: String
+  where: [CommonMatchInput!]
+  whereOperator: WHERE_OPERATOR
+}
+
+input TeamListQueryDto {
+  page: Int
+  limit: Int
+  sort: SortType
+  sortBy: String
+  where: [CommonMatchInput!]
+  whereOperator: WHERE_OPERATOR
+}
+
+input BookingPackageListQueryDto {
+  page: Int
+  limit: Int
+  sort: SortType
+  sortBy: String
+  where: [CommonMatchInput!]
+  whereOperator: WHERE_OPERATOR
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User!
+  updateUser(input: UpdateUserInput!): User!
+  removeUser(input: CommonMatchInput!): Boolean
+  createTravelPackage(input: CreateTravelPackageInput!): TravelPackage!
+  updateTravelPackage(input: UpdateTravelPackageInput!): TravelPackage!
+  removeTravelPackage(input: CommonMatchInput!): Boolean
+  createAppointment(input: CreateAppointmentInput!): Appointment!
+  updateAppointment(input: UpdateAppointmentInput!): Appointment!
+  removeAppointment(input: CommonMatchInput!): Boolean
+  createService(input: CreateServiceInput!): Service!
+  updateService(input: UpdateServiceInput!): Service!
+  removeService(input: CommonMatchInput!): Boolean
+  createTeam(input: CreateTeamInput!): Team!
+  updateTeam(input: UpdateTeamInput!): Team!
+  removeTeam(input: CommonMatchInput!): Boolean
+  createBooking(input: CreatePackageBookingInput!): PackageBooking!
+  updateBooking(input: UpdatePackageBookingInput!): PackageBooking!
+  removeBooking(input: CommonMatchInput!): Boolean
+}
+
+input CreateUserInput {
+  _id: ID
+
+  """
+  User name
+  """
+  name: String!
+
+  """
+  User email
+  """
+  email: String!
+
+  """
+  User role
+  """
+  role: USER_ROLE!
+
+  """
+  User password
+  """
+  password: String!
+
+  """
+  User avatar
+  """
+  avatar: String!
+}
+
+input UpdateUserInput {
+  _id: String
+
+  """
+  User name
+  """
+  name: String
+
+  """
+  User email
+  """
+  email: String
+
+  """
+  User role
+  """
+  role: USER_ROLE
+
+  """
+  User password
+  """
+  password: String
+
+  """
+  User avatar
+  """
+  avatar: String
+}
+
+input CreateTravelPackageInput {
+  _id: ID
+  packageTitle: String!
+  regularPrice: Float!
+  salePrice: Float
+  saleStatus: SALE_STATUS = FIXED
+  isPublished: Boolean!
+  bookingStart: DateTime
+  bookingEnd: DateTime
+  thumbnail: String
+  packageStatus: String = "UPCOMING"
+  description: String
+  shortDescription: String
+  carouselThumbnails: [String!]
+  travelOutline: [TravelOutlineInput!]
+  ratingsAndReviews: [RatingsAndReviewsInput!]
+  travelers: [TravelersInput!]
+  transportation: [TransportationInput!]
+}
+
+input TravelOutlineInput {
+  departureFrom: String
+  destinationTo: String
+  startAt: DateTime
+  endAt: DateTime
+  packageIn: PACKAGE_IN = DOMESTIC
+  description: String
+  breakfast: String
+  lunch: String
+  normalSnacks: String
+  dinner: String
+  otherFeatures: String
+}
+
+input RatingsAndReviewsInput {
+  rating: Float
+  email: String
+  message: String
+}
+
+input TravelersInput {
+  travelerEmail: String
+}
+
+input TransportationInput {
+  tourBy: TOURBY! = BY_ROAD
+  departureFrom: String
+  destination: String
+  startAt: String
+  transportName: String
+  stops: Float
+  journeyBreak: String
+  endAt: DateTime
+}
+
+input UpdateTravelPackageInput {
+  _id: String
+  packageTitle: String
+  regularPrice: Float
+  salePrice: Float
+  saleStatus: SALE_STATUS = FIXED
+  isPublished: Boolean
+  bookingStart: DateTime
+  bookingEnd: DateTime
+  thumbnail: String
+  packageStatus: String = "UPCOMING"
+  description: String
+  shortDescription: String
+  carouselThumbnails: [String!]
+  travelOutline: [TravelOutlineInput!]
+  ratingsAndReviews: [RatingsAndReviewsInput!]
+  travelers: [TravelersInput!]
+  transportation: [TransportationInput!]
+}
+
+input CreateAppointmentInput {
+  _id: ID
+  name: String!
+  email: String!
+  phone: String!
+  subject: String!
+  serviceId: String!
+  note: String
+}
+
+input UpdateAppointmentInput {
+  _id: String
+  name: String
+  email: String
+  phone: String
+  subject: String
+  serviceId: String
+  note: String
+}
+
+input CreateServiceInput {
+  _id: ID
+  title: String!
+  shortDesc: String!
+  desc: String!
+  preRequirements: String
+  price: Float!
+  meetTime: String
+}
+
+input UpdateServiceInput {
+  _id: String!
+  title: String
+  shortDesc: String
+  desc: String
+  preRequirements: String
+  price: Float
+  meetTime: String
+}
+
+input CreateTeamInput {
+  _id: ID
+  name: String!
+  post: String!
+  avatar: String!
+  email: String!
+  facebook: String
+  linkedin: String
+  phone: String
+}
+
+input UpdateTeamInput {
+  _id: String!
+  name: String
+  post: String
+  avatar: String
+  email: String
+  facebook: String
+  linkedin: String
+  phone: String
+}
+
+input CreatePackageBookingInput {
+  _id: ID
+  name: String!
+  email: String!
+  phone: String!
+  street: String!
+  city: String!
+  country: String!
+  packageId: String!
+  status: BOOKING_STATUS! = PENDING
+  paymentStatus: PAYMENT_STATUS! = DUE
+  paymentMethod: PAYMENT_METHOD
+  transactionId: String
+  amount: Float!
+  paymentDateTime: DateTime!
+}
+
+input UpdatePackageBookingInput {
+  _id: ID
+  name: String
+  email: String
+  phone: String
+  street: String
+  city: String
+  country: String
+  packageId: String
+  status: BOOKING_STATUS = PENDING
+  paymentStatus: PAYMENT_STATUS = DUE
+  paymentMethod: PAYMENT_METHOD
+  transactionId: String
+  amount: Float
+  paymentDateTime: DateTime
+}
