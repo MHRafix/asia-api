@@ -304,6 +304,7 @@ type Mutation {
   createUser(input: CreateUserInput!): User!
   updateUser(input: UpdateUserInput!): User!
   removeUser(input: CommonMatchInput!): Boolean
+  bulkRemoveUser(uIds: [String!]!): Boolean
   createTravelPackage(input: CreateTravelPackageInput!): TravelPackage!
   updateTravelPackage(input: UpdateTravelPackageInput!): TravelPackage!
   removeTravelPackage(input: CommonMatchInput!): Boolean
@@ -319,63 +320,44 @@ type Mutation {
   createBooking(input: CreatePackageBookingInput!): PackageBooking!
   updateBooking(input: UpdatePackageBookingInput!): PackageBooking!
   removeBooking(input: CommonMatchInput!): Boolean
+  bulkRemoveBooking(uIds: [String!]!): Boolean
 }
 
 input CreateUserInput {
   _id: ID
 
-  """
-  User name
-  """
+  """User name"""
   name: String!
 
-  """
-  User email
-  """
+  """User email"""
   email: String!
 
-  """
-  User role
-  """
+  """User role"""
   role: USER_ROLE!
 
-  """
-  User password
-  """
+  """User password"""
   password: String!
 
-  """
-  User avatar
-  """
+  """User avatar"""
   avatar: String!
 }
 
 input UpdateUserInput {
   _id: String
 
-  """
-  User name
-  """
+  """User name"""
   name: String
 
-  """
-  User email
-  """
+  """User email"""
   email: String
 
-  """
-  User role
-  """
+  """User role"""
   role: USER_ROLE
 
-  """
-  User password
-  """
+  """User password"""
   password: String
 
-  """
-  User avatar
-  """
+  """User avatar"""
   avatar: String
 }
 

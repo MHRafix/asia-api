@@ -10,6 +10,8 @@ import { ServicesModule } from './api/services/services.module';
 import { TeamModule } from './api/team/team.module';
 import { TravelPackagesModule } from './api/travel-packages/travel-packages.module';
 import { UsersModule } from './api/users/users.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import config from './app/config';
 
 @Module({
@@ -39,5 +41,7 @@ import config from './app/config';
     TeamModule,
     PackageBookingModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
