@@ -16,15 +16,15 @@ export class CreateUserInput {
   @IsEmail()
   email: string;
 
-  @Field(() => USER_ROLE, { description: 'User role' })
+  @Field(() => USER_ROLE, { description: 'User role', nullable: true })
   @IsNotEmpty()
   role: USER_ROLE;
 
-  @Field(() => String, { description: 'User password' })
+  @Field(() => String, { description: 'User password', nullable: true })
   @IsOptional()
   password: string;
 
-  @Field(() => String, { description: 'User avatar' })
+  @Field(() => String, { description: 'User avatar', nullable: true })
   @IsOptional()
   avatar: string;
 }

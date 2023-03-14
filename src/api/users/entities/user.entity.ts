@@ -42,8 +42,8 @@ export class User {
   @Field(() => USER_ROLE, { defaultValue: USER_ROLE.CUSTOMER })
   role: USER_ROLE;
 
-  @Prop({ required: true, nullable: true })
-  @Field(() => String)
+  @Prop({ required: false })
+  @Field(() => String, { nullable: true })
   password: string;
 
   @Prop({
