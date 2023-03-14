@@ -52,43 +52,9 @@ export class User {
   })
   @Field(() => String, { nullable: true })
   avatar: string;
-
-  // @Prop({ required: false })
-  // @Field(() => [BookingPaymentInformation], { nullable: true })
-  // bookingAndPaymentInfo: BookingPaymentInformation[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
 
 @ObjectType()
 export class UserPagination extends Paginated(User) {}
-
-// @ObjectType()
-// @Schema({ timestamps: true })
-// export class BookingPaymentInformation {
-//   @Field(() => ID)
-//   _id: string;
-
-//   @Prop({ default: PAYMENT_TYPE.ONLINE })
-//   @Field(() => PAYMENT_TYPE, { defaultValue: PAYMENT_TYPE.ONLINE })
-//   type: PAYMENT_TYPE;
-
-//   @Prop()
-//   @Field(() => String, { nullable: true })
-//   serviceName: string;
-
-//   // @Prop({
-//   //   type: MongooseSchema.Types.ObjectId,
-//   //   // ref: Service.name
-//   // })
-//   // @Field(() => 'Service')
-//   // serviceId: string;
-
-//   @Prop()
-//   @Field(() => Number, { nullable: true })
-//   amount: number;
-
-//   @Prop()
-//   @Field(() => String, { nullable: true })
-//   providerName: string;
-// }

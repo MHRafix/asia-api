@@ -21,12 +21,13 @@ export class UsersService {
    * @param input payload
    * @returns
    */
-  async create(input: CreateUserInput) {
-    const email = input.email;
-    const isExistUser = await this.userModel.findOne({ email });
 
-    if (isExistUser) {
-      throw new ForbiddenException('User already exists');
+  async authentication(input: CreateUserInput) {
+    const email = input.email;
+    const existUser = await this.userModel.findOne({ email });
+
+    if (existUser) {
+      return existUser;
     }
 
     return this.userModel.create(input);

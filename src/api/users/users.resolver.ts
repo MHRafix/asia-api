@@ -14,8 +14,8 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   @Mutation(() => User)
-  createUser(@Args('input') input: CreateUserInput) {
-    return this.usersService.create(input);
+  authUser(@Args('input') input: CreateUserInput) {
+    return this.usersService.authentication(input);
   }
 
   @Query(() => UserPagination, { name: 'users' })
