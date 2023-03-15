@@ -187,7 +187,7 @@ type User {
   name: String
   email: String
   role: USER_ROLE!
-  password: String!
+  password: String
   avatar: String
 }
 
@@ -333,13 +333,13 @@ input CreateUserInput {
   email: String!
 
   """User role"""
-  role: USER_ROLE!
+  role: USER_ROLE
 
   """User password"""
-  password: String!
+  password: String
 
   """User avatar"""
-  avatar: String!
+  avatar: String
 }
 
 input UpdateUserInput {

@@ -17,8 +17,8 @@ export class CreateUserInput {
   email: string;
 
   @Field(() => USER_ROLE, { description: 'User role', nullable: true })
-  @IsNotEmpty()
-  role: USER_ROLE;
+  @IsOptional()
+  role: USER_ROLE.CUSTOMER;
 
   @Field(() => String, { description: 'User password', nullable: true })
   @IsOptional()
