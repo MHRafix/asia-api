@@ -15,7 +15,11 @@ export class UsersResolver {
 
   @Mutation(() => User)
   authUser(@Args('input') input: CreateUserInput) {
-    return this.usersService.authentication(input);
+    try {
+      return this.usersService.authentication(input);
+    } catch (err) {
+      throw new BadRequestException(err.message);
+    }
   }
 
   @Query(() => UserPagination, { name: 'users' })

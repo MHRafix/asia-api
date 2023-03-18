@@ -20,11 +20,15 @@ export class CreateUserInput {
   @IsOptional()
   role: USER_ROLE.CUSTOMER;
 
-  @Field(() => String, { description: 'User password', nullable: true })
-  @IsOptional()
+  @Field(() => String, { description: 'User password' })
+  @IsNotEmpty()
   password: string;
 
   @Field(() => String, { description: 'User avatar', nullable: true })
   @IsOptional()
   avatar: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  accessToken: string;
 }

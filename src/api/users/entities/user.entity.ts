@@ -42,8 +42,8 @@ export class User {
   @Field(() => USER_ROLE, { defaultValue: USER_ROLE.CUSTOMER })
   role: USER_ROLE;
 
-  @Prop({ required: false })
-  @Field(() => String, { nullable: true })
+  @Prop({ required: true })
+  @Field(() => String)
   password: string;
 
   @Prop({
@@ -52,6 +52,10 @@ export class User {
   })
   @Field(() => String, { nullable: true })
   avatar: string;
+
+  @Prop()
+  @Field(() => String, { nullable: true })
+  accessToken: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

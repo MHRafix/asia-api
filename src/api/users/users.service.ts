@@ -3,6 +3,9 @@ import { SortType } from '@/src/shared/dto/CommonPaginationDto';
 import { filterBuilder } from '@/src/shared/utils/filterBuilder';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as bcryptjs from 'bcrypt';
+import { compare } from 'bcryptjs';
+import * as jsonwebtoken from 'jsonwebtoken';
 import { FilterQuery, Model } from 'mongoose';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
@@ -27,10 +30,30 @@ export class UsersService {
     const existUser = await this.userModel.findOne({ email });
 
     if (existUser) {
+      compare(input.password, existUser.password, (err, same) => {
+        if (err) {
+          return null;
+        }
+      });
+      existUser.accessToken = await this.createAccessToken(existUser);
       return existUser;
+    } else {
+      input.password = bcryptjs.hashSync(input.password, 10);
+      const newUser = await this.userModel.create(input);
+      const accessToken = await this.createAccessToken(newUser);
+      newUser.accessToken = accessToken;
+      return newUser;
     }
+  }
 
-    return this.userModel.create(input);
+  async createAccessToken(user: any) {
+    const payload = {
+      _id: user._id,
+      email: user.email,
+      name: user.name,
+    };
+
+    return jsonwebtoken.sign(payload, process.env.JWT_SECRET);
   }
 
   /**

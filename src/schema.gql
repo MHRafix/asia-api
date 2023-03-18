@@ -187,8 +187,9 @@ type User {
   name: String
   email: String
   role: USER_ROLE!
-  password: String
+  password: String!
   avatar: String
+  accessToken: String
 }
 
 enum USER_ROLE {
@@ -336,10 +337,11 @@ input CreateUserInput {
   role: USER_ROLE
 
   """User password"""
-  password: String
+  password: String!
 
   """User avatar"""
   avatar: String
+  accessToken: String
 }
 
 input UpdateUserInput {
@@ -359,6 +361,7 @@ input UpdateUserInput {
 
   """User avatar"""
   avatar: String
+  accessToken: String
 }
 
 input CreateTravelPackageInput {
