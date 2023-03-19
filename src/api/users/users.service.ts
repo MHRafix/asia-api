@@ -3,7 +3,7 @@ import { SortType } from '@/src/shared/dto/CommonPaginationDto';
 import { filterBuilder } from '@/src/shared/utils/filterBuilder';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import * as bcryptjs from 'bcrypt';
+import * as bcryptjs from 'bcryptjs';
 import { compare } from 'bcryptjs';
 import * as jsonwebtoken from 'jsonwebtoken';
 import { FilterQuery, Model } from 'mongoose';
@@ -16,7 +16,7 @@ import { User, UserDocument } from './entities/user.entity';
 export class UsersService {
   constructor(
     @InjectModel(User.name)
-    private userModel: Model<UserDocument>, // private customerService: CustomerService,
+    private userModel: Model<UserDocument>,
   ) {}
 
   /**
