@@ -302,7 +302,8 @@ input BookingPackageListQueryDto {
 }
 
 type Mutation {
-  authUser(input: CreateUserInput!): User!
+  signUp(input: CreateUserInput!): User!
+  signIn(input: CreateUserInput!): User!
   updateUser(input: UpdateUserInput!): User!
   removeUser(input: CommonMatchInput!): Boolean
   bulkRemoveUser(uIds: [String!]!): Boolean

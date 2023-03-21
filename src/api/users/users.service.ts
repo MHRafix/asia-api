@@ -1,7 +1,12 @@
 import { AppPaginationResponse } from '@/src/shared/contracts/app-pagination-response';
 import { SortType } from '@/src/shared/dto/CommonPaginationDto';
 import { filterBuilder } from '@/src/shared/utils/filterBuilder';
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcryptjs from 'bcryptjs';
 import { compare } from 'bcryptjs';
@@ -25,27 +30,41 @@ export class UsersService {
    * @returns
    */
 
-  async authentication(input: CreateUserInput) {
+  async create(input: CreateUserInput) {
     const email = input.email;
     const existUser = await this.userModel.findOne({ email });
 
     if (existUser) {
-      compare(input.password, existUser.password, (err, same) => {
-        if (err) {
-          return null;
-        }
-      });
-      existUser.accessToken = await this.createAccessToken(existUser);
-      return existUser;
-    } else {
-      input.password = bcryptjs.hashSync(input.password, 10);
-      const newUser = await this.userModel.create(input);
-      const accessToken = await this.createAccessToken(newUser);
-      newUser.accessToken = accessToken;
-      return newUser;
+      throw new UnauthorizedException('User already exist');
     }
+
+    input.password = bcryptjs.hashSync(input.password, 10);
+    const newUser = await this.userModel.create(input);
+    const accessToken = await this.createAccessToken(newUser);
+    newUser.accessToken = accessToken;
+    return newUser;
   }
 
+  async signin(input: CreateUserInput) {
+    const email = input.email;
+    const existUser = await this.userModel.findOne({ email });
+
+    if (!existUser) {
+      throw new NotFoundException('User not found!');
+    }
+
+    compare(input.password, existUser.password, async (err, same) => {
+      if (err || !same) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+    });
+  }
+
+  /**
+   * generate token
+   * @param user
+   * @returns
+   */
   async createAccessToken(user: any) {
     const payload = {
       _id: user._id,
