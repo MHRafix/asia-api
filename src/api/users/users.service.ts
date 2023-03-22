@@ -55,7 +55,7 @@ export class UsersService {
 
     compare(input.password, existUser.password, async (err, same) => {
       if (err || !same) {
-        throw new UnauthorizedException('Invalid credentials');
+        throw new NotFoundException('Invalid credentials');
       }
     });
   }
