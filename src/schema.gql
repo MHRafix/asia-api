@@ -329,7 +329,7 @@ input CreateUserInput {
   _id: ID
 
   """User name"""
-  name: String!
+  name: String
 
   """User email"""
   email: String!
