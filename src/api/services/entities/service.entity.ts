@@ -31,8 +31,8 @@ export class Service {
   public price: number;
 
   @Prop()
-  @Field(() => String, { nullable: true })
-  public meetTime: string;
+  @Field(() => Boolean, { nullable: true })
+  public isCustomizeable: boolean;
 }
 
 export const ServiceSchema = SchemaFactory.createForClass(Service);

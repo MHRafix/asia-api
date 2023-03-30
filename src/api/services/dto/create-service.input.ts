@@ -26,7 +26,7 @@ export class CreateServiceInput {
   @IsNotEmpty()
   price: number;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => Boolean, { nullable: true })
   @IsOptional()
-  meetTime: string;
+  public isCustomizeable: boolean;
 }
