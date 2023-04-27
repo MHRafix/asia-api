@@ -181,6 +181,26 @@ export class Transportation {
 }
 
 @ObjectType()
+@Schema()
+export class CountDownTimer {
+  @Prop()
+  @Field(() => Date, { nullable: true })
+  bookingStart: Date;
+
+  @Prop()
+  @Field(() => Date, { nullable: true })
+  bookingEnd: Date;
+}
+
+@ObjectType()
+@Schema()
+export class CarouselThumbnailsSchema {
+  @Prop()
+  @Field(() => String, { nullable: true })
+  thumbnail: string;
+}
+
+@ObjectType()
 @Schema({ timestamps: true })
 export class TravelPackage {
   @Field(() => ID, { nullable: true })
@@ -211,12 +231,8 @@ export class TravelPackage {
   packageStatus: PACKAGE_STATUS;
 
   @Prop()
-  @Field(() => Date, { nullable: true })
-  bookingStart: Date;
-
-  @Prop()
-  @Field(() => Date, { nullable: true })
-  bookingEnd: Date;
+  @Field(() => CountDownTimer, { nullable: true })
+  countDown: CountDownTimer;
 
   @Prop({ required: false })
   @Field(() => String, { nullable: true })
@@ -237,8 +253,8 @@ export class TravelPackage {
   @Prop({
     required: false,
   })
-  @Field(() => String, { nullable: true })
-  carouselThumbnails: string[];
+  @Field(() => [CarouselThumbnailsSchema], { nullable: true })
+  carouselThumbnails: CarouselThumbnailsSchema[];
 
   @Prop({ required: false })
   @Field(() => [TravelOutline], { nullable: true })

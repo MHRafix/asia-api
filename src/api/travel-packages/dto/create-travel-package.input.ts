@@ -2,6 +2,7 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsDate,
   IsNotEmpty,
   IsOptional,
   ValidateNested,
@@ -120,6 +121,26 @@ export class TransportationInput {
 }
 
 @InputType()
+export class CountDownTimerInput {
+  @Field(() => Date, { nullable: true })
+  @IsOptional()
+  @IsDate()
+  bookingStart: Date;
+
+  @Field(() => Date, { nullable: true })
+  @IsOptional()
+  @IsDate()
+  bookingEnd: Date;
+}
+
+@InputType()
+export class CarouselThumbnailsInput {
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  thumbnail: string;
+}
+
+@InputType()
 export class CreateTravelPackageInput {
   @Field(() => ID, { nullable: true })
   _id: string;
@@ -144,13 +165,9 @@ export class CreateTravelPackageInput {
   @IsNotEmpty()
   isPublished: boolean;
 
-  @Field(() => Date, { nullable: true })
+  @Field(() => CountDownTimerInput, { nullable: true })
   @IsOptional()
-  bookingStart: Date;
-
-  @Field(() => Date, { nullable: true })
-  @IsOptional()
-  bookingEnd: Date;
+  countDown: CountDownTimerInput;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
@@ -171,10 +188,10 @@ export class CreateTravelPackageInput {
   @IsOptional()
   shortDescription: string;
 
-  @Field(() => [String], { nullable: true })
+  @Field(() => [CarouselThumbnailsInput], { nullable: true })
   @IsOptional()
   @IsArray()
-  public carouselThumbnails: string[];
+  public carouselThumbnails: CarouselThumbnailsInput[];
 
   @Field(() => [TravelOutlineInput], { nullable: true })
   @IsOptional()

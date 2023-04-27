@@ -75,7 +75,7 @@ type Service {
   desc: String!
   preRequirements: String
   price: Float!
-  meetTime: String
+  isCustomizeable: Boolean
 }
 
 type ServicePagination {
@@ -145,6 +145,15 @@ enum TOURBY {
   BY_RAIL
 }
 
+type CountDownTimer {
+  bookingStart: DateTime
+  bookingEnd: DateTime
+}
+
+type CarouselThumbnailsSchema {
+  thumbnail: String
+}
+
 type TravelPackage {
   _id: ID
   packageTitle: String!
@@ -153,13 +162,12 @@ type TravelPackage {
   saleStatus: SALE_STATUS!
   isPublished: Boolean!
   packageStatus: PACKAGE_STATUS!
-  bookingStart: DateTime
-  bookingEnd: DateTime
+  countDown: CountDownTimer
   thumbnail: String
   description: String
   shortDescription: String
   destination: String
-  carouselThumbnails: String
+  carouselThumbnails: [CarouselThumbnailsSchema!]
   travelOutline: [TravelOutline!]
   ratingsAndReviews: [RatingsAndReviews!]
   travelers: [Travelers!]
@@ -190,6 +198,7 @@ type User {
   password: String!
   avatar: String
   accessToken: String
+  phone: String
 }
 
 enum USER_ROLE {
@@ -343,6 +352,7 @@ input CreateUserInput {
   """User avatar"""
   avatar: String
   accessToken: String
+  phone: String
 }
 
 input UpdateUserInput {
@@ -363,6 +373,7 @@ input UpdateUserInput {
   """User avatar"""
   avatar: String
   accessToken: String
+  phone: String
 }
 
 input CreateTravelPackageInput {
@@ -372,17 +383,25 @@ input CreateTravelPackageInput {
   salePrice: Float
   saleStatus: SALE_STATUS = FIXED
   isPublished: Boolean!
-  bookingStart: DateTime
-  bookingEnd: DateTime
+  countDown: CountDownTimerInput
   thumbnail: String
   packageStatus: String = "UPCOMING"
   description: String
   shortDescription: String
-  carouselThumbnails: [String!]
+  carouselThumbnails: [CarouselThumbnailsInput!]
   travelOutline: [TravelOutlineInput!]
   ratingsAndReviews: [RatingsAndReviewsInput!]
   travelers: [TravelersInput!]
   transportation: [TransportationInput!]
+}
+
+input CountDownTimerInput {
+  bookingStart: DateTime
+  bookingEnd: DateTime
+}
+
+input CarouselThumbnailsInput {
+  thumbnail: String
 }
 
 input TravelOutlineInput {
@@ -427,13 +446,12 @@ input UpdateTravelPackageInput {
   salePrice: Float
   saleStatus: SALE_STATUS = FIXED
   isPublished: Boolean
-  bookingStart: DateTime
-  bookingEnd: DateTime
+  countDown: CountDownTimerInput
   thumbnail: String
   packageStatus: String = "UPCOMING"
   description: String
   shortDescription: String
-  carouselThumbnails: [String!]
+  carouselThumbnails: [CarouselThumbnailsInput!]
   travelOutline: [TravelOutlineInput!]
   ratingsAndReviews: [RatingsAndReviewsInput!]
   travelers: [TravelersInput!]
@@ -467,7 +485,7 @@ input CreateServiceInput {
   desc: String!
   preRequirements: String
   price: Float!
-  meetTime: String
+  isCustomizeable: Boolean
 }
 
 input UpdateServiceInput {
@@ -477,7 +495,7 @@ input UpdateServiceInput {
   desc: String
   preRequirements: String
   price: Float
-  meetTime: String
+  isCustomizeable: Boolean
 }
 
 input CreateTeamInput {
