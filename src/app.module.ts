@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
 import { AppointmentModule } from './api/appointment/appointment.module';
+import { NewsModule } from './api/news/news.module';
 import { PackageBookingModule } from './api/package-booking/package-booking.module';
 import { ServicesModule } from './api/services/services.module';
 import { TeamModule } from './api/team/team.module';
@@ -39,6 +40,7 @@ import config from './app/config';
     AppointmentModule,
     ServicesModule,
     TeamModule,
+    NewsModule,
     PackageBookingModule,
   ],
   controllers: [AppController],

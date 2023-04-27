@@ -39,3 +39,4 @@ export const ServiceSchema = SchemaFactory.createForClass(Service);
 
 @ObjectType()
 export class ServicePagination extends Paginated(Service) {}
+ 

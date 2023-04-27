@@ -4,39 +4,39 @@ import { filterBuilder } from '@/src/shared/utils/filterBuilder';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
-import { CreateServiceInput } from './dto/create-service.input';
-import { ServiceListQueryDto } from './dto/service-list-query-dto';
-import { UpdateServiceInput } from './dto/update-service.input';
-import { Service, ServiceDocument } from './entities/service.entity';
+import { CreateNewsInput } from './dto/create-news.input';
+import { NewsListQueryDto } from './dto/news-list-query.dto';
+import { UpdateNewsInput } from './dto/update-news.input';
+import { News, NewsDocument } from './entities/news.entity';
 
 @Injectable()
-export class ServicesService {
+export class NewsService {
   constructor(
-    @InjectModel(Service.name)
-    private serviceModel: Model<ServiceDocument>,
+    @InjectModel(News.name)
+    private newsModel: Model<NewsDocument>,
   ) {}
 
   /**
-   * create service
-   * @param payload create payload
+   * create new news
+   * @param payload create news model
    * @returns
    */
-  create(payload: CreateServiceInput) {
-    return this.serviceModel.create(payload);
+  create(payload: CreateNewsInput) {
+    return this.newsModel.create(payload);
   }
 
   /**
-   * get all services
+   * get all news
    * @param input inputs
    * @param fields fields
    * @returns
    */
-  async findAll(input: ServiceListQueryDto, fields: string[] = []) {
+  async findAll(input: NewsListQueryDto, fields: string[] = []) {
     const { page = 1, limit = 10 } = input;
     const where = filterBuilder(input.where, input.whereOperator);
 
-    const cursor = this.serviceModel.find(where);
-    const count = await this.serviceModel.countDocuments(where);
+    const cursor = this.newsModel.find(where);
+    const count = await this.newsModel.countDocuments(where);
     const skip = (page - 1) * limit;
     const data = await cursor
       .sort({ [input?.sortBy]: input?.sort == SortType.DESC ? -1 : 1 })
@@ -52,14 +52,14 @@ export class ServicesService {
   }
 
   /**
-   * get single service
+   * get single news
    * @param filter filter
    * @param fields fields
    * @returns
    */
-  async findOne(filter: FilterQuery<ServiceDocument>, fields: string[] = []) {
+  async findOne(filter: FilterQuery<NewsDocument>, fields: string[] = []) {
     try {
-      const data = await this.serviceModel.findOne(filter);
+      const data = await this.newsModel.findOne(filter);
 
       if (!data) {
         throw new ForbiddenException('Data is not found');
@@ -71,21 +71,21 @@ export class ServicesService {
   }
 
   /**
-   * update service
+   * update news
    * @param _id service id
    * @param payload update payload
    * @returns
    */
-  update(_id: string, payload: UpdateServiceInput) {
-    return this.serviceModel.findOneAndUpdate({ _id }, payload);
+  update(_id: string, payload: UpdateNewsInput) {
+    return this.newsModel.findOneAndUpdate({ _id }, payload);
   }
 
   /**
-   * delete service
+   * delete news
    * @param filter filter
    * @returns
    */
-  remove(filter: FilterQuery<ServiceDocument>) {
-    return this.serviceModel.deleteOne(filter);
+  remove(filter: FilterQuery<NewsDocument>) {
+    return this.newsModel.deleteOne(filter);
   }
 }
