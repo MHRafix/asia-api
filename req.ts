@@ -8,7 +8,7 @@
 03. Bookings package api [name,email, phone, address, packageId, status, paymentInfo[paymentStatus, paymentMethod, transactionId, amount, paymentDateTime], ]
 04. Book appointment api[name, email, phone, subject, serviceId, note] [Done***]
 05. Service api [title, shortDesc, desc, requirements, price, time, ] [Done***]
-06. Team api [name, post, avatar, socialInfo[email, facebook, linkedin, phone]][Done***]
+06. Team api [name, post, avatar, socialInfo[email, facebook, linkedin, phone]][Done***]vvv
 
 // At last
 07. Payment api [amount, serviceId]
