@@ -25,6 +25,10 @@ export class CreateNewsInput {
   @IsOptional()
   relatedInfo: NewsTagsInput;
 
+  @Field(() => String)
+  @IsNotEmpty()
+  videoUrl: string;
+
   @Field(() => Date, { nullable: true })
   @IsOptional()
   publishedAt: Date;

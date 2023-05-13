@@ -31,6 +31,10 @@ export class News {
   relatedInfo: NewsTags;
 
   @Prop()
+  @Field(() => String)
+  videoUrl: string;
+
+  @Prop()
   @Field(() => Date, { nullable: true })
   publishedAt: Date;
 }

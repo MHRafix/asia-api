@@ -33,6 +33,7 @@ type News {
   title: String!
   category: String!
   relatedInfo: NewsTags
+  videoUrl: String!
   publishedAt: DateTime
 }
 
@@ -368,19 +369,29 @@ type Mutation {
 input CreateUserInput {
   _id: ID
 
-  """User name"""
+  """
+  User name
+  """
   name: String
 
-  """User email"""
+  """
+  User email
+  """
   email: String!
 
-  """User role"""
+  """
+  User role
+  """
   role: USER_ROLE
 
-  """User password"""
+  """
+  User password
+  """
   password: String!
 
-  """User avatar"""
+  """
+  User avatar
+  """
   avatar: String
   accessToken: String
   phone: String
@@ -389,19 +400,29 @@ input CreateUserInput {
 input UpdateUserInput {
   _id: String
 
-  """User name"""
+  """
+  User name
+  """
   name: String
 
-  """User email"""
+  """
+  User email
+  """
   email: String
 
-  """User role"""
+  """
+  User role
+  """
   role: USER_ROLE
 
-  """User password"""
+  """
+  User password
+  """
   password: String
 
-  """User avatar"""
+  """
+  User avatar
+  """
   avatar: String
   accessToken: String
   phone: String
@@ -556,6 +577,7 @@ input CreateNewsInput {
   title: String!
   category: String!
   relatedInfo: NewsTagsInput
+  videoUrl: String!
   publishedAt: DateTime
 }
 
@@ -568,6 +590,7 @@ input UpdateNewsInput {
   title: String
   category: String
   relatedInfo: NewsTagsInput
+  videoUrl: String
   publishedAt: DateTime
 }
 
