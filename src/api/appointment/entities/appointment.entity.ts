@@ -6,6 +6,18 @@ import { Document } from 'mongoose';
 export type AppointmentDocument = Appointment & Document;
 
 @ObjectType()
+@Schema()
+export class ClientQuestionsSchema {
+  @Prop({ required: false })
+  @Field(() => String, { nullable: true })
+  qTitle: string;
+
+  @Prop({ required: false })
+  @Field(() => String, { nullable: true })
+  qDesc: string;
+}
+
+@ObjectType()
 @Schema({ timestamps: true })
 export class Appointment {
   @Field(() => ID, { nullable: true })
@@ -25,15 +37,21 @@ export class Appointment {
 
   @Prop({ required: true })
   @Field(() => String)
-  subject: string;
-
-  @Prop({ required: true })
-  @Field(() => String)
   serviceId: string;
 
   @Prop({ required: true })
-  @Field(() => String, { nullable: true })
-  note: string;
+  @Field(() => String)
+  subService: string;
+
+  @Prop({ required: true })
+  @Field(() => String)
+  profession: string;
+
+  @Prop({
+    required: false,
+  })
+  @Field(() => [ClientQuestionsSchema], { nullable: true })
+  clientQuestions: ClientQuestionsSchema[];
 }
 
 export const AppointmentSchema = SchemaFactory.createForClass(Appointment);

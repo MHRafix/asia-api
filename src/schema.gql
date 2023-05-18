@@ -9,14 +9,20 @@ type PagniationMeta {
   totalPages: Float!
 }
 
+type ClientQuestionsSchema {
+  qTitle: String
+  qDesc: String
+}
+
 type Appointment {
   _id: ID
   name: String!
   email: String!
   phone: String!
-  subject: String!
   serviceId: String!
-  note: String
+  subService: String!
+  profession: String!
+  clientQuestions: [ClientQuestionsSchema!]
 }
 
 type AppointmentPagination {
@@ -515,9 +521,15 @@ input CreateAppointmentInput {
   name: String!
   email: String!
   phone: String!
-  subject: String!
   serviceId: String!
-  note: String
+  subService: String!
+  profession: String!
+  clientQuestions: [ClientQuestionsInput!]
+}
+
+input ClientQuestionsInput {
+  qTitle: String
+  qDesc: String
 }
 
 input UpdateAppointmentInput {
@@ -525,9 +537,10 @@ input UpdateAppointmentInput {
   name: String
   email: String
   phone: String
-  subject: String
   serviceId: String
-  note: String
+  subService: String
+  profession: String
+  clientQuestions: [ClientQuestionsInput!]
 }
 
 input CreateServiceInput {
