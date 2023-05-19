@@ -31,7 +31,7 @@ export class User {
   _id: string;
 
   @Prop({ required: true })
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   name: string;
 
   @Prop({ required: true })

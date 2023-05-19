@@ -33,9 +33,7 @@ export class UsersService {
    * @returns
    */
 
-  async signup(
-    input: CreateUserInput,
-  ): Promise<{ userId: string; token: string }> {
+  async signup(input: CreateUserInput) {
     const email = input?.email;
     const isUserExist = await this.userModel.findOne({ email });
 
@@ -48,18 +46,19 @@ export class UsersService {
     input.password = bcrypt.hashSync(input.password, 10);
     const newUser = await this.userModel.create(input);
 
-    // make token with and return
+    // make token and return
     const token = this.jwtService.sign({
       id: newUser._id,
       email: newUser?.email,
     });
 
-    return { userId: newUser?._id, token };
+    // return { userId: isUserExist?._id, token };
+
+    newUser.accessToken = token;
+    return newUser;
   }
 
-  async signin(
-    payload: CreateUserInput,
-  ): Promise<{ userId: string; token: string }> {
+  async signin(payload: CreateUserInput) {
     const { email, password } = payload;
 
     // check is user exist
@@ -71,7 +70,8 @@ export class UsersService {
     }
 
     // check is password matched
-    const isMatchedPass = bcrypt.compare(password, isUserExist.password);
+    const isMatchedPass = await bcrypt.compare(password, isUserExist.password);
+    console.log(isMatchedPass);
 
     // if password is incorrect
     if (!isMatchedPass) {
@@ -84,7 +84,10 @@ export class UsersService {
       email: isUserExist?.email,
     });
 
-    return { userId: isUserExist?._id, token };
+    // return { userId: isUserExist?._id, token };
+
+    isUserExist.accessToken = token;
+    return isUserExist;
   }
 
   /**

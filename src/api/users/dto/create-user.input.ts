@@ -7,7 +7,7 @@ export class CreateUserInput {
   @Field(() => ID, { nullable: true })
   _id: string;
 
-  @Field(() => String, { description: 'User name', nullable: true })
+  @Field(() => String, { description: 'User name' })
   @IsOptional()
   name: string;
 

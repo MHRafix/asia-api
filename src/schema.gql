@@ -216,7 +216,7 @@ type TravelPackagePagination {
 
 type User {
   _id: ID
-  name: String
+  name: String!
   email: String
   role: USER_ROLE!
   password: String!
@@ -378,7 +378,7 @@ input CreateUserInput {
   """
   User name
   """
-  name: String
+  name: String!
 
   """
   User email
