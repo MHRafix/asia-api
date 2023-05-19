@@ -30,8 +30,8 @@ export class User {
   @Field(() => ID, { nullable: true })
   _id: string;
 
-  @Prop({ required: true })
-  @Field(() => String)
+  @Prop({ required: false })
+  @Field(() => String, { nullable: true })
   name: string;
 
   @Prop({ required: true })
