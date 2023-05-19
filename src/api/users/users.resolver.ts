@@ -30,11 +30,12 @@ export class UsersResolver {
   @Mutation(() => User)
   async signIn(@Args('input') input: CreateUserInput) {
     try {
-      await this.usersService.signin(input);
-      const user = await this.usersService.findOne({ email: input.email });
-      const accessToken = await this.usersService.createAccessToken(user);
-      user.accessToken = accessToken;
-      return user;
+      return this.usersService.signin(input);
+
+      // const user = await this.usersService.findOne({ email: input.email });
+      // const accessToken = await this.usersService.createAccessToken(user);
+      // user.accessToken = accessToken;
+      // return user;
     } catch (err) {
       throw new BadRequestException(err.message);
     }
