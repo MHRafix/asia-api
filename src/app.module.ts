@@ -1,6 +1,6 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
@@ -10,10 +10,12 @@ import { PackageBookingModule } from './api/package-booking/package-booking.modu
 import { ServicesModule } from './api/services/services.module';
 import { TeamModule } from './api/team/team.module';
 import { TravelPackagesModule } from './api/travel-packages/travel-packages.module';
-import { UsersModule } from './api/users/users.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import config from './app/config';
+import { JwtStrategy } from './app/config/jwtStrategy';
+import { JwtModule } from '@nestjs/jwt';
+import { UsersModule } from './api/users/users.module';
 
 @Module({
   imports: [
@@ -27,11 +29,24 @@ import config from './app/config';
         '.env.production',
       ],
     }),
+
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: true,
       introspection: true,
+    }),
+
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          secret: config.get<string>('JWT_SECRET'),
+          signOptions: {
+            expiresIn: config.get<string | number>('JWT_EXPIRES'),
+          },
+        };
+      },
     }),
     MongooseModule.forRoot(process.env.MONGODB_CONNECTION_URI),
     // APIs
@@ -44,6 +59,6 @@ import config from './app/config';
     PackageBookingModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, JwtStrategy],
 })
 export class AppModule {}

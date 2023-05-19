@@ -35,7 +35,6 @@ export class AppointmentService {
    * @returns
    */
   async findAll(input: AppointmentListQueryDto, fields: string[] = []) {
-    console.log('cursor');
     const { page = 1, limit = 10 } = input;
     const where = filterBuilder(input.where, input.whereOperator);
 

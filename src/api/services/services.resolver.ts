@@ -1,19 +1,25 @@
 import { CommonMatchInput } from '@/src/shared/dto/CommonFindOneDto';
 import { mongodbFindObjectBuilder } from '@/src/shared/utils/filterBuilder';
 import getGqlFields from '@/src/shared/utils/get-gql-fields';
-import { BadRequestException, ForbiddenException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  UseGuards,
+} from '@nestjs/common';
 import { Args, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateServiceInput } from './dto/create-service.input';
 import { ServiceListQueryDto } from './dto/service-list-query-dto';
 import { UpdateServiceInput } from './dto/update-service.input';
 import { Service, ServicePagination } from './entities/service.entity';
 import { ServicesService } from './services.service';
+import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 
 @Resolver(() => Service)
 export class ServicesResolver {
   constructor(private readonly servicesService: ServicesService) {}
 
   @Mutation(() => Service)
+  @UseGuards(GqlAuthGuard)
   createService(@Args('input') input: CreateServiceInput) {
     return this.servicesService.create(input);
   }
@@ -42,6 +48,7 @@ export class ServicesResolver {
   }
 
   @Mutation(() => Service)
+  @UseGuards(GqlAuthGuard)
   async updateService(
     @Args('input')
     input: UpdateServiceInput,
@@ -55,6 +62,7 @@ export class ServicesResolver {
   }
 
   @Mutation(() => Boolean, { nullable: true })
+  @UseGuards(GqlAuthGuard)
   async removeService(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);

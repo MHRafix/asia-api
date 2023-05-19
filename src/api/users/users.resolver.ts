@@ -1,13 +1,18 @@
 import { CommonMatchInput } from '@/src/shared/dto/CommonFindOneDto';
 import { mongodbFindObjectBuilder } from '@/src/shared/utils/filterBuilder';
 import getGqlFields from '@/src/shared/utils/get-gql-fields';
-import { BadRequestException, ForbiddenException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  UseGuards,
+} from '@nestjs/common';
 import { Args, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UserListQueryDto } from './dto/user-list-query.dto';
 import { User, UserPagination } from './entities/user.entity';
 import { UsersService } from './users.service';
+import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -16,7 +21,7 @@ export class UsersResolver {
   @Mutation(() => User)
   signUp(@Args('input') input: CreateUserInput) {
     try {
-      return this.usersService.create(input);
+      return this.usersService.signup(input);
     } catch (err) {
       throw new BadRequestException(err.message);
     }
@@ -36,6 +41,7 @@ export class UsersResolver {
   }
 
   @Query(() => UserPagination, { name: 'users' })
+  @UseGuards(GqlAuthGuard)
   findAll(
     @Args('input', { nullable: true }) input: UserListQueryDto,
     @Info() info: any,
@@ -49,6 +55,7 @@ export class UsersResolver {
   }
 
   @Query(() => User, { name: 'user' })
+  @UseGuards(GqlAuthGuard)
   findOne(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);
@@ -59,6 +66,7 @@ export class UsersResolver {
   }
 
   @Mutation(() => User)
+  @UseGuards(GqlAuthGuard)
   async updateUser(@Args('input') input: UpdateUserInput) {
     try {
       await this.usersService.update(input._id, input);
@@ -69,6 +77,7 @@ export class UsersResolver {
   }
 
   @Mutation(() => Boolean, { nullable: true })
+  @UseGuards(GqlAuthGuard)
   async removeUser(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);
@@ -80,6 +89,7 @@ export class UsersResolver {
   }
 
   @Mutation(() => Boolean, { nullable: true })
+  @UseGuards(GqlAuthGuard)
   async bulkRemoveUser(@Args('uIds', { type: () => [String] }) uIds: string[]) {
     try {
       const res = await this.usersService.removeBulk(uIds);

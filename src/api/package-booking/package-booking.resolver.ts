@@ -1,7 +1,11 @@
 import { CommonMatchInput } from '@/src/shared/dto/CommonFindOneDto';
 import { mongodbFindObjectBuilder } from '@/src/shared/utils/filterBuilder';
 import getGqlFields from '@/src/shared/utils/get-gql-fields';
-import { BadRequestException, ForbiddenException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  UseGuards,
+} from '@nestjs/common';
 import { Args, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { BookingPackageListQueryDto } from './dto/booking-list-query.dto';
 import { CreatePackageBookingInput } from './dto/create-package-booking.input';
@@ -11,6 +15,7 @@ import {
   PackageBookingPagination,
 } from './entities/package-booking.entity';
 import { PackageBookingService } from './package-booking.service';
+import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 
 @Resolver(() => PackageBooking)
 export class PackageBookingResolver {
@@ -22,6 +27,7 @@ export class PackageBookingResolver {
   }
 
   @Query(() => PackageBookingPagination, { name: 'bookings' })
+  @UseGuards(GqlAuthGuard)
   findAll(
     @Args('input', { nullable: true }) input: BookingPackageListQueryDto,
     @Info() info: any,
@@ -35,6 +41,7 @@ export class PackageBookingResolver {
   }
 
   @Query(() => PackageBooking, { name: 'booking' })
+  @UseGuards(GqlAuthGuard)
   findOne(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);
@@ -45,6 +52,7 @@ export class PackageBookingResolver {
   }
 
   @Mutation(() => PackageBooking)
+  @UseGuards(GqlAuthGuard)
   async updateBooking(
     @Args('input')
     input: UpdatePackageBookingInput,
@@ -58,6 +66,7 @@ export class PackageBookingResolver {
   }
 
   @Mutation(() => Boolean, { nullable: true })
+  @UseGuards(GqlAuthGuard)
   async removeBooking(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);
@@ -69,6 +78,7 @@ export class PackageBookingResolver {
   }
 
   @Mutation(() => Boolean, { nullable: true })
+  @UseGuards(GqlAuthGuard)
   async bulkRemoveBooking(
     @Args('uIds', { type: () => [String] }) uIds: string[],
   ) {

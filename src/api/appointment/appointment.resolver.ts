@@ -1,7 +1,11 @@
 import { CommonMatchInput } from '@/src/shared/dto/CommonFindOneDto';
 import { mongodbFindObjectBuilder } from '@/src/shared/utils/filterBuilder';
 import getGqlFields from '@/src/shared/utils/get-gql-fields';
-import { BadRequestException, ForbiddenException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  UseGuards,
+} from '@nestjs/common';
 import { Args, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AppointmentService } from './appointment.service';
 import { AppointmentListQueryDto } from './dto/appointment-list-query.dto';
@@ -11,6 +15,8 @@ import {
   Appointment,
   AppointmentPagination,
 } from './entities/appointment.entity';
+import { AuthGuard } from '@nestjs/passport';
+import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 
 @Resolver(() => Appointment)
 export class AppointmentResolver {
@@ -25,6 +31,7 @@ export class AppointmentResolver {
   }
 
   @Query(() => AppointmentPagination, { name: 'appointments' })
+  @UseGuards(GqlAuthGuard)
   findAll(
     @Args('input', { nullable: true }) input: AppointmentListQueryDto,
     @Info() info: any,
@@ -38,6 +45,7 @@ export class AppointmentResolver {
   }
 
   @Query(() => Appointment, { name: 'appointment' })
+  @UseGuards(GqlAuthGuard)
   findOne(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);
@@ -48,6 +56,7 @@ export class AppointmentResolver {
   }
 
   @Mutation(() => Appointment)
+  @UseGuards(GqlAuthGuard)
   async updateAppointment(
     @Args('input')
     input: UpdateAppointmentInput,
@@ -61,6 +70,7 @@ export class AppointmentResolver {
   }
 
   @Mutation(() => Boolean, { nullable: true })
+  @UseGuards(GqlAuthGuard)
   async removeAppointment(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);

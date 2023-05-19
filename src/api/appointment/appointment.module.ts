@@ -3,6 +3,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppointmentResolver } from './appointment.resolver';
 import { AppointmentService } from './appointment.service';
 import { Appointment, AppointmentSchema } from './entities/appointment.entity';
+import { ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [

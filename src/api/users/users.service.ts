@@ -2,13 +2,13 @@ import { AppPaginationResponse } from '@/src/shared/contracts/app-pagination-res
 import { SortType } from '@/src/shared/dto/CommonPaginationDto';
 import { filterBuilder } from '@/src/shared/utils/filterBuilder';
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import * as bcryptjs from 'bcryptjs';
 import { compare } from 'bcryptjs';
 import * as jsonwebtoken from 'jsonwebtoken';
 import { FilterQuery, Model } from 'mongoose';
@@ -16,48 +16,75 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UserListQueryDto } from './dto/user-list-query.dto';
 import { User, UserDocument } from './entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name)
     private userModel: Model<UserDocument>,
+    private jwtService: JwtService,
   ) {}
 
   /**
-   * create user
+   * signup user
    * @param input payload
    * @returns
    */
 
-  async create(input: CreateUserInput) {
-    const email = input.email;
-    const existUser = await this.userModel.findOne({ email });
+  async signup(
+    input: CreateUserInput,
+  ): Promise<{ userId: string; token: string }> {
+    const email = input?.email;
+    const isUserExist = await this.userModel.findOne({ email });
 
-    if (existUser) {
-      throw new UnauthorizedException('User already exist');
+    if (isUserExist) {
+      throw new BadRequestException(
+        'This Email Already Used try with another email!',
+      );
     }
 
-    input.password = bcryptjs.hashSync(input.password, 10);
+    input.password = bcrypt.hashSync(input.password, 10);
     const newUser = await this.userModel.create(input);
-    const accessToken = await this.createAccessToken(newUser);
-    newUser.accessToken = accessToken;
-    return newUser;
+
+    // make token with and return
+    const token = this.jwtService.sign({
+      id: newUser._id,
+      email: newUser?.email,
+    });
+
+    return { userId: newUser?._id, token };
   }
 
-  async signin(input: CreateUserInput) {
-    const email = input.email;
-    const existUser = await this.userModel.findOne({ email });
+  async signin(
+    payload: CreateUserInput,
+  ): Promise<{ userId: string; token: string }> {
+    const { email, password } = payload;
 
-    if (!existUser) {
-      throw new NotFoundException('User not found!');
+    // check is user exist
+    const isUserExist = await this.userModel.findOne({ email });
+
+    // if user is not exist
+    if (!isUserExist) {
+      throw new UnauthorizedException('Email is not correct!');
     }
 
-    compare(input.password, existUser.password, async (err, same) => {
-      if (err || !same) {
-        throw new NotFoundException('Invalid credentials');
-      }
+    // check is password matched
+    const isMatchedPass = bcrypt.compare(password, isUserExist.password);
+
+    // if password is incorrect
+    if (!isMatchedPass) {
+      throw new UnauthorizedException('You entered wrong password!');
+    }
+
+    // make token and return
+    const token = this.jwtService.sign({
+      id: isUserExist._id,
+      email: isUserExist?.email,
     });
+
+    return { userId: isUserExist?._id, token };
   }
 
   /**

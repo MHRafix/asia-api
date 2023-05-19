@@ -1,7 +1,7 @@
 import { CommonMatchInput } from '@/src/shared/dto/CommonFindOneDto';
 import { mongodbFindObjectBuilder } from '@/src/shared/utils/filterBuilder';
 import getGqlFields from '@/src/shared/utils/get-gql-fields';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, UseGuards } from '@nestjs/common';
 import { Args, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateTravelPackageInput } from './dto/create-travel-package.input';
 import { TravelPackageListQueryDto } from './dto/travel-package-list-query.dto';
@@ -11,12 +11,14 @@ import {
   TravelPackagePagination,
 } from './entities/travel-package.entity';
 import { TravelPackagesService } from './travel-packages.service';
+import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 
 @Resolver(() => TravelPackage)
 export class TravelPackagesResolver {
   constructor(private readonly travelPackagesService: TravelPackagesService) {}
 
   @Mutation(() => TravelPackage)
+  @UseGuards(GqlAuthGuard)
   createTravelPackage(@Args('input') input: CreateTravelPackageInput) {
     return this.travelPackagesService.create(input);
   }
@@ -33,6 +35,7 @@ export class TravelPackagesResolver {
       throw new BadRequestException(err.message);
     }
   }
+
   @Query(() => TravelPackage, { name: 'travelPackage' })
   findOne(@Args('input') input: CommonMatchInput) {
     try {
@@ -44,6 +47,7 @@ export class TravelPackagesResolver {
   }
 
   @Mutation(() => TravelPackage)
+  @UseGuards(GqlAuthGuard)
   async updateTravelPackage(
     @Args('input')
     input: UpdateTravelPackageInput,
@@ -57,6 +61,7 @@ export class TravelPackagesResolver {
   }
 
   @Mutation(() => Boolean, { nullable: true })
+  @UseGuards(GqlAuthGuard)
   async removeTravelPackage(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);

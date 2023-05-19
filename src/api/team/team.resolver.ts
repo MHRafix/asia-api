@@ -1,19 +1,25 @@
 import { CommonMatchInput } from '@/src/shared/dto/CommonFindOneDto';
 import { mongodbFindObjectBuilder } from '@/src/shared/utils/filterBuilder';
 import getGqlFields from '@/src/shared/utils/get-gql-fields';
-import { BadRequestException, ForbiddenException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  UseGuards,
+} from '@nestjs/common';
 import { Args, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateTeamInput } from './dto/create-team.input';
 import { TeamListQueryDto } from './dto/team-list-query-input.dto';
 import { UpdateTeamInput } from './dto/update-team.input';
 import { Team, TeamPagination } from './entities/team.entity';
 import { TeamService } from './team.service';
+import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 
 @Resolver(() => Team)
 export class TeamResolver {
   constructor(private readonly teamService: TeamService) {}
 
   @Mutation(() => Team)
+  @UseGuards(GqlAuthGuard)
   createTeam(@Args('input') input: CreateTeamInput) {
     return this.teamService.create(input);
   }
@@ -32,6 +38,7 @@ export class TeamResolver {
   }
 
   @Query(() => Team, { name: 'team' })
+  @UseGuards(GqlAuthGuard)
   findOne(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);
@@ -42,6 +49,7 @@ export class TeamResolver {
   }
 
   @Mutation(() => Team)
+  @UseGuards(GqlAuthGuard)
   async updateTeam(
     @Args('input')
     input: UpdateTeamInput,
@@ -55,6 +63,7 @@ export class TeamResolver {
   }
 
   @Mutation(() => Boolean, { nullable: true })
+  @UseGuards(GqlAuthGuard)
   async removeTeam(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);
