@@ -35,6 +35,14 @@ export class UsersResolver {
       throw new BadRequestException(err.message);
     }
   }
+  @Mutation(() => User)
+  async adminSignIn(@Args('input') input: CreateUserInput) {
+    try {
+      return this.usersService.adminSignin(input);
+    } catch (err) {
+      throw new BadRequestException(err.message);
+    }
+  }
 
   @Query(() => UserPagination, { name: 'users' })
   @UseGuards(GqlAuthGuard)

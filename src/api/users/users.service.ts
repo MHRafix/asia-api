@@ -9,7 +9,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { compare } from 'bcryptjs';
 import * as jsonwebtoken from 'jsonwebtoken';
 import { FilterQuery, Model } from 'mongoose';
 import { CreateUserInput } from './dto/create-user.input';
@@ -76,6 +75,41 @@ export class UsersService {
     // if password is incorrect
     if (!isMatchedPass) {
       throw new UnauthorizedException('You entered wrong password!');
+    }
+
+    // make token and return
+    const token = this.jwtService.sign({
+      id: isUserExist._id,
+      email: isUserExist?.email,
+    });
+
+    // return { userId: isUserExist?._id, token };
+
+    isUserExist.accessToken = token;
+    return isUserExist;
+  }
+
+  async adminSignin(payload: CreateUserInput) {
+    const { email, password } = payload;
+
+    // check is user exist
+    const isUserExist = await this.userModel.findOne({ email });
+
+    // if user is not exist
+    if (!isUserExist) {
+      throw new UnauthorizedException('Email is not correct!');
+    }
+
+    // check is password matched
+    const isMatchedPass = await bcrypt.compare(password, isUserExist.password);
+
+    // if password is incorrect
+    if (!isMatchedPass) {
+      throw new UnauthorizedException('You entered wrong password!');
+    }
+
+    if (isUserExist?.role !== 'ADMIN') {
+      throw new UnauthorizedException('Access cancelled!');
     }
 
     // make token and return

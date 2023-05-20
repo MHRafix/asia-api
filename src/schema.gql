@@ -216,7 +216,7 @@ type TravelPackagePagination {
 
 type User {
   _id: ID
-  name: String!
+  name: String
   email: String
   role: USER_ROLE!
   password: String!
@@ -348,6 +348,7 @@ input BookingPackageListQueryDto {
 type Mutation {
   signUp(input: CreateUserInput!): User!
   signIn(input: CreateUserInput!): User!
+  adminSignIn(input: CreateUserInput!): User!
   updateUser(input: UpdateUserInput!): User!
   removeUser(input: CommonMatchInput!): Boolean
   bulkRemoveUser(uIds: [String!]!): Boolean
@@ -378,7 +379,7 @@ input CreateUserInput {
   """
   User name
   """
-  name: String!
+  name: String
 
   """
   User email
