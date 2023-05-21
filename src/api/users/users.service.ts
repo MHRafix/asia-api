@@ -47,10 +47,10 @@ export class UsersService {
 
     // make token and return
     const token = this.jwtService.sign({
-      id: newUser._id,
-      email: newUser?.email,
+      id: isUserExist._id,
+      email: isUserExist?.email,
+      role: isUserExist?.role,
     });
-
     // return { userId: isUserExist?._id, token };
 
     newUser.accessToken = token;
@@ -70,7 +70,7 @@ export class UsersService {
 
     // check is password matched
     const isMatchedPass = await bcrypt.compare(password, isUserExist.password);
-    console.log(isMatchedPass);
+    // console.log(isMatchedPass);
 
     // if password is incorrect
     if (!isMatchedPass) {
@@ -81,6 +81,7 @@ export class UsersService {
     const token = this.jwtService.sign({
       id: isUserExist._id,
       email: isUserExist?.email,
+      role: isUserExist?.role,
     });
 
     // return { userId: isUserExist?._id, token };
@@ -116,6 +117,7 @@ export class UsersService {
     const token = this.jwtService.sign({
       id: isUserExist._id,
       email: isUserExist?.email,
+      role: isUserExist?.role,
     });
 
     // return { userId: isUserExist?._id, token };
