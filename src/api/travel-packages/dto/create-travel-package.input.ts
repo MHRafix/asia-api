@@ -101,7 +101,7 @@ export class TransportationInput {
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  public startAt: Date;
+  public startAt: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
@@ -115,9 +115,13 @@ export class TransportationInput {
   @IsOptional()
   public journeyBreak: string;
 
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  public endAt: string;
+
   @Field(() => Date, { nullable: true })
   @IsOptional()
-  public endAt: Date;
+  public transportDate: Date;
 }
 
 @InputType()

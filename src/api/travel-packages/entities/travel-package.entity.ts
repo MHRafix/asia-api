@@ -45,7 +45,7 @@ registerEnumType(TOURBY, {
 });
 
 @ObjectType()
-@Schema({ timestamps: true })
+@Schema()
 export class TravelOutline {
   @Prop()
   @Field(() => String, { nullable: true })
@@ -107,7 +107,7 @@ export class TravelOutline {
 }
 
 @ObjectType()
-@Schema({ timestamps: true })
+@Schema()
 export class RatingsAndReviews {
   @Prop()
   @Field(() => Number, { nullable: true })
@@ -137,7 +137,7 @@ export class Travelers {
 }
 
 @ObjectType()
-@Schema({ timestamps: true })
+@Schema()
 export class Transportation {
   @Prop({ default: TOURBY.BY_ROAD })
   @Field(() => TOURBY, { defaultValue: TOURBY.BY_ROAD })
@@ -157,7 +157,7 @@ export class Transportation {
   @Prop()
   @Field(() => String, { nullable: true })
   @IsOptional()
-  startAt: Date;
+  startAt: string;
 
   @Prop()
   @Field(() => String, { nullable: true })
@@ -175,9 +175,14 @@ export class Transportation {
   journeyBreak: string;
 
   @Prop()
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  endAt: string;
+
+  @Prop()
   @Field(() => Date, { nullable: true })
   @IsOptional()
-  endAt: Date;
+  transportDate: Date;
 }
 
 @ObjectType()
