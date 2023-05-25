@@ -53,28 +53,19 @@ type NewsPagination {
   meta: PagniationMeta
 }
 
-type PackageBooking {
-  _id: ID
+type CustomerDetailsSchema {
   name: String!
   email: String!
   phone: String!
-  street: String!
-  city: String!
-  country: String!
-  packageId: String!
-  status: BOOKING_STATUS!
-  paymentStatus: PAYMENT_STATUS!
-  paymentMethod: PAYMENT_METHOD
-  transactionId: String
-  amount: Float!
-  paymentDateTime: DateTime!
+  address: String!
 }
 
-enum BOOKING_STATUS {
-  PENDING
-  APPROVED
-  CANCELED
-  COMPLETED
+type PaymentDetailsSchema {
+  paymentStatus: PAYMENT_STATUS
+  paymentMethod: PAYMENT_METHOD
+  paidToNumber: String
+  transactionId: String
+  paymentDateTime: DateTime
 }
 
 enum PAYMENT_STATUS {
@@ -85,6 +76,22 @@ enum PAYMENT_STATUS {
 enum PAYMENT_METHOD {
   ONLINE
   BANK
+  NONE
+}
+
+type PackageBooking {
+  _id: ID
+  customerDetails: CustomerDetailsSchema!
+  packageId: String!
+  status: BOOKING_STATUS!
+  paymentDetails: PaymentDetailsSchema
+}
+
+enum BOOKING_STATUS {
+  PENDING
+  APPROVED
+  CANCELED
+  COMPLETED
 }
 
 type PackageBookingPagination {
@@ -160,7 +167,8 @@ type Transportation {
   transportName: String
   stops: Float
   journeyBreak: String
-  endAt: DateTime
+  endAt: String
+  transportDate: DateTime
 }
 
 enum TOURBY {
@@ -495,7 +503,8 @@ input TransportationInput {
   transportName: String
   stops: Float
   journeyBreak: String
-  endAt: DateTime
+  endAt: String
+  transportDate: DateTime
 }
 
 input UpdateTravelPackageInput {
@@ -610,34 +619,31 @@ input UpdateNewsInput {
 
 input CreatePackageBookingInput {
   _id: ID
+  customerDetails: CustomerDetailsInput!
+  packageId: String!
+  status: BOOKING_STATUS! = PENDING
+  paymentDetails: PaymentDetailsInput!
+}
+
+input CustomerDetailsInput {
   name: String!
   email: String!
   phone: String!
-  street: String!
-  city: String!
-  country: String!
-  packageId: String!
-  status: BOOKING_STATUS! = PENDING
+  address: String!
+}
+
+input PaymentDetailsInput {
   paymentStatus: PAYMENT_STATUS! = DUE
-  paymentMethod: PAYMENT_METHOD
+  paymentMethod: PAYMENT_METHOD = NONE
   transactionId: String
-  amount: Float!
-  paymentDateTime: DateTime!
+  paidToNumber: String
+  paymentDateTime: DateTime
 }
 
 input UpdatePackageBookingInput {
   _id: ID
-  name: String
-  email: String
-  phone: String
-  street: String
-  city: String
-  country: String
+  customerDetails: CustomerDetailsInput
   packageId: String
   status: BOOKING_STATUS = PENDING
-  paymentStatus: PAYMENT_STATUS = DUE
-  paymentMethod: PAYMENT_METHOD
-  transactionId: String
-  amount: Float
-  paymentDateTime: DateTime
+  paymentDetails: PaymentDetailsInput
 }

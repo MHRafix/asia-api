@@ -19,6 +19,7 @@ export enum PAYMENT_STATUS {
 export enum PAYMENT_METHOD {
   ONLINE = 'ONLINE',
   BANK = 'BANK',
+  NONE = 'NONE',
 }
 
 registerEnumType(PAYMENT_METHOD, {
@@ -34,11 +35,8 @@ registerEnumType(PAYMENT_STATUS, {
 });
 
 @ObjectType()
-@Schema({ timestamps: true })
-export class PackageBooking {
-  @Field(() => ID, { nullable: true })
-  _id: string;
-
+@Schema()
+export class CustomerDetailsSchema {
   @Prop()
   @Field(() => String)
   name: string;
@@ -53,15 +51,50 @@ export class PackageBooking {
 
   @Prop()
   @Field(() => String)
-  street: string;
+  address: string;
+}
+
+@ObjectType()
+@Schema()
+export class PaymentDetailsSchema {
+  @Prop({ default: PAYMENT_STATUS.DUE })
+  @Field(() => PAYMENT_STATUS, {
+    nullable: true,
+    defaultValue: PAYMENT_STATUS.DUE,
+  })
+  paymentStatus: PAYMENT_STATUS;
 
   @Prop()
-  @Field(() => String)
-  city: string;
+  @Field(() => PAYMENT_METHOD, {
+    nullable: true,
+    defaultValue: PAYMENT_METHOD.NONE,
+  })
+  paymentMethod: PAYMENT_METHOD;
 
   @Prop()
-  @Field(() => String)
-  country: string;
+  @Field(() => String, {
+    nullable: true,
+  })
+  paidToNumber: string;
+
+  @Prop()
+  @Field(() => String, { nullable: true })
+  transactionId: string;
+
+  @Prop()
+  @Field(() => Date, { nullable: true })
+  paymentDateTime: Date;
+}
+
+@ObjectType()
+@Schema({ timestamps: true })
+export class PackageBooking {
+  @Field(() => ID, { nullable: true })
+  _id: string;
+
+  @Prop()
+  @Field(() => CustomerDetailsSchema)
+  customerDetails: CustomerDetailsSchema;
 
   @Prop()
   @Field(() => String)
@@ -71,25 +104,9 @@ export class PackageBooking {
   @Field(() => BOOKING_STATUS, { defaultValue: BOOKING_STATUS.PENDING })
   status: BOOKING_STATUS;
 
-  @Prop({ default: PAYMENT_STATUS.DUE })
-  @Field(() => PAYMENT_STATUS, { defaultValue: PAYMENT_STATUS.DUE })
-  paymentStatus: PAYMENT_STATUS;
-
   @Prop()
-  @Field(() => PAYMENT_METHOD, { nullable: true })
-  paymentMethod: PAYMENT_METHOD;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  transactionId: string;
-
-  @Prop()
-  @Field(() => Number)
-  amount: number;
-
-  @Prop({ default: Date.now() })
-  @Field(() => Date, { defaultValue: Date.now() })
-  paymentDateTime: Date;
+  @Field(() => PaymentDetailsSchema, { nullable: true })
+  paymentDetails: PaymentDetailsSchema;
 }
 
 export const PackageBookingSchema =

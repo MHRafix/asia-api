@@ -7,10 +7,33 @@ import {
 } from '../entities/package-booking.entity';
 
 @InputType()
-export class CreatePackageBookingInput {
-  @Field(() => ID, { nullable: true })
-  _id: string;
+export class PaymentDetailsInput {
+  @Field(() => PAYMENT_STATUS, { defaultValue: PAYMENT_STATUS.DUE })
+  @IsNotEmpty()
+  paymentStatus: PAYMENT_STATUS;
 
+  @Field(() => PAYMENT_METHOD, {
+    nullable: true,
+    defaultValue: PAYMENT_METHOD.NONE,
+  })
+  @IsOptional()
+  paymentMethod: PAYMENT_METHOD;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  transactionId: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  paidToNumber: string;
+
+  @Field(() => Date, { nullable: true })
+  @IsOptional()
+  paymentDateTime: Date;
+}
+
+@InputType()
+export class CustomerDetailsInput {
   @Field(() => String)
   @IsNotEmpty()
   name: string;
@@ -26,15 +49,17 @@ export class CreatePackageBookingInput {
 
   @Field(() => String)
   @IsNotEmpty()
-  street: string;
+  address: string;
+}
 
-  @Field(() => String)
-  @IsNotEmpty()
-  city: string;
+@InputType()
+export class CreatePackageBookingInput {
+  @Field(() => ID, { nullable: true })
+  _id: string;
 
-  @Field(() => String)
+  @Field(() => CustomerDetailsInput)
   @IsNotEmpty()
-  country: string;
+  customerDetails: CustomerDetailsInput;
 
   @Field(() => String)
   @IsNotEmpty()
@@ -44,23 +69,7 @@ export class CreatePackageBookingInput {
   @IsNotEmpty()
   status: BOOKING_STATUS;
 
-  @Field(() => PAYMENT_STATUS, { defaultValue: PAYMENT_STATUS.DUE })
-  @IsNotEmpty()
-  paymentStatus: PAYMENT_STATUS;
-
-  @Field(() => PAYMENT_METHOD, { nullable: true })
-  @IsNotEmpty()
-  paymentMethod: PAYMENT_METHOD;
-
-  @Field(() => String, { nullable: true })
+  @Field(() => PaymentDetailsInput)
   @IsOptional()
-  transactionId: string;
-
-  @Field(() => Number)
-  @IsNotEmpty()
-  amount: number;
-
-  @Field(() => Date, { defaultValue: Date.now() })
-  @IsNotEmpty()
-  paymentDateTime: Date;
+  paymentDetails: PaymentDetailsInput;
 }
