@@ -60,7 +60,7 @@ export class CustomerDetailsInput {
 export class TravelerDetailsInput {
   @Field(() => Number)
   @IsNotEmpty()
-  adults: number;
+  adult: number;
 
   @Field(() => Number)
   @IsNotEmpty()

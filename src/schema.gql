@@ -61,7 +61,7 @@ type CustomerDetailsSchema {
 }
 
 type TravelerDetailsSchema {
-  adults: Float!
+  adult: Float!
   child: Float!
 }
 
@@ -644,7 +644,7 @@ input CustomerDetailsInput {
 }
 
 input TravelerDetailsInput {
-  adults: Float!
+  adult: Float!
   child: Float!
 }
 

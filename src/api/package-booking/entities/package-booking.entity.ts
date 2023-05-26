@@ -1,5 +1,5 @@
 import { Paginated } from '@/src/shared/object-types/paginationObject';
-import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   BOOKING_STATUS,
@@ -34,7 +34,7 @@ export class CustomerDetailsSchema {
 export class TravelerDetailsSchema {
   @Prop()
   @Field(() => Number)
-  adults: number;
+  adult: number;
 
   @Prop()
   @Field(() => Number)
