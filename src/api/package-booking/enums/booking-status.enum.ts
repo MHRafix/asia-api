@@ -9,6 +9,7 @@ export enum BOOKING_STATUS {
 
 export enum PAYMENT_STATUS {
   DUE = 'DUE',
+  IN_REVIEW_PAID = 'IN_REVIEW_PAID',
   PAID = 'PAID',
 }
 

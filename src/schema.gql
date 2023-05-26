@@ -76,6 +76,7 @@ type PaymentDetailsSchema {
 
 enum PAYMENT_STATUS {
   DUE
+  IN_REVIEW_PAID
   PAID
 }
 
