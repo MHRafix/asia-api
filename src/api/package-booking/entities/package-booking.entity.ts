@@ -1,38 +1,13 @@
 import { Paginated } from '@/src/shared/object-types/paginationObject';
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import {
+  BOOKING_STATUS,
+  PAYMENT_METHOD,
+  PAYMENT_STATUS,
+} from '../enums/booking-status.enum';
 
 export type PackageBookingDocument = PackageBooking & Document;
-
-export enum BOOKING_STATUS {
-  PENDING = 'PENDING',
-  APPROVED = 'APPROVED',
-  CANCELED = 'CANCELED',
-  COMPLETED = 'COMPLETED',
-}
-
-export enum PAYMENT_STATUS {
-  DUE = 'DUE',
-  PAID = 'PAID',
-}
-
-export enum PAYMENT_METHOD {
-  ONLINE = 'ONLINE',
-  BANK = 'BANK',
-  NONE = 'NONE',
-}
-
-registerEnumType(PAYMENT_METHOD, {
-  name: 'PAYMENT_METHOD',
-});
-
-registerEnumType(BOOKING_STATUS, {
-  name: 'BOOKING_STATUS',
-});
-
-registerEnumType(PAYMENT_STATUS, {
-  name: 'PAYMENT_STATUS',
-});
 
 @ObjectType()
 @Schema()
@@ -56,6 +31,18 @@ export class CustomerDetailsSchema {
 
 @ObjectType()
 @Schema()
+export class TravelerDetailsSchema {
+  @Prop()
+  @Field(() => Number)
+  adults: number;
+
+  @Prop()
+  @Field(() => Number)
+  child: number;
+}
+
+@ObjectType()
+@Schema()
 export class PaymentDetailsSchema {
   @Prop({ default: PAYMENT_STATUS.DUE })
   @Field(() => PAYMENT_STATUS, {
@@ -65,17 +52,19 @@ export class PaymentDetailsSchema {
   paymentStatus: PAYMENT_STATUS;
 
   @Prop()
+  @Field(() => Number)
+  totalAmount: number;
+
+  @Prop()
+  @Field(() => String, { nullable: true })
+  paidFrom: string;
+
+  @Prop()
   @Field(() => PAYMENT_METHOD, {
     nullable: true,
     defaultValue: PAYMENT_METHOD.NONE,
   })
   paymentMethod: PAYMENT_METHOD;
-
-  @Prop()
-  @Field(() => String, {
-    nullable: true,
-  })
-  paidToNumber: string;
 
   @Prop()
   @Field(() => String, { nullable: true })
@@ -95,6 +84,10 @@ export class PackageBooking {
   @Prop()
   @Field(() => CustomerDetailsSchema)
   customerDetails: CustomerDetailsSchema;
+
+  @Prop()
+  @Field(() => TravelerDetailsSchema)
+  travelerDetails: TravelerDetailsSchema;
 
   @Prop()
   @Field(() => String)

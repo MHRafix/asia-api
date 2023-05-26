@@ -4,13 +4,17 @@ import {
   BOOKING_STATUS,
   PAYMENT_METHOD,
   PAYMENT_STATUS,
-} from '../entities/package-booking.entity';
+} from '../enums/booking-status.enum';
 
 @InputType()
 export class PaymentDetailsInput {
   @Field(() => PAYMENT_STATUS, { defaultValue: PAYMENT_STATUS.DUE })
   @IsNotEmpty()
   paymentStatus: PAYMENT_STATUS;
+
+  @Field(() => Number)
+  @IsNotEmpty()
+  totalAmount: number;
 
   @Field(() => PAYMENT_METHOD, {
     nullable: true,
@@ -21,11 +25,11 @@ export class PaymentDetailsInput {
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  transactionId: string;
+  paidFrom: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  paidToNumber: string;
+  transactionId: string;
 
   @Field(() => Date, { nullable: true })
   @IsOptional()
@@ -53,6 +57,17 @@ export class CustomerDetailsInput {
 }
 
 @InputType()
+export class TravelerDetailsInput {
+  @Field(() => Number)
+  @IsNotEmpty()
+  adults: number;
+
+  @Field(() => Number)
+  @IsNotEmpty()
+  child: number;
+}
+
+@InputType()
 export class CreatePackageBookingInput {
   @Field(() => ID, { nullable: true })
   _id: string;
@@ -60,6 +75,10 @@ export class CreatePackageBookingInput {
   @Field(() => CustomerDetailsInput)
   @IsNotEmpty()
   customerDetails: CustomerDetailsInput;
+
+  @Field(() => TravelerDetailsInput)
+  @IsNotEmpty()
+  travelerDetails: TravelerDetailsInput;
 
   @Field(() => String)
   @IsNotEmpty()
@@ -69,7 +88,7 @@ export class CreatePackageBookingInput {
   @IsNotEmpty()
   status: BOOKING_STATUS;
 
-  @Field(() => PaymentDetailsInput)
+  @Field(() => PaymentDetailsInput, { nullable: true })
   @IsOptional()
   paymentDetails: PaymentDetailsInput;
 }

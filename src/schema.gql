@@ -60,10 +60,16 @@ type CustomerDetailsSchema {
   address: String!
 }
 
+type TravelerDetailsSchema {
+  adults: Float!
+  child: Float!
+}
+
 type PaymentDetailsSchema {
   paymentStatus: PAYMENT_STATUS
+  totalAmount: Float!
+  paidFrom: String
   paymentMethod: PAYMENT_METHOD
-  paidToNumber: String
   transactionId: String
   paymentDateTime: DateTime
 }
@@ -77,11 +83,15 @@ enum PAYMENT_METHOD {
   ONLINE
   BANK
   NONE
+  BKASH
+  NAGAD
+  ROCKET
 }
 
 type PackageBooking {
   _id: ID
   customerDetails: CustomerDetailsSchema!
+  travelerDetails: TravelerDetailsSchema!
   packageId: String!
   status: BOOKING_STATUS!
   paymentDetails: PaymentDetailsSchema
@@ -620,9 +630,10 @@ input UpdateNewsInput {
 input CreatePackageBookingInput {
   _id: ID
   customerDetails: CustomerDetailsInput!
+  travelerDetails: TravelerDetailsInput!
   packageId: String!
   status: BOOKING_STATUS! = PENDING
-  paymentDetails: PaymentDetailsInput!
+  paymentDetails: PaymentDetailsInput
 }
 
 input CustomerDetailsInput {
@@ -632,17 +643,24 @@ input CustomerDetailsInput {
   address: String!
 }
 
+input TravelerDetailsInput {
+  adults: Float!
+  child: Float!
+}
+
 input PaymentDetailsInput {
   paymentStatus: PAYMENT_STATUS! = DUE
+  totalAmount: Float!
   paymentMethod: PAYMENT_METHOD = NONE
+  paidFrom: String
   transactionId: String
-  paidToNumber: String
   paymentDateTime: DateTime
 }
 
 input UpdatePackageBookingInput {
   _id: ID
   customerDetails: CustomerDetailsInput
+  travelerDetails: TravelerDetailsInput
   packageId: String
   status: BOOKING_STATUS = PENDING
   paymentDetails: PaymentDetailsInput
