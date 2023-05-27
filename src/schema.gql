@@ -70,7 +70,6 @@ type PaymentDetailsSchema {
   totalAmount: Float!
   paidFrom: String
   paymentMethod: PAYMENT_METHOD
-  transactionId: String
   paymentDateTime: DateTime
 }
 
@@ -94,6 +93,8 @@ type PackageBooking {
   customerDetails: CustomerDetailsSchema!
   travelerDetails: TravelerDetailsSchema!
   packageId: String!
+  transactionId: String
+  bookingId: String!
   status: BOOKING_STATUS!
   paymentDetails: PaymentDetailsSchema
 }
@@ -633,6 +634,8 @@ input CreatePackageBookingInput {
   customerDetails: CustomerDetailsInput!
   travelerDetails: TravelerDetailsInput!
   packageId: String!
+  transactionId: String
+  bookingId: String!
   status: BOOKING_STATUS! = PENDING
   paymentDetails: PaymentDetailsInput
 }
@@ -654,7 +657,6 @@ input PaymentDetailsInput {
   totalAmount: Float!
   paymentMethod: PAYMENT_METHOD = NONE
   paidFrom: String
-  transactionId: String
   paymentDateTime: DateTime
 }
 
@@ -663,6 +665,8 @@ input UpdatePackageBookingInput {
   customerDetails: CustomerDetailsInput
   travelerDetails: TravelerDetailsInput
   packageId: String
+  transactionId: String
+  bookingId: String
   status: BOOKING_STATUS = PENDING
   paymentDetails: PaymentDetailsInput
 }

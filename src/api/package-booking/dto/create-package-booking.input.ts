@@ -27,10 +27,6 @@ export class PaymentDetailsInput {
   @IsOptional()
   paidFrom: string;
 
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  transactionId: string;
-
   @Field(() => Date, { nullable: true })
   @IsOptional()
   paymentDateTime: Date;
@@ -83,6 +79,14 @@ export class CreatePackageBookingInput {
   @Field(() => String)
   @IsNotEmpty()
   packageId: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  transactionId: string;
+
+  @Field(() => String)
+  @IsNotEmpty()
+  bookingId: string;
 
   @Field(() => BOOKING_STATUS, { defaultValue: BOOKING_STATUS.PENDING })
   @IsNotEmpty()

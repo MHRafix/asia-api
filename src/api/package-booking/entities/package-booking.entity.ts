@@ -67,10 +67,6 @@ export class PaymentDetailsSchema {
   paymentMethod: PAYMENT_METHOD;
 
   @Prop()
-  @Field(() => String, { nullable: true })
-  transactionId: string;
-
-  @Prop()
   @Field(() => Date, { nullable: true })
   paymentDateTime: Date;
 }
@@ -92,6 +88,14 @@ export class PackageBooking {
   @Prop()
   @Field(() => String)
   packageId: string;
+
+  @Prop()
+  @Field(() => String, { nullable: true })
+  transactionId: string;
+
+  @Prop()
+  @Field(() => String)
+  bookingId: string;
 
   @Prop({ default: BOOKING_STATUS.PENDING })
   @Field(() => BOOKING_STATUS, { defaultValue: BOOKING_STATUS.PENDING })

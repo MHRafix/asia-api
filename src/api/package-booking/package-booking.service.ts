@@ -1,7 +1,11 @@
 import { AppPaginationResponse } from '@/src/shared/contracts/app-pagination-response';
 import { SortType } from '@/src/shared/dto/CommonPaginationDto';
 import { filterBuilder } from '@/src/shared/utils/filterBuilder';
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { BookingPackageListQueryDto } from './dto/booking-list-query.dto';
@@ -24,7 +28,17 @@ export class PackageBookingService {
    * @param payload create payload
    * @returns
    */
-  create(payload: CreatePackageBookingInput) {
+  async create(payload: CreatePackageBookingInput) {
+    const isExistTransactionId = await this.packageBookingModel.findOne({
+      transactionId: payload?.transactionId,
+    });
+
+    if (isExistTransactionId) {
+      throw new BadRequestException(
+        'Booking is already exist with given transaction Id',
+      );
+    }
+
     return this.packageBookingModel.create(payload);
   }
 
