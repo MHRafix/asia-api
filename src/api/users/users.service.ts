@@ -5,18 +5,16 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
-import * as jsonwebtoken from 'jsonwebtoken';
+import * as bcrypt from 'bcryptjs';
 import { FilterQuery, Model } from 'mongoose';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UserListQueryDto } from './dto/user-list-query.dto';
 import { User, UserDocument } from './entities/user.entity';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -81,7 +79,6 @@ export class UsersService {
     const token = this.jwtService.sign({
       id: isUserExist._id,
       email: isUserExist?.email,
-      role: isUserExist?.role,
     });
 
     // return { userId: isUserExist?._id, token };
@@ -130,16 +127,16 @@ export class UsersService {
    * generate token
    * @param user
    * @returns
-   */
-  async createAccessToken(user: any) {
-    const payload = {
-      _id: user._id,
-      email: user.email,
-      name: user.name,
-    };
+  //  */
+  // async createAccessToken(user: any) {
+  //   const payload = {
+  //     _id: user._id,
+  //     email: user.email,
+  //     name: user.name,
+  //   };
 
-    return jsonwebtoken.sign(payload, process.env.JWT_SECRET);
-  }
+  //   return jsonwebtoken.sign(payload, process.env.JWT_SECRET);
+  // }
 
   /**
    * get all users
@@ -176,6 +173,26 @@ export class UsersService {
 
       if (!data) {
         throw new ForbiddenException('Data is not found');
+      }
+      return data;
+    } catch (err) {
+      throw new ForbiddenException(err.message);
+    }
+  }
+
+  /**
+   * check user isAdmin
+   * @param _id check user isAdmin
+   * @returns
+   */
+  async isAdmin(email: string) {
+    try {
+      const data = await this.userModel.findOne({ email });
+
+      if (data?.role !== 'ADMIN') {
+        throw new UnauthorizedException(
+          'You do not have permission to access this',
+        );
       }
       return data;
     } catch (err) {

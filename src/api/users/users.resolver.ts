@@ -1,3 +1,4 @@
+import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 import { CommonMatchInput } from '@/src/shared/dto/CommonFindOneDto';
 import { mongodbFindObjectBuilder } from '@/src/shared/utils/filterBuilder';
 import getGqlFields from '@/src/shared/utils/get-gql-fields';
@@ -12,7 +13,6 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { UserListQueryDto } from './dto/user-list-query.dto';
 import { User, UserPagination } from './entities/user.entity';
 import { UsersService } from './users.service';
-import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 
 @Resolver(() => User)
 export class UsersResolver {

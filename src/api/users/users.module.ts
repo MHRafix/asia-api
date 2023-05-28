@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './entities/user.entity';
 import { UsersResolver } from './users.resolver';
 import { UsersService } from './users.service';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -22,5 +22,6 @@ import { ConfigService } from '@nestjs/config';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   providers: [UsersResolver, UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}

@@ -1,14 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, ExtractJwt } from 'passport-jwt';
-import { Model } from 'mongoose';
-import { User, UserDocument } from '../../api/users/entities/user.entity';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+import { UsersService } from './../../api/users/users.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
-    // @InjectModel(User.name) private userModel: Model<UserDocument>
+  constructor(private usersService: UsersService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: process.env.JWT_SECRET,
@@ -16,16 +13,19 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload) {
-    const { id } = payload;
-    // console.log(payload);
-    // const user = await this.userModel.findById({
-    //   _id: id,
-    // });
+    const { id, role, email } = payload;
 
-    // if (!user) {
-    //   throw new UnauthorizedException();
-    // }
+    if (role === 'ADMIN') {
+      const user = await this.usersService.isAdmin(email);
 
-    return { id };
+      if (!user) {
+        throw new UnauthorizedException(
+          "You're not allowed to get access this.",
+        );
+      }
+      return payload;
+    }
+
+    return payload;
   }
 }
