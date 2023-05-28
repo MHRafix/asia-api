@@ -117,26 +117,9 @@ export class UsersService {
       role: isUserExist?.role,
     });
 
-    // return { userId: isUserExist?._id, token };
-
     isUserExist.accessToken = token;
     return isUserExist;
   }
-
-  /**
-   * generate token
-   * @param user
-   * @returns
-  //  */
-  // async createAccessToken(user: any) {
-  //   const payload = {
-  //     _id: user._id,
-  //     email: user.email,
-  //     name: user.name,
-  //   };
-
-  //   return jsonwebtoken.sign(payload, process.env.JWT_SECRET);
-  // }
 
   /**
    * get all users

@@ -15,15 +15,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload) {
     const { id, role, email } = payload;
 
-    if (role === 'ADMIN') {
-      const user = await this.usersService.isAdmin(email);
-
-      if (!user) {
+    if (role) {
+      if (role !== 'ADMIN') {
         throw new UnauthorizedException(
           "You're not allowed to get access this.",
         );
       }
-      return payload;
     }
 
     return payload;
