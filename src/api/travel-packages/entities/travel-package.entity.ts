@@ -139,8 +139,8 @@ export class CountDownTimer {
 @Schema()
 export class CarouselThumbnailsSchema {
   @Prop()
-  @Field(() => String, { nullable: true })
-  thumbnail: string;
+  @Field(() => [String], { nullable: true })
+  thumbnail: string[];
 }
 
 @ObjectType()
@@ -196,8 +196,8 @@ export class TravelPackage {
   @Prop({
     required: false,
   })
-  @Field(() => [CarouselThumbnailsSchema], { nullable: true })
-  carouselThumbnails: CarouselThumbnailsSchema[];
+  @Field(() => CarouselThumbnailsSchema, { nullable: true })
+  carouselThumbnails: CarouselThumbnailsSchema;
 
   @Prop({ required: false })
   @Field(() => [RatingsAndReviews], { nullable: true })

@@ -89,9 +89,9 @@ export class CountDownTimerInput {
 
 @InputType()
 export class CarouselThumbnailsInput {
-  @Field(() => String, { nullable: true })
+  @Field(() => [String], { nullable: true })
   @IsOptional()
-  thumbnail: string;
+  thumbnail: string[];
 }
 
 @InputType()
@@ -142,10 +142,10 @@ export class CreateTravelPackageInput {
   @IsOptional()
   shortDescription: string;
 
-  @Field(() => [CarouselThumbnailsInput], { nullable: true })
+  @Field(() => CarouselThumbnailsInput, { nullable: true })
   @IsOptional()
   @IsArray()
-  public carouselThumbnails: CarouselThumbnailsInput[];
+  public carouselThumbnails: CarouselThumbnailsInput;
 
   @Field(() => [RatingsAndReviewsInput], { nullable: true })
   @IsOptional()
