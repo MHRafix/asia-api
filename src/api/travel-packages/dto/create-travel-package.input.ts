@@ -8,60 +8,10 @@ import {
   ValidateNested,
 } from 'class-validator';
 import {
-  PACKAGE_IN,
   PACKAGE_STATUS,
   SALE_STATUS,
   TOURBY,
 } from '../entities/travel-package.entity';
-@InputType()
-export class TravelOutlineInput {
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  public departureFrom: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  public destinationTo: string;
-
-  @Field(() => Date, { nullable: true })
-  @IsOptional()
-  public startAt: Date;
-
-  @Field(() => Date, { nullable: true })
-  @IsOptional()
-  public endAt: Date;
-
-  @Field(() => PACKAGE_IN, {
-    defaultValue: PACKAGE_IN.DOMESTIC,
-    nullable: true,
-  })
-  @IsOptional()
-  public packageIn: PACKAGE_IN;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  public description: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  public breakfast: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  public lunch: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  public normalSnacks: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  public dinner: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  public otherFeatures: string;
-}
 
 @InputType()
 export class RatingsAndReviewsInput {
@@ -196,13 +146,6 @@ export class CreateTravelPackageInput {
   @IsOptional()
   @IsArray()
   public carouselThumbnails: CarouselThumbnailsInput[];
-
-  @Field(() => [TravelOutlineInput], { nullable: true })
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => TravelOutlineInput)
-  public travelOutline: TravelOutlineInput[];
 
   @Field(() => [RatingsAndReviewsInput], { nullable: true })
   @IsOptional()

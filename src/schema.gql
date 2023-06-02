@@ -142,25 +142,6 @@ type TeamPagination {
   meta: PagniationMeta
 }
 
-type TravelOutline {
-  departureFrom: String
-  destinationTo: String
-  startAt: DateTime
-  endAt: DateTime
-  packageIn: PACKAGE_IN
-  description: String
-  breakfast: String
-  lunch: String
-  normalSnacks: String
-  dinner: String
-  otherFeatures: String
-}
-
-enum PACKAGE_IN {
-  DOMESTIC
-  INTERNATIONAL
-}
-
 type RatingsAndReviews {
   rating: Float
   email: String
@@ -212,7 +193,6 @@ type TravelPackage {
   shortDescription: String
   destination: String
   carouselThumbnails: [CarouselThumbnailsSchema!]
-  travelOutline: [TravelOutline!]
   ratingsAndReviews: [RatingsAndReviews!]
   travelers: [Travelers!]
   transportation: [Transportation!]
@@ -468,7 +448,6 @@ input CreateTravelPackageInput {
   description: String
   shortDescription: String
   carouselThumbnails: [CarouselThumbnailsInput!]
-  travelOutline: [TravelOutlineInput!]
   ratingsAndReviews: [RatingsAndReviewsInput!]
   travelers: [TravelersInput!]
   transportation: [TransportationInput!]
@@ -481,20 +460,6 @@ input CountDownTimerInput {
 
 input CarouselThumbnailsInput {
   thumbnail: String
-}
-
-input TravelOutlineInput {
-  departureFrom: String
-  destinationTo: String
-  startAt: DateTime
-  endAt: DateTime
-  packageIn: PACKAGE_IN = DOMESTIC
-  description: String
-  breakfast: String
-  lunch: String
-  normalSnacks: String
-  dinner: String
-  otherFeatures: String
 }
 
 input RatingsAndReviewsInput {
@@ -532,7 +497,6 @@ input UpdateTravelPackageInput {
   description: String
   shortDescription: String
   carouselThumbnails: [CarouselThumbnailsInput!]
-  travelOutline: [TravelOutlineInput!]
   ratingsAndReviews: [RatingsAndReviewsInput!]
   travelers: [TravelersInput!]
   transportation: [TransportationInput!]

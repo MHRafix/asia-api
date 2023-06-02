@@ -46,68 +46,6 @@ registerEnumType(TOURBY, {
 
 @ObjectType()
 @Schema()
-export class TravelOutline {
-  @Prop()
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  departureFrom: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  destinationTo: string;
-
-  @Prop()
-  @Field(() => Date, { nullable: true })
-  @IsOptional()
-  startAt: Date;
-
-  @Prop()
-  @Field(() => Date, { nullable: true })
-  @IsOptional()
-  endAt: Date;
-
-  @Prop({ default: PACKAGE_IN.DOMESTIC })
-  @Field(() => PACKAGE_IN, {
-    defaultValue: PACKAGE_IN.DOMESTIC,
-    nullable: true,
-  })
-  @IsOptional()
-  packageIn: PACKAGE_IN;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  description: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  breakfast: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  lunch: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  normalSnacks: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  dinner: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  otherFeatures: string;
-}
-
-@ObjectType()
-@Schema()
 export class RatingsAndReviews {
   @Prop()
   @Field(() => Number, { nullable: true })
@@ -260,10 +198,6 @@ export class TravelPackage {
   })
   @Field(() => [CarouselThumbnailsSchema], { nullable: true })
   carouselThumbnails: CarouselThumbnailsSchema[];
-
-  @Prop({ required: false })
-  @Field(() => [TravelOutline], { nullable: true })
-  travelOutline: TravelOutline[];
 
   @Prop({ required: false })
   @Field(() => [RatingsAndReviews], { nullable: true })
