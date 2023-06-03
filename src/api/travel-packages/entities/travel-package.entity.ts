@@ -196,8 +196,8 @@ export class TravelPackage {
   @Prop({
     required: false,
   })
-  @Field(() => CarouselThumbnailsSchema, { nullable: true })
-  carouselThumbnails: CarouselThumbnailsSchema;
+  @Field(() => [String], { nullable: true })
+  carouselThumbnails: string[];
 
   @Prop({ required: false })
   @Field(() => [RatingsAndReviews], { nullable: true })

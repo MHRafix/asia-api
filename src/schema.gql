@@ -175,10 +175,6 @@ type CountDownTimer {
   bookingEnd: DateTime
 }
 
-type CarouselThumbnailsSchema {
-  thumbnail: String
-}
-
 type TravelPackage {
   _id: ID
   packageTitle: String!
@@ -192,7 +188,7 @@ type TravelPackage {
   description: String
   shortDescription: String
   destination: String
-  carouselThumbnails: [CarouselThumbnailsSchema!]
+  carouselThumbnails: [String!]
   ratingsAndReviews: [RatingsAndReviews!]
   travelers: [Travelers!]
   transportation: [Transportation!]
@@ -447,7 +443,7 @@ input CreateTravelPackageInput {
   packageStatus: String = "UPCOMING"
   description: String
   shortDescription: String
-  carouselThumbnails: [CarouselThumbnailsInput!]
+  carouselThumbnails: [String!]
   ratingsAndReviews: [RatingsAndReviewsInput!]
   travelers: [TravelersInput!]
   transportation: [TransportationInput!]
@@ -456,10 +452,6 @@ input CreateTravelPackageInput {
 input CountDownTimerInput {
   bookingStart: DateTime
   bookingEnd: DateTime
-}
-
-input CarouselThumbnailsInput {
-  thumbnail: String
 }
 
 input RatingsAndReviewsInput {
@@ -496,7 +488,7 @@ input UpdateTravelPackageInput {
   packageStatus: String = "UPCOMING"
   description: String
   shortDescription: String
-  carouselThumbnails: [CarouselThumbnailsInput!]
+  carouselThumbnails: [String!]
   ratingsAndReviews: [RatingsAndReviewsInput!]
   travelers: [TravelersInput!]
   transportation: [TransportationInput!]
