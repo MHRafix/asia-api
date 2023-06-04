@@ -45,9 +45,9 @@ export class UsersService {
 
     // make token and return
     const token = this.jwtService.sign({
-      id: isUserExist._id,
-      email: isUserExist?.email,
-      role: isUserExist?.role,
+      id: newUser._id,
+      email: newUser?.email,
+      role: newUser?.role,
     });
     // return { userId: isUserExist?._id, token };
 
