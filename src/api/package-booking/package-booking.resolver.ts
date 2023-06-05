@@ -1,3 +1,4 @@
+import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 import { CommonMatchInput } from '@/src/shared/dto/CommonFindOneDto';
 import { mongodbFindObjectBuilder } from '@/src/shared/utils/filterBuilder';
 import getGqlFields from '@/src/shared/utils/get-gql-fields';
@@ -15,7 +16,6 @@ import {
   PackageBookingPagination,
 } from './entities/package-booking.entity';
 import { PackageBookingService } from './package-booking.service';
-import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 
 @Resolver(() => PackageBooking)
 export class PackageBookingResolver {
@@ -39,6 +39,19 @@ export class PackageBookingResolver {
       throw new BadRequestException(err.message);
     }
   }
+
+  // @Query(() => DashboardOverviewInput, { name: 'dashboardOverviewData' })
+  // dashboardOverviewData(
+  //   @Args('input', { nullable: true }) input: BookingPackageListQueryDto,
+  //   @Info() info: any,
+  // ) {
+  //   try {
+  //     const fields = getGqlFields(info, 'nodes');
+  //     return this.packageBookingService.findAll(input, fields);
+  //   } catch (err) {
+  //     throw new BadRequestException(err.message);
+  //   }
+  // }
 
   @Query(() => PackageBooking, { name: 'booking' })
   @UseGuards(GqlAuthGuard)

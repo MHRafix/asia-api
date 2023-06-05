@@ -2,6 +2,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
+import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
 import { AppointmentModule } from './api/appointment/appointment.module';
@@ -10,12 +11,11 @@ import { PackageBookingModule } from './api/package-booking/package-booking.modu
 import { ServicesModule } from './api/services/services.module';
 import { TeamModule } from './api/team/team.module';
 import { TravelPackagesModule } from './api/travel-packages/travel-packages.module';
+import { UsersModule } from './api/users/users.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import config from './app/config';
 import { JwtStrategy } from './app/config/jwtStrategy';
-import { JwtModule } from '@nestjs/jwt';
-import { UsersModule } from './api/users/users.module';
 
 @Module({
   imports: [

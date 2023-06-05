@@ -4,6 +4,7 @@ import { filterBuilder } from '@/src/shared/utils/filterBuilder';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
+import { DashboardOverviewInput } from '../package-booking/dto/dashboard-overview.input';
 import { AppointmentListQueryDto } from './dto/appointment-list-query.dto';
 import { CreateAppointmentInput } from './dto/create-appointment.input';
 import { UpdateAppointmentInput } from './dto/update-appointment.input';
@@ -51,6 +52,19 @@ export class AppointmentService {
       currentPage: page,
       hasNextPage: page * limit < count,
       totalPages: Math.ceil(count / limit),
+    });
+  }
+
+  findAppointmentsWithDateRange(
+    status: string,
+    filter: DashboardOverviewInput,
+  ) {
+    return this.appointmentModel.find({
+      createdAt: {
+        $gte: filter?.firstDate,
+        $lte: filter?.lastDate,
+      },
+      status: { $eq: status },
     });
   }
 

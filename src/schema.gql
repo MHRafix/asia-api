@@ -20,9 +20,17 @@ type Appointment {
   email: String!
   phone: String!
   serviceId: String!
+  status: BOOKING_STATUS!
   subService: String!
   profession: String!
   clientQuestions: [ClientQuestionsSchema!]
+}
+
+enum BOOKING_STATUS {
+  PENDING
+  APPROVED
+  CANCELED
+  COMPLETED
 }
 
 type AppointmentPagination {
@@ -97,13 +105,6 @@ type PackageBooking {
   bookingId: String!
   status: BOOKING_STATUS!
   paymentDetails: PaymentDetailsSchema
-}
-
-enum BOOKING_STATUS {
-  PENDING
-  APPROVED
-  CANCELED
-  COMPLETED
 }
 
 type PackageBookingPagination {
@@ -500,6 +501,7 @@ input CreateAppointmentInput {
   email: String!
   phone: String!
   serviceId: String!
+  status: BOOKING_STATUS!
   subService: String!
   profession: String!
   clientQuestions: [ClientQuestionsInput!]
@@ -516,6 +518,7 @@ input UpdateAppointmentInput {
   email: String
   phone: String
   serviceId: String
+  status: BOOKING_STATUS
   subService: String
   profession: String
   clientQuestions: [ClientQuestionsInput!]
@@ -592,6 +595,7 @@ input CreatePackageBookingInput {
   packageId: String!
   transactionId: String
   bookingId: String!
+  createdAt: DateTime
   status: BOOKING_STATUS! = PENDING
   paymentDetails: PaymentDetailsInput
 }
@@ -623,6 +627,7 @@ input UpdatePackageBookingInput {
   packageId: String
   transactionId: String
   bookingId: String
+  createdAt: DateTime
   status: BOOKING_STATUS = PENDING
   paymentDetails: PaymentDetailsInput
 }

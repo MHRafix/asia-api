@@ -2,6 +2,7 @@ import { Paginated } from '@/src/shared/object-types/paginationObject';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { BOOKING_STATUS } from '../../package-booking/enums/booking-status.enum';
 
 export type AppointmentDocument = Appointment & Document;
 
@@ -38,6 +39,10 @@ export class Appointment {
   @Prop({ required: true })
   @Field(() => String)
   serviceId: string;
+
+  @Prop({ required: true })
+  @Field(() => BOOKING_STATUS)
+  status: BOOKING_STATUS;
 
   @Prop({ required: true })
   @Field(() => String)

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { TravelPackagesService } from './travel-packages.service';
-import { TravelPackagesResolver } from './travel-packages.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
   TravelPackage,
   TravelPackageSchema,
 } from './entities/travel-package.entity';
+import { TravelPackagesResolver } from './travel-packages.resolver';
+import { TravelPackagesService } from './travel-packages.service';
 
 @Module({
   imports: [
@@ -14,5 +14,6 @@ import {
     ]),
   ],
   providers: [TravelPackagesResolver, TravelPackagesService],
+  exports: [TravelPackagesService],
 })
 export class TravelPackagesModule {}

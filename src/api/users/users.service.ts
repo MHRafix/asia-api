@@ -68,7 +68,6 @@ export class UsersService {
 
     // check is password matched
     const isMatchedPass = await bcrypt.compare(password, isUserExist.password);
-    // console.log(isMatchedPass);
 
     // if password is incorrect
     if (!isMatchedPass) {

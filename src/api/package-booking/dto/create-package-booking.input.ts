@@ -88,6 +88,10 @@ export class CreatePackageBookingInput {
   @IsNotEmpty()
   bookingId: string;
 
+  @Field(() => Date, { nullable: true })
+  @IsOptional()
+  createdAt: Date;
+
   @Field(() => BOOKING_STATUS, { defaultValue: BOOKING_STATUS.PENDING })
   @IsNotEmpty()
   status: BOOKING_STATUS;
