@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { PassportModule } from '@nestjs/passport';
 import { AppointmentModule } from '../appointment/appointment.module';
 import {
   PackageBooking,
@@ -11,6 +12,7 @@ import { PackageBookingService } from './package-booking.service';
 
 @Module({
   imports: [
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     AppointmentModule,
     MongooseModule.forFeature([
       { name: PackageBooking.name, schema: PackageBookingSchema },

@@ -1,5 +1,6 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { addDays, subDays } from 'date-fns';
 import { Model } from 'mongoose';
@@ -11,8 +12,8 @@ import {
 } from './entities/package-booking.entity';
 import { BOOKING_STATUS } from './enums/booking-status.enum';
 
-@Controller('bookings')
-@ApiTags('Booking')
+@Controller('dashboard')
+@ApiTags('dashboard')
 export class PackageBookingController {
   constructor(
     @InjectModel(PackageBooking.name)
@@ -21,6 +22,7 @@ export class PackageBookingController {
   ) {}
 
   @Get('overview')
+  @UseGuards(AuthGuard())
   async getOverviewData(@Query() payload: DashboardOverviewInput) {
     /**
      * chart analytics of bookings [pending, approved, completed, canceled]
