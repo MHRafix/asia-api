@@ -20,6 +20,10 @@ async function bootstrap() {
     }),
   );
 
+  // prevent cors err
+  app.enableCors();
+
+  // swagger config
   const config = new DocumentBuilder()
     .setTitle('Reserve Table API')
     .addBearerAuth()
