@@ -3,6 +3,9 @@ import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { DeparturePlaceInfo, DestinationPlaceInfo } from './location.entity';
+import { CountDownTimer, RatingsAndReviews, Travelers } from './others.entity';
+import { Transportation } from './transport.entity';
 
 export type TravelPackageDocument = TravelPackage & Document;
 
@@ -32,134 +35,6 @@ export enum PACKAGE_STATUS {
 registerEnumType(PACKAGE_STATUS, {
   name: 'PACKAGE_STATUS',
 });
-
-export enum TOURBY {
-  BY_AIR = 'BY_AIR',
-  BY_ROAD = 'BY_ROAD',
-  BY_RAIL = 'BY_RAIL',
-}
-
-registerEnumType(TOURBY, {
-  name: 'TOURBY',
-});
-
-@ObjectType()
-@Schema()
-export class RatingsAndReviews {
-  @Prop()
-  @Field(() => Number, { nullable: true })
-  rating: number;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  email: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  message: string;
-}
-
-@ObjectType()
-@Schema()
-export class DeparturePlaceInfo {
-  @Prop()
-  @Field(() => String, { nullable: true })
-  departureFrom: string;
-
-  @Prop()
-  @Field(() => Number, { nullable: true })
-  lat: number;
-
-  @Prop()
-  @Field(() => Number, { nullable: true })
-  lng: number;
-}
-
-@ObjectType()
-@Schema()
-export class DestinationPlaceInfo {
-  @Prop()
-  @Field(() => String, { nullable: true })
-  destination: string;
-
-  @Prop()
-  @Field(() => Number, { nullable: true })
-  lat: number;
-
-  @Prop()
-  @Field(() => Number, { nullable: true })
-  lng: number;
-}
-
-@ObjectType()
-@Schema({ timestamps: true })
-export class Travelers {
-  @Prop({
-    required: false,
-  })
-  @Field(() => String, { nullable: true })
-  travelerEmail: string;
-}
-
-@ObjectType()
-@Schema()
-export class Transportation {
-  @Prop({ default: TOURBY.BY_ROAD })
-  @Field(() => TOURBY, { defaultValue: TOURBY.BY_ROAD })
-  tourBy: TOURBY;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  startAt: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  transportName: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  departureFrom: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  destination: string;
-
-  @Prop()
-  @Field(() => Number, { nullable: true })
-  stops: number;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  journeyBreak: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  endAt: string;
-
-  @Prop()
-  @Field(() => Date, { nullable: true })
-  transportDate: Date;
-}
-
-@ObjectType()
-@Schema()
-export class CountDownTimer {
-  @Prop()
-  @Field(() => Date, { nullable: true })
-  bookingStart: Date;
-
-  @Prop()
-  @Field(() => Date, { nullable: true })
-  bookingEnd: Date;
-}
-
-@ObjectType()
-@Schema()
-export class CarouselThumbnailsSchema {
-  @Prop()
-  @Field(() => [String], { nullable: true })
-  thumbnail: string[];
-}
 
 @ObjectType()
 @Schema({ timestamps: true })

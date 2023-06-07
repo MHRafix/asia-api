@@ -143,12 +143,6 @@ type TeamPagination {
   meta: PagniationMeta
 }
 
-type RatingsAndReviews {
-  rating: Float
-  email: String
-  message: String
-}
-
 type DeparturePlaceInfo {
   departureFrom: String
   lat: Float
@@ -161,8 +155,19 @@ type DestinationPlaceInfo {
   lng: Float
 }
 
+type RatingsAndReviews {
+  rating: Float
+  email: String
+  message: String
+}
+
 type Travelers {
   travelerEmail: String
+}
+
+type CountDownTimer {
+  bookingStart: DateTime
+  bookingEnd: DateTime
 }
 
 type Transportation {
@@ -181,11 +186,6 @@ enum TOURBY {
   BY_AIR
   BY_ROAD
   BY_RAIL
-}
-
-type CountDownTimer {
-  bookingStart: DateTime
-  bookingEnd: DateTime
 }
 
 type TravelPackage {
