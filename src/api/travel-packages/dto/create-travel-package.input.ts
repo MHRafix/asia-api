@@ -17,61 +17,61 @@ import {
 export class RatingsAndReviewsInput {
   @Field(() => Number, { nullable: true })
   @IsOptional()
-  public rating: number;
+  rating: number;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  public email: string;
+  email: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  public message: string;
+  message: string;
 }
 
 @InputType()
 export class TravelersInput {
   @Field(() => String, { nullable: true })
   @IsOptional()
-  public travelerEmail: string;
+  travelerEmail: string;
 }
 
 @InputType()
 export class TransportationInput {
   @Field(() => TOURBY, { defaultValue: TOURBY.BY_ROAD })
   @IsOptional()
-  public tourBy: TOURBY;
+  tourBy: TOURBY;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  public departureFrom: string;
+  departureFrom: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  public destination: string;
+  destination: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  public startAt: string;
+  startAt: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  public transportName: string;
+  transportName: string;
 
   @Field(() => Number, { nullable: true })
   @IsOptional()
-  public stops: number;
+  stops: number;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  public journeyBreak: string;
+  journeyBreak: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  public endAt: string;
+  endAt: string;
 
   @Field(() => Date, { nullable: true })
   @IsOptional()
-  public transportDate: Date;
+  transportDate: Date;
 }
 
 @InputType()
@@ -175,26 +175,26 @@ export class CreateTravelPackageInput {
 
   @Field(() => [String], { nullable: true })
   @IsOptional()
-  public carouselThumbnails: string[];
+  carouselThumbnails: string[];
 
   @Field(() => [RatingsAndReviewsInput], { nullable: true })
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => RatingsAndReviewsInput)
-  public ratingsAndReviews: RatingsAndReviewsInput[];
+  ratingsAndReviews: RatingsAndReviewsInput[];
 
   @Field(() => [TravelersInput], { nullable: true })
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => TravelersInput)
-  public travelers: TravelersInput[];
+  travelers: TravelersInput[];
 
   @Field(() => [TransportationInput], { nullable: true })
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => TransportationInput)
-  public transportation: TransportationInput[];
+  transportation: TransportationInput[];
 }

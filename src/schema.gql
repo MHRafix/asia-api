@@ -169,6 +169,8 @@ type Transportation {
   tourBy: TOURBY!
   startAt: String
   transportName: String
+  departureFrom: String
+  destination: String
   stops: Float
   journeyBreak: String
   endAt: String

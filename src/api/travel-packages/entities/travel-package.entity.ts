@@ -117,6 +117,14 @@ export class Transportation {
   transportName: string;
 
   @Prop()
+  @Field(() => String, { nullable: true })
+  departureFrom: string;
+
+  @Prop()
+  @Field(() => String, { nullable: true })
+  destination: string;
+
+  @Prop()
   @Field(() => Number, { nullable: true })
   stops: number;
 
