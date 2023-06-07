@@ -89,31 +89,31 @@ export class CountDownTimerInput {
 
 @InputType()
 export class DeparturePlaceInfoInput {
-  @Field(() => String)
-  @IsNotEmpty()
+  @Field(() => String, { nullable: true })
+  @IsOptional()
   departureFrom: string;
 
-  @Field(() => Number)
-  @IsNotEmpty()
+  @Field(() => Number, { nullable: true })
+  @IsOptional()
   lat: number;
 
-  @Field(() => Number)
-  @IsNotEmpty()
+  @Field(() => Number, { nullable: true })
+  @IsOptional()
   lng: number;
 }
 
 @InputType()
 export class DestinationPlaceInfoInput {
-  @Field(() => String)
-  @IsNotEmpty()
+  @Field(() => String, { nullable: true })
+  @IsOptional()
   destination: string;
 
-  @Field(() => Number)
-  @IsNotEmpty()
+  @Field(() => Number, { nullable: true })
+  @IsOptional()
   lat: number;
 
-  @Field(() => Number)
-  @IsNotEmpty()
+  @Field(() => Number, { nullable: true })
+  @IsOptional()
   lng: number;
 }
 

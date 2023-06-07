@@ -2,7 +2,6 @@ import { Paginated } from '@/src/shared/object-types/paginationObject';
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsNotEmpty, IsOptional } from 'class-validator';
 import { Document } from 'mongoose';
 
 export type TravelPackageDocument = TravelPackage & Document;
@@ -49,17 +48,14 @@ registerEnumType(TOURBY, {
 export class RatingsAndReviews {
   @Prop()
   @Field(() => Number, { nullable: true })
-  @IsOptional()
   rating: number;
 
   @Prop()
   @Field(() => String, { nullable: true })
-  @IsOptional()
   email: string;
 
   @Prop()
   @Field(() => String, { nullable: true })
-  @IsOptional()
   message: string;
 }
 
@@ -67,18 +63,15 @@ export class RatingsAndReviews {
 @Schema()
 export class DeparturePlaceInfo {
   @Prop()
-  @Field(() => String)
-  @IsNotEmpty()
+  @Field(() => String, { nullable: true })
   departureFrom: string;
 
   @Prop()
-  @Field(() => Number)
-  @IsNotEmpty()
+  @Field(() => Number, { nullable: true })
   lat: number;
 
   @Prop()
-  @Field(() => Number)
-  @IsNotEmpty()
+  @Field(() => Number, { nullable: true })
   lng: number;
 }
 
@@ -86,18 +79,15 @@ export class DeparturePlaceInfo {
 @Schema()
 export class DestinationPlaceInfo {
   @Prop()
-  @Field(() => String)
-  @IsNotEmpty()
+  @Field(() => String, { nullable: true })
   destination: string;
 
   @Prop()
-  @Field(() => Number)
-  @IsNotEmpty()
+  @Field(() => Number, { nullable: true })
   lat: number;
 
   @Prop()
-  @Field(() => Number)
-  @IsNotEmpty()
+  @Field(() => Number, { nullable: true })
   lng: number;
 }
 
@@ -108,7 +98,6 @@ export class Travelers {
     required: false,
   })
   @Field(() => String, { nullable: true })
-  @IsOptional()
   travelerEmail: string;
 }
 
@@ -117,47 +106,30 @@ export class Travelers {
 export class Transportation {
   @Prop({ default: TOURBY.BY_ROAD })
   @Field(() => TOURBY, { defaultValue: TOURBY.BY_ROAD })
-  @IsOptional()
   tourBy: TOURBY;
 
   @Prop()
-  @Field(() => DeparturePlaceInfo)
-  @IsOptional()
-  departureFrom: DeparturePlaceInfo;
-
-  @Prop()
-  @Field(() => DestinationPlaceInfo)
-  @IsOptional()
-  destination: DestinationPlaceInfo;
-
-  @Prop()
   @Field(() => String, { nullable: true })
-  @IsOptional()
   startAt: string;
 
   @Prop()
   @Field(() => String, { nullable: true })
-  @IsOptional()
   transportName: string;
 
   @Prop()
   @Field(() => Number, { nullable: true })
-  @IsOptional()
   stops: number;
 
   @Prop()
   @Field(() => String, { nullable: true })
-  @IsOptional()
   journeyBreak: string;
 
   @Prop()
   @Field(() => String, { nullable: true })
-  @IsOptional()
   endAt: string;
 
   @Prop()
   @Field(() => Date, { nullable: true })
-  @IsOptional()
   transportDate: Date;
 }
 
@@ -227,10 +199,6 @@ export class TravelPackage {
   @Field(() => String, { nullable: true })
   shortDescription: string;
 
-  @Prop({ required: false })
-  @Field(() => String, { nullable: true })
-  destination: string;
-
   @Prop({
     required: false,
   })
@@ -240,6 +208,14 @@ export class TravelPackage {
   @Prop({ required: false })
   @Field(() => [RatingsAndReviews], { nullable: true })
   ratingsAndReviews: RatingsAndReviews[];
+
+  @Prop()
+  @Field(() => DeparturePlaceInfo, { nullable: true })
+  departureFrom: DeparturePlaceInfo;
+
+  @Prop()
+  @Field(() => DestinationPlaceInfo, { nullable: true })
+  destination: DestinationPlaceInfo;
 
   @Prop({ required: false })
   @Field(() => [Travelers], { nullable: true })

@@ -150,15 +150,15 @@ type RatingsAndReviews {
 }
 
 type DeparturePlaceInfo {
-  departureFrom: String!
-  lat: Float!
-  lng: Float!
+  departureFrom: String
+  lat: Float
+  lng: Float
 }
 
 type DestinationPlaceInfo {
-  destination: String!
-  lat: Float!
-  lng: Float!
+  destination: String
+  lat: Float
+  lng: Float
 }
 
 type Travelers {
@@ -167,8 +167,6 @@ type Travelers {
 
 type Transportation {
   tourBy: TOURBY!
-  departureFrom: DeparturePlaceInfo!
-  destination: DestinationPlaceInfo!
   startAt: String
   transportName: String
   stops: Float
@@ -200,9 +198,10 @@ type TravelPackage {
   thumbnail: String
   description: String
   shortDescription: String
-  destination: String
   carouselThumbnails: [String!]
   ratingsAndReviews: [RatingsAndReviews!]
+  departureFrom: DeparturePlaceInfo
+  destination: DestinationPlaceInfo
   travelers: [Travelers!]
   transportation: [Transportation!]
 }
@@ -470,15 +469,15 @@ input CountDownTimerInput {
 }
 
 input DeparturePlaceInfoInput {
-  departureFrom: String!
-  lat: Float!
-  lng: Float!
+  departureFrom: String
+  lat: Float
+  lng: Float
 }
 
 input DestinationPlaceInfoInput {
-  destination: String!
-  lat: Float!
-  lng: Float!
+  destination: String
+  lat: Float
+  lng: Float
 }
 
 input RatingsAndReviewsInput {
