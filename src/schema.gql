@@ -149,14 +149,26 @@ type RatingsAndReviews {
   message: String
 }
 
+type DeparturePlaceInfo {
+  departureFrom: String!
+  lat: Float!
+  lng: Float!
+}
+
+type DestinationPlaceInfo {
+  destination: String!
+  lat: Float!
+  lng: Float!
+}
+
 type Travelers {
   travelerEmail: String
 }
 
 type Transportation {
   tourBy: TOURBY!
-  departureFrom: String
-  destination: String
+  departureFrom: DeparturePlaceInfo!
+  destination: DestinationPlaceInfo!
   startAt: String
   transportName: String
   stops: Float
@@ -441,6 +453,8 @@ input CreateTravelPackageInput {
   isPublished: Boolean!
   countDown: CountDownTimerInput
   thumbnail: String
+  departureFrom: DeparturePlaceInfoInput!
+  destination: DestinationPlaceInfoInput!
   packageStatus: String = "UPCOMING"
   description: String
   shortDescription: String
@@ -453,6 +467,18 @@ input CreateTravelPackageInput {
 input CountDownTimerInput {
   bookingStart: DateTime
   bookingEnd: DateTime
+}
+
+input DeparturePlaceInfoInput {
+  departureFrom: String!
+  lat: Float!
+  lng: Float!
+}
+
+input DestinationPlaceInfoInput {
+  destination: String!
+  lat: Float!
+  lng: Float!
 }
 
 input RatingsAndReviewsInput {
@@ -486,6 +512,8 @@ input UpdateTravelPackageInput {
   isPublished: Boolean
   countDown: CountDownTimerInput
   thumbnail: String
+  departureFrom: DeparturePlaceInfoInput
+  destination: DestinationPlaceInfoInput
   packageStatus: String = "UPCOMING"
   description: String
   shortDescription: String

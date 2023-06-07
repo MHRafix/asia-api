@@ -2,7 +2,7 @@ import { Paginated } from '@/src/shared/object-types/paginationObject';
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { Document } from 'mongoose';
 
 export type TravelPackageDocument = TravelPackage & Document;
@@ -64,6 +64,44 @@ export class RatingsAndReviews {
 }
 
 @ObjectType()
+@Schema()
+export class DeparturePlaceInfo {
+  @Prop()
+  @Field(() => String)
+  @IsNotEmpty()
+  departureFrom: string;
+
+  @Prop()
+  @Field(() => Number)
+  @IsNotEmpty()
+  lat: number;
+
+  @Prop()
+  @Field(() => Number)
+  @IsNotEmpty()
+  lng: number;
+}
+
+@ObjectType()
+@Schema()
+export class DestinationPlaceInfo {
+  @Prop()
+  @Field(() => String)
+  @IsNotEmpty()
+  destination: string;
+
+  @Prop()
+  @Field(() => Number)
+  @IsNotEmpty()
+  lat: number;
+
+  @Prop()
+  @Field(() => Number)
+  @IsNotEmpty()
+  lng: number;
+}
+
+@ObjectType()
 @Schema({ timestamps: true })
 export class Travelers {
   @Prop({
@@ -83,14 +121,14 @@ export class Transportation {
   tourBy: TOURBY;
 
   @Prop()
-  @Field(() => String, { nullable: true })
+  @Field(() => DeparturePlaceInfo)
   @IsOptional()
-  departureFrom: string;
+  departureFrom: DeparturePlaceInfo;
 
-  @Prop({ required: false })
-  @Field(() => String, { nullable: true })
+  @Prop()
+  @Field(() => DestinationPlaceInfo)
   @IsOptional()
-  destination: string;
+  destination: DestinationPlaceInfo;
 
   @Prop()
   @Field(() => String, { nullable: true })

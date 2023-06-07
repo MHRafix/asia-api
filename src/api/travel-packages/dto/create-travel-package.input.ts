@@ -88,6 +88,36 @@ export class CountDownTimerInput {
 }
 
 @InputType()
+export class DeparturePlaceInfoInput {
+  @Field(() => String)
+  @IsNotEmpty()
+  departureFrom: string;
+
+  @Field(() => Number)
+  @IsNotEmpty()
+  lat: number;
+
+  @Field(() => Number)
+  @IsNotEmpty()
+  lng: number;
+}
+
+@InputType()
+export class DestinationPlaceInfoInput {
+  @Field(() => String)
+  @IsNotEmpty()
+  destination: string;
+
+  @Field(() => Number)
+  @IsNotEmpty()
+  lat: number;
+
+  @Field(() => Number)
+  @IsNotEmpty()
+  lng: number;
+}
+
+@InputType()
 export class CreateTravelPackageInput {
   @Field(() => ID, { nullable: true })
   _id: string;
@@ -119,6 +149,14 @@ export class CreateTravelPackageInput {
   @Field(() => String, { nullable: true })
   @IsOptional()
   thumbnail: string;
+
+  @Field(() => DeparturePlaceInfoInput)
+  @IsOptional()
+  departureFrom: DeparturePlaceInfoInput;
+
+  @Field(() => DestinationPlaceInfoInput)
+  @IsOptional()
+  destination: DestinationPlaceInfoInput;
 
   @Field(() => String, {
     defaultValue: PACKAGE_STATUS.UPCOMING,
