@@ -143,16 +143,10 @@ type TeamPagination {
   meta: PagniationMeta
 }
 
-type DeparturePlaceInfo {
-  departureFrom: String
-  lat: Float
-  lng: Float
-}
-
-type DestinationPlaceInfo {
-  destination: String
-  lat: Float
-  lng: Float
+type PlaceInfoSchema {
+  name: String
+  lat: String
+  lng: String
 }
 
 type RatingsAndReviews {
@@ -172,14 +166,15 @@ type CountDownTimer {
 
 type Transportation {
   tourBy: TOURBY!
-  startAt: String
+  departureDate: DateTime
+  departureTime: String
   transportName: String
-  departureFrom: String
-  destination: String
+  departureStation: String
+  destinationStation: String
   stops: Float
-  journeyBreak: String
-  endAt: String
-  transportDate: DateTime
+  journeyBreak: Float
+  arrivalTime: String
+  arrivalDate: DateTime
 }
 
 enum TOURBY {
@@ -202,8 +197,8 @@ type TravelPackage {
   shortDescription: String
   carouselThumbnails: [String!]
   ratingsAndReviews: [RatingsAndReviews!]
-  departureFrom: DeparturePlaceInfo
-  destination: DestinationPlaceInfo
+  departureFrom: PlaceInfoSchema
+  destination: PlaceInfoSchema
   travelers: [Travelers!]
   transportation: [Transportation!]
 }
@@ -454,8 +449,8 @@ input CreateTravelPackageInput {
   isPublished: Boolean!
   countDown: CountDownTimerInput
   thumbnail: String
-  departureFrom: DeparturePlaceInfoInput!
-  destination: DestinationPlaceInfoInput!
+  departureFrom: PlaceInfoInput!
+  destination: PlaceInfoInput!
   packageStatus: String = "UPCOMING"
   description: String
   shortDescription: String
@@ -470,16 +465,10 @@ input CountDownTimerInput {
   bookingEnd: DateTime
 }
 
-input DeparturePlaceInfoInput {
-  departureFrom: String
-  lat: Float
-  lng: Float
-}
-
-input DestinationPlaceInfoInput {
-  destination: String
-  lat: Float
-  lng: Float
+input PlaceInfoInput {
+  name: String
+  lat: String
+  lng: String
 }
 
 input RatingsAndReviewsInput {
@@ -494,14 +483,15 @@ input TravelersInput {
 
 input TransportationInput {
   tourBy: TOURBY! = BY_ROAD
-  departureFrom: String
-  destination: String
-  startAt: String
+  departureStation: String
+  destinationStation: String
+  departureDate: DateTime
+  departureTime: String
   transportName: String
-  stops: Float
+  stops: String
   journeyBreak: String
-  endAt: String
-  transportDate: DateTime
+  arrivalTime: String
+  arrivalDate: DateTime
 }
 
 input UpdateTravelPackageInput {
@@ -513,8 +503,8 @@ input UpdateTravelPackageInput {
   isPublished: Boolean
   countDown: CountDownTimerInput
   thumbnail: String
-  departureFrom: DeparturePlaceInfoInput
-  destination: DestinationPlaceInfoInput
+  departureFrom: PlaceInfoInput
+  destination: PlaceInfoInput
   packageStatus: String = "UPCOMING"
   description: String
   shortDescription: String

@@ -2,31 +2,16 @@ import { Field, InputType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
 @InputType()
-export class DeparturePlaceInfoInput {
+export class PlaceInfoInput {
   @Field(() => String, { nullable: true })
   @IsOptional()
-  departureFrom: string;
+  name: string;
 
-  @Field(() => Number, { nullable: true })
-  @IsOptional()
-  lat: number;
-
-  @Field(() => Number, { nullable: true })
-  @IsOptional()
-  lng: number;
-}
-
-@InputType()
-export class DestinationPlaceInfoInput {
   @Field(() => String, { nullable: true })
   @IsOptional()
-  destination: string;
+  lat: string;
 
-  @Field(() => Number, { nullable: true })
+  @Field(() => String, { nullable: true })
   @IsOptional()
-  lat: number;
-
-  @Field(() => Number, { nullable: true })
-  @IsOptional()
-  lng: number;
+  lng: string;
 }

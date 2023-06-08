@@ -10,23 +10,27 @@ export class TransportationInput {
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  departureFrom: string;
+  departureStation: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  destination: string;
+  destinationStation: string;
+
+  @Field(() => Date, { nullable: true })
+  @IsOptional()
+  departureDate: Date;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  startAt: string;
+  departureTime: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   transportName: string;
 
-  @Field(() => Number, { nullable: true })
+  @Field(() => String, { nullable: true })
   @IsOptional()
-  stops: number;
+  stops: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
@@ -34,9 +38,9 @@ export class TransportationInput {
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  endAt: string;
+  arrivalTime: string;
 
   @Field(() => Date, { nullable: true })
   @IsOptional()
-  transportDate: Date;
+  arrivalDate: Date;
 }

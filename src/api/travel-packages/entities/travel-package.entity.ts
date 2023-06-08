@@ -3,7 +3,7 @@ import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { DeparturePlaceInfo, DestinationPlaceInfo } from './location.entity';
+import { PlaceInfoSchema } from './location.entity';
 import { CountDownTimer, RatingsAndReviews, Travelers } from './others.entity';
 import { Transportation } from './transport.entity';
 
@@ -93,12 +93,12 @@ export class TravelPackage {
   ratingsAndReviews: RatingsAndReviews[];
 
   @Prop()
-  @Field(() => DeparturePlaceInfo, { nullable: true })
-  departureFrom: DeparturePlaceInfo;
+  @Field(() => PlaceInfoSchema, { nullable: true })
+  departureFrom: PlaceInfoSchema;
 
   @Prop()
-  @Field(() => DestinationPlaceInfo, { nullable: true })
-  destination: DestinationPlaceInfo;
+  @Field(() => PlaceInfoSchema, { nullable: true })
+  destination: PlaceInfoSchema;
 
   @Prop({ required: false })
   @Field(() => [Travelers], { nullable: true })

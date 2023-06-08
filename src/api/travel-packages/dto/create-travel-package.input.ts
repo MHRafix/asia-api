@@ -7,10 +7,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { PACKAGE_STATUS, SALE_STATUS } from '../entities/travel-package.entity';
-import {
-  DeparturePlaceInfoInput,
-  DestinationPlaceInfoInput,
-} from './location.inpu';
+import { PlaceInfoInput } from './location.inpu';
 import {
   CountDownTimerInput,
   RatingsAndReviewsInput,
@@ -51,13 +48,13 @@ export class CreateTravelPackageInput {
   @IsOptional()
   thumbnail: string;
 
-  @Field(() => DeparturePlaceInfoInput)
+  @Field(() => PlaceInfoInput)
   @IsOptional()
-  departureFrom: DeparturePlaceInfoInput;
+  departureFrom: PlaceInfoInput;
 
-  @Field(() => DestinationPlaceInfoInput)
+  @Field(() => PlaceInfoInput)
   @IsOptional()
-  destination: DestinationPlaceInfoInput;
+  destination: PlaceInfoInput;
 
   @Field(() => String, {
     defaultValue: PACKAGE_STATUS.UPCOMING,

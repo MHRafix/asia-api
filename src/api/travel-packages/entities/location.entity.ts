@@ -3,32 +3,16 @@ import { Prop, Schema } from '@nestjs/mongoose';
 
 @ObjectType()
 @Schema()
-export class DeparturePlaceInfo {
+export class PlaceInfoSchema {
   @Prop()
   @Field(() => String, { nullable: true })
-  departureFrom: string;
+  name: string;
 
-  @Prop()
-  @Field(() => Number, { nullable: true })
-  lat: number;
-
-  @Prop()
-  @Field(() => Number, { nullable: true })
-  lng: number;
-}
-
-@ObjectType()
-@Schema()
-export class DestinationPlaceInfo {
   @Prop()
   @Field(() => String, { nullable: true })
-  destination: string;
+  lat: string;
 
   @Prop()
-  @Field(() => Number, { nullable: true })
-  lat: number;
-
-  @Prop()
-  @Field(() => Number, { nullable: true })
-  lng: number;
+  @Field(() => String, { nullable: true })
+  lng: string;
 }

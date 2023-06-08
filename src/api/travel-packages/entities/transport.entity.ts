@@ -19,8 +19,12 @@ export class Transportation {
   tourBy: TOURBY;
 
   @Prop()
+  @Field(() => Date, { nullable: true })
+  departureDate: Date;
+
+  @Prop()
   @Field(() => String, { nullable: true })
-  startAt: string;
+  departureTime: string;
 
   @Prop()
   @Field(() => String, { nullable: true })
@@ -28,25 +32,25 @@ export class Transportation {
 
   @Prop()
   @Field(() => String, { nullable: true })
-  departureFrom: string;
+  departureStation: string;
 
   @Prop()
   @Field(() => String, { nullable: true })
-  destination: string;
+  destinationStation: string;
 
   @Prop()
   @Field(() => Number, { nullable: true })
   stops: number;
 
   @Prop()
-  @Field(() => String, { nullable: true })
-  journeyBreak: string;
+  @Field(() => Number, { nullable: true })
+  journeyBreak: number;
 
   @Prop()
   @Field(() => String, { nullable: true })
-  endAt: string;
+  arrivalTime: string;
 
   @Prop()
   @Field(() => Date, { nullable: true })
-  transportDate: Date;
+  arrivalDate: Date;
 }
