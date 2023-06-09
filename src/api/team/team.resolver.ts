@@ -73,4 +73,15 @@ export class TeamResolver {
       throw new ForbiddenException(error.message);
     }
   }
+
+  @Mutation(() => Boolean, { nullable: true })
+  @UseGuards(GqlAuthGuard)
+  async bulkRemoveTeam(@Args('uIds', { type: () => [String] }) uIds: string[]) {
+    try {
+      const res = await this.teamService.removeBulk(uIds);
+      return res.deletedCount > 0;
+    } catch (error) {
+      throw new ForbiddenException(error.message);
+    }
+  }
 }

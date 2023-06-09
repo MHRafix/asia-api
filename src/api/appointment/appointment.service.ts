@@ -108,4 +108,15 @@ export class AppointmentService {
   remove(filter: FilterQuery<AppointmentDocument>) {
     return this.appointmentModel.deleteOne(filter);
   }
+
+  /**
+   * remove many appointment
+   * @param uids string[]
+   * @returns
+   */
+  removeBulk(uids: string[]) {
+    return this.appointmentModel.deleteMany({
+      _id: { $in: uids },
+    });
+  }
 }

@@ -1,3 +1,4 @@
+import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 import { CommonMatchInput } from '@/src/shared/dto/CommonFindOneDto';
 import { mongodbFindObjectBuilder } from '@/src/shared/utils/filterBuilder';
 import getGqlFields from '@/src/shared/utils/get-gql-fields';
@@ -15,8 +16,6 @@ import {
   Appointment,
   AppointmentPagination,
 } from './entities/appointment.entity';
-import { AuthGuard } from '@nestjs/passport';
-import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 
 @Resolver(() => Appointment)
 export class AppointmentResolver {
@@ -75,6 +74,19 @@ export class AppointmentResolver {
     try {
       const find = mongodbFindObjectBuilder(input);
       const res = await this.appointmentService.remove(find);
+      return res.deletedCount > 0;
+    } catch (error) {
+      throw new ForbiddenException(error.message);
+    }
+  }
+
+  @Mutation(() => Boolean, { nullable: true })
+  @UseGuards(GqlAuthGuard)
+  async bulkRemoveAppointment(
+    @Args('uIds', { type: () => [String] }) uIds: string[],
+  ) {
+    try {
+      const res = await this.appointmentService.removeBulk(uIds);
       return res.deletedCount > 0;
     } catch (error) {
       throw new ForbiddenException(error.message);

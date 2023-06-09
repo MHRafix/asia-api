@@ -81,11 +81,22 @@ export class TeamService {
   }
 
   /**
-   * delete service
+   * delete team
    * @param filter filter
    * @returns
    */
   remove(filter: FilterQuery<TeamDocument>) {
     return this.teamModel.deleteOne(filter);
+  }
+
+  /**
+   * remove many team
+   * @param uids string[]
+   * @returns
+   */
+  removeBulk(uids: string[]) {
+    return this.teamModel.deleteMany({
+      _id: { $in: uids },
+    });
   }
 }
