@@ -48,15 +48,15 @@ export class CreateTravelPackageInput {
   @IsOptional()
   thumbnail: string;
 
-  @Field(() => PlaceInfoInput)
+  @Field(() => PlaceInfoInput, { nullable: true })
   @IsOptional()
   departureFrom: PlaceInfoInput;
 
-  @Field(() => PlaceInfoInput)
+  @Field(() => PlaceInfoInput, { nullable: true })
   @IsOptional()
   destination: PlaceInfoInput;
 
-  @Field(() => String, {
+  @Field(() => PACKAGE_STATUS, {
     defaultValue: PACKAGE_STATUS.UPCOMING,
     nullable: true,
   })

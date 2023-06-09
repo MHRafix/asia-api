@@ -449,9 +449,9 @@ input CreateTravelPackageInput {
   isPublished: Boolean!
   countDown: CountDownTimerInput
   thumbnail: String
-  departureFrom: PlaceInfoInput!
-  destination: PlaceInfoInput!
-  packageStatus: String = "UPCOMING"
+  departureFrom: PlaceInfoInput
+  destination: PlaceInfoInput
+  packageStatus: PACKAGE_STATUS = UPCOMING
   description: String
   shortDescription: String
   carouselThumbnails: [String!]
@@ -505,7 +505,7 @@ input UpdateTravelPackageInput {
   thumbnail: String
   departureFrom: PlaceInfoInput
   destination: PlaceInfoInput
-  packageStatus: String = "UPCOMING"
+  packageStatus: PACKAGE_STATUS = UPCOMING
   description: String
   shortDescription: String
   carouselThumbnails: [String!]
