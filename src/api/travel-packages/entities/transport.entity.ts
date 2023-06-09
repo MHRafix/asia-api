@@ -39,8 +39,8 @@ export class Transportation {
   destinationStation: string;
 
   @Prop()
-  @Field(() => Number, { nullable: true })
-  stops: number;
+  @Field(() => String, { nullable: true })
+  stops: string;
 
   @Prop()
   @Field(() => Number, { nullable: true })
