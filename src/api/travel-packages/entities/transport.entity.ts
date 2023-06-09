@@ -43,8 +43,8 @@ export class Transportation {
   stops: string;
 
   @Prop()
-  @Field(() => Number, { nullable: true })
-  journeyBreak: number;
+  @Field(() => String, { nullable: true })
+  journeyBreak: string;
 
   @Prop()
   @Field(() => String, { nullable: true })
