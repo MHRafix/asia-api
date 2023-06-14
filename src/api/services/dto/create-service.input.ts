@@ -12,21 +12,37 @@ export class CreateServiceInput {
 
   @Field(() => String)
   @IsNotEmpty()
+  thumbnail: string;
+
+  @Field(() => String)
+  @IsNotEmpty()
+  banner: string;
+
+  @Field(() => String)
+  @IsNotEmpty()
   shortDesc: string;
 
   @Field(() => String)
   @IsNotEmpty()
   desc: string;
 
+  @Field(() => String)
+  @IsNotEmpty()
+  country: string;
+
+  @Field(() => String)
+  @IsNotEmpty()
+  visaCategory: string;
+
   @Field(() => String, { nullable: true })
   @IsOptional()
   preRequirements: string;
 
-  @Field(() => Number)
+  @Field(() => Number, { nullable: true })
   @IsNotEmpty()
   price: number;
 
-  @Field(() => Boolean, { nullable: true })
-  @IsOptional()
-  public isCustomizeable: boolean;
+  // @Field(() => Boolean, { nullable: true })
+  // @IsOptional()
+  // isCustomizable: boolean;
 }

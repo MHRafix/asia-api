@@ -12,31 +12,42 @@ export class Service {
 
   @Prop()
   @Field(() => String)
-  public title: string;
+  title: string;
 
   @Prop()
   @Field(() => String)
-  public shortDesc: string;
+  thumbnail: string;
 
   @Prop()
   @Field(() => String)
-  public desc: string;
+  banner: string;
+
+  @Prop()
+  @Field(() => String)
+  shortDesc: string;
+
+  @Prop()
+  @Field(() => String)
+  desc: string;
 
   @Prop()
   @Field(() => String, { nullable: true })
-  public preRequirements: string;
+  preRequirements: string;
 
   @Prop()
-  @Field(() => Number)
-  public price: number;
+  @Field(() => String)
+  country: string;
 
   @Prop()
-  @Field(() => Boolean, { nullable: true })
-  public isCustomizeable: boolean;
+  @Field(() => String)
+  visaCategory: string;
+
+  @Prop()
+  @Field(() => Number, { nullable: true })
+  price: number;
 }
 
 export const ServiceSchema = SchemaFactory.createForClass(Service);
 
 @ObjectType()
 export class ServicePagination extends Paginated(Service) {}
- 

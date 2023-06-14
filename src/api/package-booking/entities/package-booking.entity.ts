@@ -1,6 +1,8 @@
 import { Paginated } from '@/src/shared/object-types/paginationObject';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Schema as MongooseSchema } from 'mongoose';
+import { TravelPackage } from '../../travel-packages/entities/travel-package.entity';
 import {
   BOOKING_STATUS,
   PAYMENT_METHOD,
@@ -85,9 +87,9 @@ export class PackageBooking {
   @Field(() => TravelerDetailsSchema)
   travelerDetails: TravelerDetailsSchema;
 
-  @Prop()
-  @Field(() => String)
-  packageId: string;
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: TravelPackage.name })
+  @Field(() => TravelPackage, { nullable: true })
+  package: TravelPackage;
 
   @Prop()
   @Field(() => String, { nullable: true })

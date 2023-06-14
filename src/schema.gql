@@ -9,6 +9,24 @@ type PagniationMeta {
   totalPages: Float!
 }
 
+type Service {
+  _id: ID
+  title: String!
+  thumbnail: String!
+  banner: String!
+  shortDesc: String!
+  desc: String!
+  preRequirements: String
+  country: String!
+  visaCategory: String!
+  price: Float
+}
+
+type ServicePagination {
+  nodes: [Service!]
+  meta: PagniationMeta
+}
+
 type ClientQuestionsSchema {
   qTitle: String
   qDesc: String
@@ -19,7 +37,7 @@ type Appointment {
   name: String!
   email: String!
   phone: String!
-  serviceId: String!
+  service: Service
   status: BOOKING_STATUS!
   subService: String!
   profession: String!
@@ -61,88 +79,6 @@ type NewsPagination {
   meta: PagniationMeta
 }
 
-type CustomerDetailsSchema {
-  name: String!
-  email: String!
-  phone: String!
-  address: String!
-}
-
-type TravelerDetailsSchema {
-  adult: Float!
-  child: Float!
-}
-
-type PaymentDetailsSchema {
-  paymentStatus: PAYMENT_STATUS
-  totalAmount: Float!
-  paidFrom: String
-  paymentMethod: PAYMENT_METHOD
-  paymentDateTime: DateTime
-}
-
-enum PAYMENT_STATUS {
-  DUE
-  IN_REVIEW_PAID
-  PAID
-}
-
-enum PAYMENT_METHOD {
-  ONLINE
-  BANK
-  NONE
-  BKASH
-  NAGAD
-  ROCKET
-}
-
-type PackageBooking {
-  _id: ID
-  customerDetails: CustomerDetailsSchema!
-  travelerDetails: TravelerDetailsSchema!
-  packageId: String!
-  transactionId: String
-  bookingId: String!
-  status: BOOKING_STATUS!
-  paymentDetails: PaymentDetailsSchema
-}
-
-type PackageBookingPagination {
-  nodes: [PackageBooking!]
-  meta: PagniationMeta
-}
-
-type Service {
-  _id: ID
-  title: String!
-  shortDesc: String!
-  desc: String!
-  preRequirements: String
-  price: Float!
-  isCustomizeable: Boolean
-}
-
-type ServicePagination {
-  nodes: [Service!]
-  meta: PagniationMeta
-}
-
-type Team {
-  _id: ID
-  name: String!
-  post: String!
-  avatar: String
-  email: String!
-  facebook: String
-  linkedin: String
-  phone: String
-}
-
-type TeamPagination {
-  nodes: [Team!]
-  meta: PagniationMeta
-}
-
 type PlaceInfoSchema {
   name: String
   lat: String
@@ -171,8 +107,8 @@ type Transportation {
   transportName: String
   departureStation: String
   destinationStation: String
-  stops: Float
-  journeyBreak: Float
+  stops: String
+  journeyBreak: String
   arrivalTime: String
   arrivalDate: DateTime
 }
@@ -216,6 +152,73 @@ enum PACKAGE_STATUS {
 
 type TravelPackagePagination {
   nodes: [TravelPackage!]
+  meta: PagniationMeta
+}
+
+type CustomerDetailsSchema {
+  name: String!
+  email: String!
+  phone: String!
+  address: String!
+}
+
+type TravelerDetailsSchema {
+  adult: Float!
+  child: Float!
+}
+
+type PaymentDetailsSchema {
+  paymentStatus: PAYMENT_STATUS
+  totalAmount: Float!
+  paidFrom: String
+  paymentMethod: PAYMENT_METHOD
+  paymentDateTime: DateTime
+}
+
+enum PAYMENT_STATUS {
+  DUE
+  IN_REVIEW_PAID
+  PAID
+}
+
+enum PAYMENT_METHOD {
+  ONLINE
+  BANK
+  NONE
+  BKASH
+  NAGAD
+  ROCKET
+}
+
+type PackageBooking {
+  _id: ID
+  customerDetails: CustomerDetailsSchema!
+  travelerDetails: TravelerDetailsSchema!
+  package: TravelPackage
+  transactionId: String
+  bookingId: String!
+  status: BOOKING_STATUS!
+  paymentDetails: PaymentDetailsSchema
+}
+
+type PackageBookingPagination {
+  nodes: [PackageBooking!]
+  meta: PagniationMeta
+}
+
+type Team {
+  _id: ID
+  name: String!
+  post: String!
+  avatar: String
+  email: String!
+  facebook: String
+  linkedin: String
+  phone: String
+}
+
+type TeamPagination {
+  nodes: [Team!]
   meta: PagniationMeta
 }
 
@@ -363,12 +366,14 @@ type Mutation {
   createAppointment(input: CreateAppointmentInput!): Appointment!
   updateAppointment(input: UpdateAppointmentInput!): Appointment!
   removeAppointment(input: CommonMatchInput!): Boolean
+  bulkRemoveAppointment(uIds: [String!]!): Boolean
   createService(input: CreateServiceInput!): Service!
   updateService(input: UpdateServiceInput!): Service!
   removeService(input: CommonMatchInput!): Boolean
   createTeam(input: CreateTeamInput!): Team!
   updateTeam(input: UpdateTeamInput!): Team!
   removeTeam(input: CommonMatchInput!): Boolean
+  bulkRemoveTeam(uIds: [String!]!): Boolean
   createNews(input: CreateNewsInput!): News!
   updateNews(input: UpdateNewsInput!): News!
   removeNews(input: CommonMatchInput!): Boolean
@@ -546,21 +551,27 @@ input UpdateAppointmentInput {
 input CreateServiceInput {
   _id: ID
   title: String!
+  thumbnail: String!
+  banner: String!
   shortDesc: String!
   desc: String!
+  country: String!
+  visaCategory: String!
   preRequirements: String
-  price: Float!
-  isCustomizeable: Boolean
+  price: Float
 }
 
 input UpdateServiceInput {
   _id: String!
   title: String
+  thumbnail: String
+  banner: String
   shortDesc: String
   desc: String
+  country: String
+  visaCategory: String
   preRequirements: String
   price: Float
-  isCustomizeable: Boolean
 }
 
 input CreateTeamInput {
