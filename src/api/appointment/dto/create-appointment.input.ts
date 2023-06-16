@@ -1,6 +1,6 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
-import { BOOKING_STATUS } from '../../package-booking/enums/booking-status.enum';
+import { APPOINTMENT_STATUS } from '../entities/appointment.entity';
 
 @InputType()
 export class ClientQuestionsInput {
@@ -31,13 +31,15 @@ export class CreateAppointmentInput {
   @IsNotEmpty()
   phone: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsNotEmpty()
   serviceId: string;
 
-  @Field(() => BOOKING_STATUS)
+  @Field(() => APPOINTMENT_STATUS, {
+    defaultValue: APPOINTMENT_STATUS.PENDING,
+  })
   @IsNotEmpty()
-  status: BOOKING_STATUS;
+  status: APPOINTMENT_STATUS;
 
   @Field(() => String)
   @IsNotEmpty()

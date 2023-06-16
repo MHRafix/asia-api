@@ -9,14 +9,16 @@ import {
 import { PackageBookingController } from './package-booking.controller';
 import { PackageBookingResolver } from './package-booking.resolver';
 import { PackageBookingService } from './package-booking.service';
+import { TravelPackagesModule } from '../travel-packages/travel-packages.module';
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    AppointmentModule,
     MongooseModule.forFeature([
       { name: PackageBooking.name, schema: PackageBookingSchema },
     ]),
+    AppointmentModule,
+    TravelPackagesModule,
   ],
   controllers: [PackageBookingController],
   providers: [PackageBookingResolver, PackageBookingService],

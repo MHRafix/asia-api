@@ -15,11 +15,11 @@ export class Service {
   title: string;
 
   @Prop()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   thumbnail: string;
 
   @Prop()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   banner: string;
 
   @Prop()
@@ -35,11 +35,11 @@ export class Service {
   preRequirements: string;
 
   @Prop()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   country: string;
 
   @Prop()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   visaCategory: string;
 
   @Prop()

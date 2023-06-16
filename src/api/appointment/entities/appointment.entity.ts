@@ -1,11 +1,20 @@
 import { Paginated } from '@/src/shared/object-types/paginationObject';
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
-import { BOOKING_STATUS } from '../../package-booking/enums/booking-status.enum';
-import { Service } from '../../services/entities/service.entity';
+import { Document } from 'mongoose';
 
 export type AppointmentDocument = Appointment & Document;
+
+export enum APPOINTMENT_STATUS {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  CANCELED = 'CANCELED',
+  COMPLETED = 'COMPLETED',
+}
+
+registerEnumType(APPOINTMENT_STATUS, {
+  name: 'APPOINTMENT_STATUS',
+});
 
 @ObjectType()
 @Schema()
@@ -37,13 +46,13 @@ export class Appointment {
   @Field(() => String)
   phone: string;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: Service.name })
-  @Field(() => Service, { nullable: true })
-  service: Service;
+  @Prop()
+  @Field(() => String, { nullable: true })
+  serviceId: string;
 
-  @Prop({ required: true })
-  @Field(() => BOOKING_STATUS)
-  status: BOOKING_STATUS;
+  @Prop({ required: true, default: APPOINTMENT_STATUS.PENDING })
+  @Field(() => APPOINTMENT_STATUS)
+  status: APPOINTMENT_STATUS;
 
   @Prop({ required: true })
   @Field(() => String)

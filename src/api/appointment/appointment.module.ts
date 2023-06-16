@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ServicesModule } from '../services/services.module';
 import { AppointmentResolver } from './appointment.resolver';
 import { AppointmentService } from './appointment.service';
 import { Appointment, AppointmentSchema } from './entities/appointment.entity';
@@ -9,6 +10,7 @@ import { Appointment, AppointmentSchema } from './entities/appointment.entity';
     MongooseModule.forFeature([
       { name: Appointment.name, schema: AppointmentSchema },
     ]),
+    ServicesModule,
   ],
 
   providers: [AppointmentResolver, AppointmentService],

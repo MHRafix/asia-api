@@ -12,13 +12,13 @@ type PagniationMeta {
 type Service {
   _id: ID
   title: String!
-  thumbnail: String!
-  banner: String!
+  thumbnail: String
+  banner: String
   shortDesc: String!
   desc: String!
   preRequirements: String
-  country: String!
-  visaCategory: String!
+  country: String
+  visaCategory: String
   price: Float
 }
 
@@ -37,14 +37,14 @@ type Appointment {
   name: String!
   email: String!
   phone: String!
-  service: Service
-  status: BOOKING_STATUS!
+  serviceId: String
+  status: APPOINTMENT_STATUS!
   subService: String!
   profession: String!
   clientQuestions: [ClientQuestionsSchema!]
 }
 
-enum BOOKING_STATUS {
+enum APPOINTMENT_STATUS {
   PENDING
   APPROVED
   CANCELED
@@ -76,6 +76,64 @@ scalar DateTime
 
 type NewsPagination {
   nodes: [News!]
+  meta: PagniationMeta
+}
+
+type CustomerDetailsSchema {
+  name: String!
+  email: String!
+  phone: String!
+  address: String!
+}
+
+type TravelerDetailsSchema {
+  adult: Float!
+  child: Float!
+}
+
+type PaymentDetailsSchema {
+  paymentStatus: PAYMENT_STATUS
+  totalAmount: Float!
+  paidFrom: String
+  paymentMethod: PAYMENT_METHOD
+  paymentDateTime: DateTime
+}
+
+enum PAYMENT_STATUS {
+  DUE
+  IN_REVIEW_PAID
+  PAID
+}
+
+enum PAYMENT_METHOD {
+  ONLINE
+  BANK
+  NONE
+  BKASH
+  NAGAD
+  ROCKET
+}
+
+type PackageBooking {
+  _id: ID
+  customerDetails: CustomerDetailsSchema!
+  travelerDetails: TravelerDetailsSchema!
+  packageId: String!
+  transactionId: String
+  bookingId: String!
+  status: BOOKING_STATUS!
+  paymentDetails: PaymentDetailsSchema
+}
+
+enum BOOKING_STATUS {
+  PENDING
+  APPROVED
+  CANCELED
+  COMPLETED
+}
+
+type PackageBookingPagination {
+  nodes: [PackageBooking!]
   meta: PagniationMeta
 }
 
@@ -152,57 +210,6 @@ enum PACKAGE_STATUS {
 
 type TravelPackagePagination {
   nodes: [TravelPackage!]
-  meta: PagniationMeta
-}
-
-type CustomerDetailsSchema {
-  name: String!
-  email: String!
-  phone: String!
-  address: String!
-}
-
-type TravelerDetailsSchema {
-  adult: Float!
-  child: Float!
-}
-
-type PaymentDetailsSchema {
-  paymentStatus: PAYMENT_STATUS
-  totalAmount: Float!
-  paidFrom: String
-  paymentMethod: PAYMENT_METHOD
-  paymentDateTime: DateTime
-}
-
-enum PAYMENT_STATUS {
-  DUE
-  IN_REVIEW_PAID
-  PAID
-}
-
-enum PAYMENT_METHOD {
-  ONLINE
-  BANK
-  NONE
-  BKASH
-  NAGAD
-  ROCKET
-}
-
-type PackageBooking {
-  _id: ID
-  customerDetails: CustomerDetailsSchema!
-  travelerDetails: TravelerDetailsSchema!
-  package: TravelPackage
-  transactionId: String
-  bookingId: String!
-  status: BOOKING_STATUS!
-  paymentDetails: PaymentDetailsSchema
-}
-
-type PackageBookingPagination {
-  nodes: [PackageBooking!]
   meta: PagniationMeta
 }
 
@@ -524,8 +531,8 @@ input CreateAppointmentInput {
   name: String!
   email: String!
   phone: String!
-  serviceId: String!
-  status: BOOKING_STATUS!
+  serviceId: String
+  status: APPOINTMENT_STATUS! = PENDING
   subService: String!
   profession: String!
   clientQuestions: [ClientQuestionsInput!]
@@ -542,7 +549,7 @@ input UpdateAppointmentInput {
   email: String
   phone: String
   serviceId: String
-  status: BOOKING_STATUS
+  status: APPOINTMENT_STATUS = PENDING
   subService: String
   profession: String
   clientQuestions: [ClientQuestionsInput!]
@@ -551,12 +558,12 @@ input UpdateAppointmentInput {
 input CreateServiceInput {
   _id: ID
   title: String!
-  thumbnail: String!
-  banner: String!
-  shortDesc: String!
+  thumbnail: String
+  banner: String
+  shortDesc: String
   desc: String!
-  country: String!
-  visaCategory: String!
+  country: String
+  visaCategory: String
   preRequirements: String
   price: Float
 }
