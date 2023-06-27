@@ -32,8 +32,8 @@ export class BranchSchema {
   email: string;
 
   @Prop()
-  @Field(() => AddressSchema, { nullable: true })
-  address: AddressSchema;
+  @Field(() => String, { nullable: true })
+  address: string;
 
   @Prop()
   @Field(() => String, { nullable: true })

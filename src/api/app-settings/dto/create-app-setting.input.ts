@@ -26,9 +26,9 @@ export class BranchInput {
   @IsOptional()
   email: string;
 
-  @Field(() => AddressInput, { nullable: true })
+  @Field(() => String, { nullable: true })
   @IsOptional()
-  address: AddressInput;
+  address: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
