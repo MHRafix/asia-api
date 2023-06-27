@@ -34,7 +34,7 @@ export class AppSettingsResolver {
     }
   }
 
-  @Mutation(() => Boolean, { nullable: true })
+  @Mutation(() => AppSettings)
   @UseGuards(GqlAuthGuard)
   async updateAppSettings(
     @Args('input')

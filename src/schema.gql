@@ -430,7 +430,7 @@ type Mutation {
   removeBooking(input: CommonMatchInput!): Boolean
   bulkRemoveBooking(uIds: [String!]!): Boolean
   createAppSetting(input: CreateAppSettingInput!): AppSettings!
-  updateAppSettings(input: UpdateAppSettingInput!): Boolean
+  updateAppSettings(input: UpdateAppSettingInput!): AppSettings!
 }
 
 input CreateUserInput {
@@ -733,10 +733,9 @@ input BranchInput {
 }
 
 input UpdateAppSettingInput {
-  _id: ID
+  _id: String!
   logo: String
   visaCategories: [String!]
   countriesVisa: [CountriesVisaInput!]
   branches: [BranchInput!]
-  id: String!
 }
