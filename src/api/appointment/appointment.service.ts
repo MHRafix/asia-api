@@ -111,12 +111,12 @@ export class AppointmentService {
 
   /**
    * remove many appointment
-   * @param uids string[]
+   * @param uIds string[]
    * @returns
    */
-  removeBulk(uids: string[]) {
+  removeBulk(uIds: string[]) {
     return this.appointmentModel.deleteMany({
-      _id: { $in: uids },
+      _id: { $in: uIds },
     });
   }
 }

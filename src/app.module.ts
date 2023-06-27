@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
+import { AppSettingsModule } from './api/app-settings/app-settings.module';
 import { AppointmentModule } from './api/appointment/appointment.module';
 import { NewsModule } from './api/news/news.module';
 import { PackageBookingModule } from './api/package-booking/package-booking.module';
@@ -57,6 +58,7 @@ import { JwtStrategy } from './app/config/jwtStrategy';
     TeamModule,
     NewsModule,
     PackageBookingModule,
+    AppSettingsModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],

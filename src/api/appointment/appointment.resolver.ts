@@ -43,7 +43,7 @@ export class AppointmentResolver {
     }
   }
 
-  @Query(() => Appointment, { name: 'appointment' })
+  @Query(() => Appointment, { name: Appointment.name })
   @UseGuards(GqlAuthGuard)
   findOne(@Args('input') input: CommonMatchInput) {
     try {

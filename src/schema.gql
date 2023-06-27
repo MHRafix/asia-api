@@ -9,6 +9,37 @@ type PagniationMeta {
   totalPages: Float!
 }
 
+type AddressSchema {
+  name: String
+  lat: Float
+  lng: Float
+}
+
+type BranchSchema {
+  branchName: String
+  email: String
+  address: AddressSchema
+  phone: String
+}
+
+type CountriesVisaSchema {
+  country: String
+  visaCategory: String
+}
+
+type AppSettings {
+  _id: ID
+  logo: String
+  visaCategories: [String!]
+  countriesVisa: [CountriesVisaSchema!]
+  branches: [BranchSchema!]
+}
+
+type AppSettingsPagination {
+  nodes: [AppSettings!]
+  meta: PagniationMeta
+}
+
 type Service {
   _id: ID
   title: String!
@@ -257,7 +288,7 @@ type Query {
   travelPackages(input: TravelPackageListQueryDto): TravelPackagePagination!
   travelPackage(input: CommonMatchInput!): TravelPackage!
   appointments(input: AppointmentListQueryDto): AppointmentPagination!
-  appointment(input: CommonMatchInput!): Appointment!
+  Appointment(input: CommonMatchInput!): Appointment!
   services(input: ServiceListQueryDto): ServicePagination!
   service(input: CommonMatchInput!): Service!
   teams(input: TeamListQueryDto): TeamPagination!
@@ -266,6 +297,7 @@ type Query {
   news(input: CommonMatchInput!): News!
   bookings(input: BookingPackageListQueryDto): PackageBookingPagination!
   booking(input: CommonMatchInput!): PackageBooking!
+  appSettings(input: AppSettingsListQueryDto): AppSettingsPagination!
 }
 
 input UserListQueryDto {
@@ -360,6 +392,15 @@ input BookingPackageListQueryDto {
   whereOperator: WHERE_OPERATOR
 }
 
+input AppSettingsListQueryDto {
+  page: Int
+  limit: Int
+  sort: SortType
+  sortBy: String
+  where: [CommonMatchInput!]
+  whereOperator: WHERE_OPERATOR
+}
+
 type Mutation {
   signUp(input: CreateUserInput!): User!
   signIn(input: CreateUserInput!): User!
@@ -388,6 +429,8 @@ type Mutation {
   updateBooking(input: UpdatePackageBookingInput!): PackageBooking!
   removeBooking(input: CommonMatchInput!): Boolean
   bulkRemoveBooking(uIds: [String!]!): Boolean
+  createAppSetting(input: CreateAppSettingInput!): AppSettings!
+  updateAppSettings(input: UpdateAppSettingInput!): Boolean
 }
 
 input CreateUserInput {
@@ -667,4 +710,33 @@ input UpdatePackageBookingInput {
   createdAt: DateTime
   status: BOOKING_STATUS = PENDING
   paymentDetails: PaymentDetailsInput
+}
+
+input CreateAppSettingInput {
+  _id: ID
+  logo: String
+  visaCategories: [String!]
+  countriesVisa: [CountriesVisaInput!]
+  branches: [BranchInput!]
+}
+
+input CountriesVisaInput {
+  country: String
+  visaCategory: String
+}
+
+input BranchInput {
+  branchName: String
+  email: String
+  address: String
+  phone: String
+}
+
+input UpdateAppSettingInput {
+  _id: ID
+  logo: String
+  visaCategories: [String!]
+  countriesVisa: [CountriesVisaInput!]
+  branches: [BranchInput!]
+  id: String!
 }
