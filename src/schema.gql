@@ -9,16 +9,10 @@ type PagniationMeta {
   totalPages: Float!
 }
 
-type AddressSchema {
-  name: String
-  lat: Float
-  lng: Float
-}
-
 type BranchSchema {
   branchName: String
   email: String
-  address: AddressSchema
+  address: String
   phone: String
 }
 
@@ -87,6 +81,53 @@ type AppointmentPagination {
   meta: PagniationMeta
 }
 
+type User {
+  _id: ID
+  name: String
+  email: String
+  role: USER_ROLE!
+  password: String!
+  avatar: String
+  accessToken: String
+  phone: String
+}
+
+enum USER_ROLE {
+  ADMIN
+  MODERATOR
+  CUSTOMER
+}
+
+type UserPagination {
+  nodes: [User!]
+  meta: PagniationMeta
+}
+
+type Attendance {
+  _id: ID
+  verifyBy: User!
+  attendee: User!
+  status: Attendance_Status
+  date: DateTime
+  note: String
+}
+
+enum Attendance_Status {
+  VERIFIED
+  PENDING
+  NOT_PRESENT
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type AttendancePagination {
+  nodes: [Attendance!]
+  meta: PagniationMeta
+}
+
 type NewsTags {
   tags: [String!]
 }
@@ -99,11 +140,6 @@ type News {
   videoUrl: String!
   publishedAt: DateTime
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type NewsPagination {
   nodes: [News!]
@@ -260,28 +296,6 @@ type TeamPagination {
   meta: PagniationMeta
 }
 
-type User {
-  _id: ID
-  name: String
-  email: String
-  role: USER_ROLE!
-  password: String!
-  avatar: String
-  accessToken: String
-  phone: String
-}
-
-enum USER_ROLE {
-  ADMIN
-  MODERATOR
-  CUSTOMER
-}
-
-type UserPagination {
-  nodes: [User!]
-  meta: PagniationMeta
-}
-
 type Query {
   users(input: UserListQueryDto): UserPagination!
   user(input: CommonMatchInput!): User!
@@ -298,6 +312,8 @@ type Query {
   bookings(input: BookingPackageListQueryDto): PackageBookingPagination!
   booking(input: CommonMatchInput!): PackageBooking!
   appSettings(input: AppSettingsListQueryDto): AppSettingsPagination!
+  Attendances(input: AttendanceQueryDto): AttendancePagination!
+  Attendance(input: CommonMatchInput!): Attendance!
 }
 
 input UserListQueryDto {
@@ -401,6 +417,15 @@ input AppSettingsListQueryDto {
   whereOperator: WHERE_OPERATOR
 }
 
+input AttendanceQueryDto {
+  page: Int
+  limit: Int
+  sort: SortType
+  sortBy: String
+  where: [CommonMatchInput!]
+  whereOperator: WHERE_OPERATOR
+}
+
 type Mutation {
   signUp(input: CreateUserInput!): User!
   signIn(input: CreateUserInput!): User!
@@ -431,6 +456,9 @@ type Mutation {
   bulkRemoveBooking(uIds: [String!]!): Boolean
   createAppSetting(input: CreateAppSettingInput!): AppSettings!
   updateAppSettings(input: UpdateAppSettingInput!): AppSettings!
+  createAttendance(input: CreateAttendanceInput!): Boolean!
+  updateAttendance(input: UpdateAttendanceInput!): Boolean!
+  removeAttendance(input: CommonMatchInput!): Boolean
 }
 
 input CreateUserInput {
@@ -738,4 +766,27 @@ input UpdateAppSettingInput {
   visaCategories: [String!]
   countriesVisa: [CountriesVisaInput!]
   branches: [BranchInput!]
+}
+
+input CreateAttendanceInput {
+  _id: ID
+  status: Attendance_Status = PENDING
+  attendee: String!
+  verifyBy: String!
+  note: String
+  date: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input UpdateAttendanceInput {
+  _id: ID
+  status: Attendance_Status = PENDING
+  attendee: String
+  verifyBy: String
+  note: String
+  date: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+  id: Int!
 }

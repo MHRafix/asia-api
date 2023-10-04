@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
 import { AppSettingsModule } from './api/app-settings/app-settings.module';
 import { AppointmentModule } from './api/appointment/appointment.module';
+import { AttendanceModule } from './api/attendance/attendance.module';
 import { NewsModule } from './api/news/news.module';
 import { PackageBookingModule } from './api/package-booking/package-booking.module';
 import { ServicesModule } from './api/services/services.module';
@@ -59,6 +60,7 @@ import { JwtStrategy } from './app/config/jwtStrategy';
     NewsModule,
     PackageBookingModule,
     AppSettingsModule,
+    AttendanceModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],
