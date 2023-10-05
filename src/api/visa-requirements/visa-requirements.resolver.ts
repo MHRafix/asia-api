@@ -8,40 +8,40 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Args, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { AttendanceService } from './attendance.service';
-import { AttendanceQueryDto } from './dto/attendance-list-query.dto';
-import { CreateAttendanceInput } from './dto/create-attendance.input';
-import { UpdateAttendanceInput } from './dto/update-attendance.input';
-import { Attendance, AttendancePagination } from './entities/attendance.entity';
+import { CreateVisaRequirementInput } from './dto/create-visa-requirement.input';
+import { UpdateVisaRequirementInput } from './dto/update-visa-requirement.input';
+import { VisaReqListQueryDto } from './dto/visa-req-list-query.dto';
+import { VisaReq, VisaReqPagination } from './entities/visa-requirement.entity';
+import { VisaRequirementsService } from './visa-requirements.service';
 
-@Resolver(() => Attendance)
-export class AttendanceResolver {
-  constructor(private readonly attendanceService: AttendanceService) {}
+@Resolver(() => VisaReq)
+export class VisaRequirementsResolver {
+  constructor(private readonly visaReqService: VisaRequirementsService) {}
   @Mutation(() => Boolean)
   // @UseGuards(GqlAuthGuard)
-  async createAttendance(@Args('input') input: CreateAttendanceInput) {
-    await this.attendanceService.create(input);
+  async createVisaReq(@Args('input') input: CreateVisaRequirementInput) {
+    await this.visaReqService.create(input);
     return true;
   }
 
-  @Query(() => AttendancePagination, { name: 'Attendances' })
+  @Query(() => VisaReqPagination, { name: 'VisaRequirements' })
   findAll(
-    @Args('input', { nullable: true }) input: AttendanceQueryDto,
+    @Args('input', { nullable: true }) input: VisaReqListQueryDto,
     @Info() info: any,
   ) {
     try {
       const fields = getGqlFields(info, 'nodes');
-      return this.attendanceService.findAll(input, fields);
+      return this.visaReqService.findAll(input, fields);
     } catch (err) {
       throw new BadRequestException(err.message);
     }
   }
 
-  @Query(() => Attendance, { name: 'Attendance' })
+  @Query(() => VisaReq, { name: 'VisaRequirement' })
   findOne(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);
-      return this.attendanceService.findOne(find);
+      return this.visaReqService.findOne(find);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -49,12 +49,12 @@ export class AttendanceResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async updateAttendance(
+  async updateVisaReq(
     @Args('input')
-    input: UpdateAttendanceInput,
+    input: UpdateVisaRequirementInput,
   ) {
     try {
-      await this.attendanceService.update(input._id, input);
+      await this.visaReqService.update(input._id, input);
       return true;
     } catch (err) {
       throw new BadRequestException(err.message);
@@ -63,10 +63,10 @@ export class AttendanceResolver {
 
   @Mutation(() => Boolean, { nullable: true })
   @UseGuards(GqlAuthGuard)
-  async removeAttendance(@Args('input') input: CommonMatchInput) {
+  async removeVisaReq(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);
-      const res = await this.attendanceService.remove(find);
+      const res = await this.visaReqService.remove(find);
       return res.deletedCount > 0;
     } catch (error) {
       throw new ForbiddenException(error.message);

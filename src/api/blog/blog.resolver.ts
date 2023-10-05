@@ -8,40 +8,40 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Args, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { AttendanceService } from './attendance.service';
-import { AttendanceQueryDto } from './dto/attendance-list-query.dto';
-import { CreateAttendanceInput } from './dto/create-attendance.input';
-import { UpdateAttendanceInput } from './dto/update-attendance.input';
-import { Attendance, AttendancePagination } from './entities/attendance.entity';
+import { BlogService } from './blog.service';
+import { BlogListQueryDto } from './dto/blog-list-query.dto';
+import { CreateBlogInput } from './dto/create-blog.input';
+import { UpdateBlogInput } from './dto/update-blog.input';
+import { Blog, BlogPagination } from './entities/blog.entity';
 
-@Resolver(() => Attendance)
-export class AttendanceResolver {
-  constructor(private readonly attendanceService: AttendanceService) {}
+@Resolver(() => Blog)
+export class BlogResolver {
+  constructor(private readonly blogService: BlogService) {}
   @Mutation(() => Boolean)
   // @UseGuards(GqlAuthGuard)
-  async createAttendance(@Args('input') input: CreateAttendanceInput) {
-    await this.attendanceService.create(input);
+  async createBlog(@Args('input') input: CreateBlogInput) {
+    await this.blogService.create(input);
     return true;
   }
 
-  @Query(() => AttendancePagination, { name: 'Attendances' })
+  @Query(() => BlogPagination, { name: 'Blogs' })
   findAll(
-    @Args('input', { nullable: true }) input: AttendanceQueryDto,
+    @Args('input', { nullable: true }) input: BlogListQueryDto,
     @Info() info: any,
   ) {
     try {
       const fields = getGqlFields(info, 'nodes');
-      return this.attendanceService.findAll(input, fields);
+      return this.blogService.findAll(input, fields);
     } catch (err) {
       throw new BadRequestException(err.message);
     }
   }
 
-  @Query(() => Attendance, { name: 'Attendance' })
+  @Query(() => Blog, { name: 'Blog' })
   findOne(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);
-      return this.attendanceService.findOne(find);
+      return this.blogService.findOne(find);
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -49,12 +49,12 @@ export class AttendanceResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async updateAttendance(
+  async updateBlog(
     @Args('input')
-    input: UpdateAttendanceInput,
+    input: UpdateBlogInput,
   ) {
     try {
-      await this.attendanceService.update(input._id, input);
+      await this.blogService.update(input._id, input);
       return true;
     } catch (err) {
       throw new BadRequestException(err.message);
@@ -63,10 +63,10 @@ export class AttendanceResolver {
 
   @Mutation(() => Boolean, { nullable: true })
   @UseGuards(GqlAuthGuard)
-  async removeAttendance(@Args('input') input: CommonMatchInput) {
+  async removeBlog(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);
-      const res = await this.attendanceService.remove(find);
+      const res = await this.blogService.remove(find);
       return res.deletedCount > 0;
     } catch (error) {
       throw new ForbiddenException(error.message);

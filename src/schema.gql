@@ -128,6 +128,37 @@ type AttendancePagination {
   meta: PagniationMeta
 }
 
+type Blog {
+  _id: ID
+  author: User!
+  status: Blog_Status
+  date: DateTime
+  title: String!
+  description: String!
+  country: String!
+  image: String
+  cover: String
+  visaType: Visa_Types
+}
+
+enum Blog_Status {
+  PUBLISHED
+  PAUSED
+  ARCHIVE
+}
+
+enum Visa_Types {
+  TOURIST
+  WORK_PERMIT
+  MEDICAL
+  BUSINESS
+}
+
+type BlogPagination {
+  nodes: [Blog!]
+  meta: PagniationMeta
+}
+
 type NewsTags {
   tags: [String!]
 }
@@ -296,6 +327,30 @@ type TeamPagination {
   meta: PagniationMeta
 }
 
+type VisaReq {
+  _id: ID
+  author: User!
+  status: VisaReq_Status
+  date: DateTime
+  title: String!
+  description: String!
+  country: String!
+  image: String
+  cover: String
+  visaType: Visa_Types
+}
+
+enum VisaReq_Status {
+  PUBLISHED
+  PAUSED
+  ARCHIVE
+}
+
+type VisaReqPagination {
+  nodes: [VisaReq!]
+  meta: PagniationMeta
+}
+
 type Query {
   users(input: UserListQueryDto): UserPagination!
   user(input: CommonMatchInput!): User!
@@ -314,6 +369,10 @@ type Query {
   appSettings(input: AppSettingsListQueryDto): AppSettingsPagination!
   Attendances(input: AttendanceQueryDto): AttendancePagination!
   Attendance(input: CommonMatchInput!): Attendance!
+  VisaRequirements(input: VisaReqListQueryDto): VisaReqPagination!
+  VisaRequirement(input: CommonMatchInput!): VisaReq!
+  Blogs(input: BlogListQueryDto): BlogPagination!
+  Blog(input: CommonMatchInput!): Blog!
 }
 
 input UserListQueryDto {
@@ -426,6 +485,24 @@ input AttendanceQueryDto {
   whereOperator: WHERE_OPERATOR
 }
 
+input VisaReqListQueryDto {
+  page: Int
+  limit: Int
+  sort: SortType
+  sortBy: String
+  where: [CommonMatchInput!]
+  whereOperator: WHERE_OPERATOR
+}
+
+input BlogListQueryDto {
+  page: Int
+  limit: Int
+  sort: SortType
+  sortBy: String
+  where: [CommonMatchInput!]
+  whereOperator: WHERE_OPERATOR
+}
+
 type Mutation {
   signUp(input: CreateUserInput!): User!
   signIn(input: CreateUserInput!): User!
@@ -459,6 +536,12 @@ type Mutation {
   createAttendance(input: CreateAttendanceInput!): Boolean!
   updateAttendance(input: UpdateAttendanceInput!): Boolean!
   removeAttendance(input: CommonMatchInput!): Boolean
+  createVisaReq(input: CreateVisaRequirementInput!): Boolean!
+  updateVisaReq(input: UpdateVisaRequirementInput!): Boolean!
+  removeVisaReq(input: CommonMatchInput!): Boolean
+  createBlog(input: CreateBlogInput!): Boolean!
+  updateBlog(input: UpdateBlogInput!): Boolean!
+  removeBlog(input: CommonMatchInput!): Boolean
 }
 
 input CreateUserInput {
@@ -786,6 +869,75 @@ input UpdateAttendanceInput {
   verifyBy: String
   note: String
   date: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+  id: Int!
+}
+
+input CreateVisaRequirementInput {
+  _id: ID
+  status: VisaReq_Status = PUBLISHED
+  author: String!
+  title: String!
+  description: String!
+  date: DateTime
+  country: String!
+  image: String
+  cover: String
+  visaType: Visa_Types2 = TOURIST
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+enum Visa_Types2 {
+  TOURIST
+  WORK_PERMIT
+  MEDICAL
+  BUSINESS
+}
+
+input UpdateVisaRequirementInput {
+  _id: ID
+  status: VisaReq_Status = PUBLISHED
+  author: String
+  title: String
+  description: String
+  date: DateTime
+  country: String
+  image: String
+  cover: String
+  visaType: Visa_Types2 = TOURIST
+  createdAt: DateTime
+  updatedAt: DateTime
+  id: Int!
+}
+
+input CreateBlogInput {
+  _id: ID
+  status: Blog_Status = PUBLISHED
+  author: String!
+  title: String!
+  description: String!
+  date: DateTime
+  country: String!
+  image: String
+  cover: String
+  visaType: Visa_Types = TOURIST
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input UpdateBlogInput {
+  _id: ID
+  status: Blog_Status = PUBLISHED
+  author: String
+  title: String
+  description: String
+  date: DateTime
+  country: String
+  image: String
+  cover: String
+  visaType: Visa_Types = TOURIST
   createdAt: DateTime
   updatedAt: DateTime
   id: Int!
