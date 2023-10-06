@@ -38,10 +38,11 @@ export class BlogResolver {
   }
 
   @Query(() => Blog, { name: 'Blog' })
-  findOne(@Args('input') input: CommonMatchInput) {
+  findOne(@Args('input') input: CommonMatchInput, @Info() info: any) {
     try {
+      const fields = getGqlFields(info);
       const find = mongodbFindObjectBuilder(input);
-      return this.blogService.findOne(find);
+      return this.blogService.findOne(find, fields);
     } catch (error) {
       throw new BadRequestException(error.message);
     }

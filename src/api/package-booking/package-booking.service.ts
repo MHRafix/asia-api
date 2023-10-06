@@ -8,6 +8,8 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
+import { TravelPackage } from '../travel-packages/entities/travel-package.entity';
+import { User } from '../users/entities/user.entity';
 import { BookingPackageListQueryDto } from './dto/booking-list-query.dto';
 import { CreatePackageBookingInput } from './dto/create-package-booking.input';
 import { UpdatePackageBookingInput } from './dto/update-package-booking.input';
@@ -53,8 +55,37 @@ export class PackageBookingService {
     const where = filterBuilder(input.where, input.whereOperator);
 
     const cursor = this.packageBookingModel.find(where);
+
+    // populate customer details info
+    if (fields.includes('customerDetails')) {
+      cursor.populate({
+        path: 'customerDetails',
+        model: User.name,
+      });
+    }
+
+    // populate package details info
+    if (fields.includes('packageId')) {
+      cursor.populate({
+        path: 'packageId',
+        model: TravelPackage.name,
+      });
+    }
+
+    // populate author of package here
+    if (fields.includes('packageId')) {
+      cursor.populate({
+        path: 'packageId',
+        populate: {
+          path: 'author',
+          model: User.name,
+        },
+      });
+    }
+
     const count = await this.packageBookingModel.countDocuments(where);
     const skip = (page - 1) * limit;
+
     const data = await cursor
       .sort({ [input?.sortBy]: input?.sort == SortType.DESC ? -1 : 1 })
       .skip(skip)
@@ -79,7 +110,37 @@ export class PackageBookingService {
     fields: string[] = [],
   ) {
     try {
-      const data = await this.packageBookingModel.findOne(filter);
+      // TODO: Need on demand population
+      const cursor = this.packageBookingModel.findOne(filter);
+
+      // populate customer here
+      if (fields.includes('customerDetails')) {
+        cursor.populate({
+          path: 'customerDetails',
+          model: User.name,
+        });
+      }
+
+      // populate package here
+      if (fields.includes('packageId')) {
+        cursor.populate({
+          path: 'packageId',
+          model: TravelPackage.name,
+        });
+      }
+
+      // populate author of package here
+      if (fields.includes('packageId')) {
+        cursor.populate({
+          path: 'packageId',
+          populate: {
+            path: 'author',
+            model: User.name,
+          },
+        });
+      }
+
+      const data = await cursor;
 
       if (!data) {
         throw new ForbiddenException('Data is not found');

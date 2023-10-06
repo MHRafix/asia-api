@@ -45,10 +45,11 @@ export class AppointmentResolver {
 
   @Query(() => Appointment, { name: Appointment.name })
   @UseGuards(GqlAuthGuard)
-  findOne(@Args('input') input: CommonMatchInput) {
+  findOne(@Args('input') input: CommonMatchInput, @Info() info: any) {
     try {
+      const fields = getGqlFields(info);
       const find = mongodbFindObjectBuilder(input);
-      return this.appointmentService.findOne(find);
+      return this.appointmentService.findOne(find, fields);
     } catch (error) {
       throw new BadRequestException(error.message);
     }

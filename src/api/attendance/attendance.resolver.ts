@@ -38,10 +38,11 @@ export class AttendanceResolver {
   }
 
   @Query(() => Attendance, { name: 'Attendance' })
-  findOne(@Args('input') input: CommonMatchInput) {
+  findOne(@Args('input') input: CommonMatchInput, @Info() info: any) {
     try {
+      const fields = getGqlFields(info);
       const find = mongodbFindObjectBuilder(input);
-      return this.attendanceService.findOne(find);
+      return this.attendanceService.findOne(find, fields);
     } catch (error) {
       throw new BadRequestException(error.message);
     }

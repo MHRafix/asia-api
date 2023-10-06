@@ -69,7 +69,17 @@ export class VisaRequirementsService {
    */
   async findOne(filter: FilterQuery<VisaReqDocument>, fields: string[] = []) {
     try {
-      const data = await this.blogModel.findOne(filter);
+      const cursor = this.blogModel.findOne(filter);
+
+      // populate author here
+      if (fields.includes('author')) {
+        cursor.populate({
+          path: 'author',
+          model: User.name,
+        });
+      }
+
+      const data = await cursor;
 
       if (!data) {
         throw new ForbiddenException('Data is not found');

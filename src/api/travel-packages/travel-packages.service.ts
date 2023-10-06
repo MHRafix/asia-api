@@ -4,6 +4,7 @@ import { filterBuilder } from '@/src/shared/utils/filterBuilder';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
+import { User } from '../users/entities/user.entity';
 import { CreateTravelPackageInput } from './dto/create-travel-package.input';
 import { TravelPackageListQueryDto } from './dto/travel-package-list-query.dto';
 import { UpdateTravelPackageInput } from './dto/update-travel-package.input';
@@ -37,6 +38,15 @@ export class TravelPackagesService {
     const where = filterBuilder(input.where, input.whereOperator);
 
     const cursor = this.travelPackageModel.find(where);
+
+    // populate author of the package
+    if (fields.includes('author')) {
+      cursor.populate({
+        path: 'author',
+        model: User.name,
+      });
+    }
+
     const count = await this.travelPackageModel.countDocuments(where);
     const skip = (page - 1) * limit;
     const data = await cursor
@@ -62,7 +72,17 @@ export class TravelPackagesService {
     fields: string[] = [],
   ) {
     try {
-      const data = await this.travelPackageModel.findOne(filter);
+      const cursor = this.travelPackageModel.findOne(filter);
+
+      // populate author of the package
+      if (fields.includes('author')) {
+        cursor.populate({
+          path: 'author',
+          model: User.name,
+        });
+      }
+
+      const data = await cursor;
 
       if (!data) {
         throw new ForbiddenException('Data is not found');

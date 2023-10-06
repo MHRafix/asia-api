@@ -1,3 +1,4 @@
+import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 import { CommonMatchInput } from '@/src/shared/dto/CommonFindOneDto';
 import { mongodbFindObjectBuilder } from '@/src/shared/utils/filterBuilder';
 import getGqlFields from '@/src/shared/utils/get-gql-fields';
@@ -12,7 +13,6 @@ import { ServiceListQueryDto } from './dto/service-list-query-dto';
 import { UpdateServiceInput } from './dto/update-service.input';
 import { Service, ServicePagination } from './entities/service.entity';
 import { ServicesService } from './services.service';
-import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 
 @Resolver(() => Service)
 export class ServicesResolver {
@@ -38,10 +38,11 @@ export class ServicesResolver {
   }
 
   @Query(() => Service, { name: 'service' })
-  findOne(@Args('input') input: CommonMatchInput) {
+  findOne(@Args('input') input: CommonMatchInput, @Info() info: any) {
     try {
+      const fields = getGqlFields(info);
       const find = mongodbFindObjectBuilder(input);
-      return this.servicesService.findOne(find);
+      return this.servicesService.findOne(find, fields);
     } catch (error) {
       throw new BadRequestException(error.message);
     }

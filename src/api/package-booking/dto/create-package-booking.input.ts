@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
 import {
   BOOKING_STATUS,
   PAYMENT_METHOD,
@@ -32,25 +32,25 @@ export class PaymentDetailsInput {
   paymentDateTime: Date;
 }
 
-@InputType()
-export class CustomerDetailsInput {
-  @Field(() => String)
-  @IsNotEmpty()
-  name: string;
+// @InputType()
+// export class CustomerDetailsInput {
+//   @Field(() => String)
+//   @IsNotEmpty()
+//   name: string;
 
-  @Field(() => String)
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
+//   @Field(() => String)
+//   @IsNotEmpty()
+//   @IsEmail()
+//   email: string;
 
-  @Field(() => String)
-  @IsNotEmpty()
-  phone: string;
+//   @Field(() => String)
+//   @IsNotEmpty()
+//   phone: string;
 
-  @Field(() => String)
-  @IsNotEmpty()
-  address: string;
-}
+//   @Field(() => String)
+//   @IsNotEmpty()
+//   address: string;
+// }
 
 @InputType()
 export class TravelerDetailsInput {
@@ -68,16 +68,18 @@ export class CreatePackageBookingInput {
   @Field(() => ID, { nullable: true })
   _id: string;
 
-  @Field(() => CustomerDetailsInput)
+  @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  customerDetails: CustomerDetailsInput;
+  @IsMongoId()
+  customerDetails: string;
 
   @Field(() => TravelerDetailsInput)
   @IsNotEmpty()
   travelerDetails: TravelerDetailsInput;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsNotEmpty()
+  @IsMongoId()
   packageId: string;
 
   @Field(() => String, { nullable: true })

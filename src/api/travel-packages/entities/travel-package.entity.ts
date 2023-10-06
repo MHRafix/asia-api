@@ -2,7 +2,8 @@ import { Paginated } from '@/src/shared/object-types/paginationObject';
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
+import { User } from '../../users/entities/user.entity';
 import { PlaceInfoSchema } from './location.entity';
 import { CountDownTimer, RatingsAndReviews, Travelers } from './others.entity';
 import { Transportation } from './transport.entity';
@@ -107,6 +108,10 @@ export class TravelPackage {
   @Prop({ required: false })
   @Field(() => [Transportation], { nullable: true })
   transportation: Transportation[];
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
+  @Field(() => User, { nullable: true })
+  author: string;
 }
 
 export const TravelPackageSchema = SchemaFactory.createForClass(TravelPackage);

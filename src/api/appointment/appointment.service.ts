@@ -5,6 +5,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { DashboardOverviewInput } from '../package-booking/dto/dashboard-overview.input';
+import { Service } from '../services/entities/service.entity';
 import { AppointmentListQueryDto } from './dto/appointment-list-query.dto';
 import { CreateAppointmentInput } from './dto/create-appointment.input';
 import { UpdateAppointmentInput } from './dto/update-appointment.input';
@@ -40,6 +41,15 @@ export class AppointmentService {
     const where = filterBuilder(input.where, input.whereOperator);
 
     const cursor = this.appointmentModel.find(where);
+
+    // populate service here
+    if (fields.includes('service')) {
+      cursor.populate({
+        path: 'service',
+        model: Service.name,
+      });
+    }
+
     const count = await this.appointmentModel.countDocuments(where);
     const skip = (page - 1) * limit;
     const data = await cursor
@@ -79,7 +89,17 @@ export class AppointmentService {
     fields: string[] = [],
   ) {
     try {
-      const data = await this.appointmentModel.findOne(filter);
+      const cursor = this.appointmentModel.findOne(filter);
+
+      // populate service here
+      if (fields.includes('service')) {
+        cursor.populate({
+          path: 'service',
+          model: Service.name,
+        });
+      }
+
+      const data = await cursor;
 
       if (!data) {
         throw new ForbiddenException('Data is not found');

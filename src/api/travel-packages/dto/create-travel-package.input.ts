@@ -2,6 +2,7 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsMongoId,
   IsNotEmpty,
   IsOptional,
   ValidateNested,
@@ -95,4 +96,9 @@ export class CreateTravelPackageInput {
   @ValidateNested({ each: true })
   @Type(() => TransportationInput)
   transportation: TransportationInput[];
+
+  @Field(() => String, { nullable: true })
+  @IsNotEmpty()
+  @IsMongoId()
+  author: string;
 }

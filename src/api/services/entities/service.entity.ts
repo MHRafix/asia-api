@@ -1,6 +1,8 @@
 import { Paginated } from '@/src/shared/object-types/paginationObject';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
+import { User } from '../../users/entities/user.entity';
 
 export type ServiceDocument = Service & Document;
 
@@ -45,6 +47,10 @@ export class Service {
   @Prop()
   @Field(() => Number, { nullable: true })
   price: number;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
+  @Field(() => User, { nullable: true })
+  author: string;
 }
 
 export const ServiceSchema = SchemaFactory.createForClass(Service);

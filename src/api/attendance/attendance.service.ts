@@ -80,7 +80,25 @@ export class AttendanceService {
     fields: string[] = [],
   ) {
     try {
-      const data = await this.attendanceModel.findOne(filter);
+      const cursor = this.attendanceModel.findOne(filter);
+
+      // populate post author info
+      if (fields.includes('attendee')) {
+        cursor.populate({
+          path: 'attendee',
+          model: User.name,
+        });
+      }
+
+      // populate share from user info
+      if (fields.includes('verifyBy')) {
+        cursor.populate({
+          path: 'verifyBy',
+          model: User.name,
+        });
+      }
+
+      const data = await cursor;
 
       if (!data) {
         throw new ForbiddenException('Data is not found');

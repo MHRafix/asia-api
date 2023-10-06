@@ -38,10 +38,11 @@ export class VisaRequirementsResolver {
   }
 
   @Query(() => VisaReq, { name: 'VisaRequirement' })
-  findOne(@Args('input') input: CommonMatchInput) {
+  findOne(@Args('input') input: CommonMatchInput, @Info() info: any) {
     try {
+      const fields = getGqlFields(info);
       const find = mongodbFindObjectBuilder(input);
-      return this.visaReqService.findOne(find);
+      return this.visaReqService.findOne(find, fields);
     } catch (error) {
       throw new BadRequestException(error.message);
     }

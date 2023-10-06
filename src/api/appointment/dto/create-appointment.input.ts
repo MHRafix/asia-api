@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsEmail, IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
 import { APPOINTMENT_STATUS } from '../entities/appointment.entity';
 
 @InputType()
@@ -33,7 +33,8 @@ export class CreateAppointmentInput {
 
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  serviceId: string;
+  @IsMongoId()
+  author: string;
 
   @Field(() => APPOINTMENT_STATUS, {
     defaultValue: APPOINTMENT_STATUS.PENDING,

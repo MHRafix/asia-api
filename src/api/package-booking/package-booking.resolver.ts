@@ -55,10 +55,12 @@ export class PackageBookingResolver {
 
   @Query(() => PackageBooking, { name: 'booking' })
   @UseGuards(GqlAuthGuard)
-  findOne(@Args('input') input: CommonMatchInput) {
+  findOne(@Args('input') input: CommonMatchInput, @Info() info: any) {
     try {
+      const fields = getGqlFields(info);
+
       const find = mongodbFindObjectBuilder(input);
-      return this.packageBookingService.findOne(find);
+      return this.packageBookingService.findOne(find, fields);
     } catch (error) {
       throw new BadRequestException(error.message);
     }

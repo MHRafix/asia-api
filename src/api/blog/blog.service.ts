@@ -69,7 +69,17 @@ export class BlogService {
    */
   async findOne(filter: FilterQuery<BlogDocument>, fields: string[] = []) {
     try {
-      const data = await this.blogModel.findOne(filter);
+      const cursor = this.blogModel.findOne(filter);
+
+      // populate post author info
+      if (fields.includes('author')) {
+        cursor.populate({
+          path: 'author',
+          model: User.name,
+        });
+      }
+
+      const data = await cursor;
 
       if (!data) {
         throw new ForbiddenException('Data is not found');

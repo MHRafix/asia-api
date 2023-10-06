@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
 
 @InputType()
 export class CreateServiceInput {
@@ -42,7 +42,8 @@ export class CreateServiceInput {
   @IsNotEmpty()
   price: number;
 
-  // @Field(() => Boolean, { nullable: true })
-  // @IsOptional()
-  // isCustomizable: boolean;
+  @Field(() => String, { nullable: true })
+  @IsNotEmpty()
+  @IsMongoId()
+  author: string;
 }

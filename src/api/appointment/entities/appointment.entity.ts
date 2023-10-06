@@ -1,7 +1,8 @@
 import { Paginated } from '@/src/shared/object-types/paginationObject';
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
+import { Service } from '../../services/entities/service.entity';
 
 export type AppointmentDocument = Appointment & Document;
 
@@ -46,9 +47,9 @@ export class Appointment {
   @Field(() => String)
   phone: string;
 
-  @Prop()
-  @Field(() => String, { nullable: true })
-  serviceId: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Service.name })
+  @Field(() => Service, { nullable: true })
+  service: Service;
 
   @Prop({ required: true, default: APPOINTMENT_STATUS.PENDING })
   @Field(() => APPOINTMENT_STATUS)

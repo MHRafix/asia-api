@@ -4,6 +4,7 @@ import { filterBuilder } from '@/src/shared/utils/filterBuilder';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
+import { User } from '../users/entities/user.entity';
 import { CreateServiceInput } from './dto/create-service.input';
 import { ServiceListQueryDto } from './dto/service-list-query-dto';
 import { UpdateServiceInput } from './dto/update-service.input';
@@ -36,6 +37,15 @@ export class ServicesService {
     const where = filterBuilder(input.where, input.whereOperator);
 
     const cursor = this.serviceModel.find(where);
+
+    // populate author of service
+    if (fields.includes('author')) {
+      cursor.populate({
+        path: 'author',
+        model: User.name,
+      });
+    }
+
     const count = await this.serviceModel.countDocuments(where);
     const skip = (page - 1) * limit;
     const data = await cursor
@@ -59,7 +69,17 @@ export class ServicesService {
    */
   async findOne(filter: FilterQuery<ServiceDocument>, fields: string[] = []) {
     try {
-      const data = await this.serviceModel.findOne(filter);
+      const cursor = this.serviceModel.findOne(filter);
+
+      // populate author of service
+      if (fields.includes('author')) {
+        cursor.populate({
+          path: 'author',
+          model: User.name,
+        });
+      }
+
+      const data = await cursor;
 
       if (!data) {
         throw new ForbiddenException('Data is not found');
