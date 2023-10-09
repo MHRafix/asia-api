@@ -25,7 +25,7 @@ export class CreateAttendanceInput {
   verifyBy: string;
 
   @Field(() => String, { nullable: true })
-  @IsNotEmpty()
+  @IsOptional()
   note: string;
 
   @Field(() => Date, { nullable: true })
