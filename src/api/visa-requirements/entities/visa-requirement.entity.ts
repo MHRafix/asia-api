@@ -75,6 +75,14 @@ export class VisaReq {
     nullable: true,
   })
   visaType: Visa_Types;
+
+  @Prop()
+  @Field(() => Date, { nullable: true })
+  createdAt: Date;
+
+  @Prop()
+  @Field(() => Date, { nullable: true })
+  updatedAt: Date;
 }
 
 export const VisaReqSchema = SchemaFactory.createForClass(VisaReq);

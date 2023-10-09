@@ -44,6 +44,14 @@ export class Attendance {
   @Prop()
   @Field(() => String, { nullable: true })
   note: string;
+
+  @Prop()
+  @Field(() => Date, { nullable: true })
+  createdAt: Date;
+
+  @Prop()
+  @Field(() => Date, { nullable: true })
+  updatedAt: Date;
 }
 
 export const AttendanceSchema = SchemaFactory.createForClass(Attendance);

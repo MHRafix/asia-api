@@ -107,6 +107,14 @@ export class PackageBooking {
   @Prop()
   @Field(() => PaymentDetailsSchema, { nullable: true })
   paymentDetails: PaymentDetailsSchema;
+
+  @Prop()
+  @Field(() => Date, { nullable: true })
+  createdAt: Date;
+
+  @Prop()
+  @Field(() => Date, { nullable: true })
+  updatedAt: Date;
 }
 
 export const PackageBookingSchema =

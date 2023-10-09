@@ -74,6 +74,14 @@ export class Blog {
     nullable: true,
   })
   visaType: Visa_Types;
+
+  @Prop()
+  @Field(() => Date, { nullable: true })
+  createdAt: Date;
+
+  @Prop()
+  @Field(() => Date, { nullable: true })
+  updatedAt: Date;
 }
 
 export const BlogSchema = SchemaFactory.createForClass(Blog);

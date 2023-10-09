@@ -111,6 +111,8 @@ type Attendance {
   status: Attendance_Status
   date: DateTime
   note: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 enum Attendance_Status {
@@ -140,6 +142,8 @@ type Blog {
   image: String
   cover: String
   visaType: Visa_Types
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 enum Blog_Status {
@@ -292,6 +296,8 @@ type PackageBooking {
   bookingId: String!
   status: BOOKING_STATUS!
   paymentDetails: PaymentDetailsSchema
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 enum BOOKING_STATUS {
@@ -333,6 +339,8 @@ type VisaReq {
   image: String
   cover: String
   visaType: Visa_Types
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 enum VisaReq_Status {
@@ -855,7 +863,7 @@ input CreateAttendanceInput {
 }
 
 input UpdateAttendanceInput {
-  _id: ID
+  _id: String
   status: Attendance_Status = PENDING
   attendee: String
   verifyBy: String
@@ -863,7 +871,6 @@ input UpdateAttendanceInput {
   date: DateTime
   createdAt: DateTime
   updatedAt: DateTime
-  id: Int!
 }
 
 input CreateVisaRequirementInput {
@@ -889,7 +896,7 @@ enum Visa_Types2 {
 }
 
 input UpdateVisaRequirementInput {
-  _id: ID
+  _id: String
   status: VisaReq_Status = PUBLISHED
   author: String
   title: String
@@ -901,7 +908,6 @@ input UpdateVisaRequirementInput {
   visaType: Visa_Types2 = TOURIST
   createdAt: DateTime
   updatedAt: DateTime
-  id: Int!
 }
 
 input CreateBlogInput {
@@ -920,7 +926,7 @@ input CreateBlogInput {
 }
 
 input UpdateBlogInput {
-  _id: ID
+  _id: String
   status: Blog_Status = PUBLISHED
   author: String
   title: String
@@ -932,5 +938,4 @@ input UpdateBlogInput {
   visaType: Visa_Types = TOURIST
   createdAt: DateTime
   updatedAt: DateTime
-  id: Int!
 }
