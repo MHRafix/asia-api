@@ -19,8 +19,8 @@ export class CreateAttendanceInput {
   @IsMongoId()
   attendee: string;
 
-  @Field(() => String)
-  @IsNotEmpty()
+  @Field(() => String, { nullable: true })
+  @IsOptional()
   @IsMongoId()
   verifyBy: string;
 

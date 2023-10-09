@@ -23,7 +23,7 @@ export class Attendance {
   _id: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
-  @Field(() => User)
+  @Field(() => User, { nullable: true })
   verifyBy: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
