@@ -30,6 +30,7 @@ export class CreateAttendanceInput {
 
   @Field(() => Date, { nullable: true })
   @IsDate()
+  @IsOptional()
   date: Date;
 
   @Field(() => Date, { nullable: true })
