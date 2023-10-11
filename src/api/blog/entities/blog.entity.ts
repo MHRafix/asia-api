@@ -61,6 +61,10 @@ export class Blog {
   country: string;
 
   @Prop()
+  @Field(() => Number)
+  like: number;
+
+  @Prop()
   @Field(() => String, { nullable: true })
   image: string;
 

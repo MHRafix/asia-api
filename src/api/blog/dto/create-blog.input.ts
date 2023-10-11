@@ -35,6 +35,10 @@ export class CreateBlogInput {
   @IsNotEmpty()
   country: string;
 
+  @IsOptional()
+  @Field(() => Number)
+  like: number;
+
   @Field(() => String, { nullable: true })
   @IsOptional()
   image: string;
