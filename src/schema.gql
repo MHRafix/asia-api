@@ -106,7 +106,7 @@ type AppointmentPagination {
 
 type Attendance {
   _id: ID
-  verifyBy: User!
+  verifyBy: User
   attendee: User!
   status: Attendance_Status
   date: DateTime
@@ -139,6 +139,7 @@ type Blog {
   title: String!
   description: String!
   country: String!
+  like: Float!
   image: String
   cover: String
   visaType: Visa_Types
@@ -855,7 +856,7 @@ input CreateAttendanceInput {
   _id: ID
   status: Attendance_Status = PENDING
   attendee: String!
-  verifyBy: String!
+  verifyBy: String
   note: String
   date: DateTime
   createdAt: DateTime
@@ -918,6 +919,7 @@ input CreateBlogInput {
   description: String!
   date: DateTime
   country: String!
+  like: Float!
   image: String
   cover: String
   visaType: Visa_Types = TOURIST
@@ -933,6 +935,7 @@ input UpdateBlogInput {
   description: String
   date: DateTime
   country: String
+  like: Float
   image: String
   cover: String
   visaType: Visa_Types = TOURIST

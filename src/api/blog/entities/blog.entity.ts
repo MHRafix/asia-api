@@ -61,7 +61,7 @@ export class Blog {
   country: string;
 
   @Prop()
-  @Field(() => Number)
+  @Field(() => Number, { nullable: true })
   like: number;
 
   @Prop()

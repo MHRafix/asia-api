@@ -36,7 +36,7 @@ export class CreateBlogInput {
   country: string;
 
   @IsOptional()
-  @Field(() => Number)
+  @Field(() => Number, { nullable: true })
   like: number;
 
   @Field(() => String, { nullable: true })
