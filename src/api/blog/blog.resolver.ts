@@ -17,11 +17,10 @@ import { Blog, BlogPagination } from './entities/blog.entity';
 @Resolver(() => Blog)
 export class BlogResolver {
   constructor(private readonly blogService: BlogService) {}
-  @Mutation(() => Boolean)
+  @Mutation(() => Blog)
   // @UseGuards(GqlAuthGuard)
   async createBlog(@Args('input') input: CreateBlogInput) {
-    await this.blogService.create(input);
-    return true;
+    return this.blogService.create(input);
   }
 
   @Query(() => BlogPagination, { name: 'Blogs' })
