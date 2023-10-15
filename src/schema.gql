@@ -139,7 +139,7 @@ type Blog {
   title: String!
   description: String!
   country: String!
-  like: Float!
+  like: Float
   image: String
   cover: String
   visaType: Visa_Types
@@ -543,7 +543,7 @@ type Mutation {
   createVisaReq(input: CreateVisaRequirementInput!): Boolean!
   updateVisaReq(input: UpdateVisaRequirementInput!): Boolean!
   removeVisaReq(input: CommonMatchInput!): Boolean
-  createBlog(input: CreateBlogInput!): Boolean!
+  createBlog(input: CreateBlogInput!): Blog!
   updateBlog(input: UpdateBlogInput!): Boolean!
   removeBlog(input: CommonMatchInput!): Boolean
 }
@@ -919,7 +919,7 @@ input CreateBlogInput {
   description: String!
   date: DateTime
   country: String!
-  like: Float!
+  like: Float
   image: String
   cover: String
   visaType: Visa_Types = TOURIST

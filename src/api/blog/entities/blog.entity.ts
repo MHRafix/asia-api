@@ -57,10 +57,6 @@ export class Blog {
   description: string;
 
   @Prop()
-  @Field(() => String)
-  country: string;
-
-  @Prop()
   @Field(() => Number, { nullable: true })
   like: number;
 
@@ -71,13 +67,6 @@ export class Blog {
   @Prop()
   @Field(() => String, { nullable: true })
   cover: string;
-
-  @Prop({ default: Visa_Types.TOURIST })
-  @Field(() => Visa_Types, {
-    defaultValue: Visa_Types.TOURIST,
-    nullable: true,
-  })
-  visaType: Visa_Types;
 
   @Prop()
   @Field(() => Date, { nullable: true })

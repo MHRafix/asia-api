@@ -31,12 +31,8 @@ export class CreateBlogInput {
   @IsDate()
   date: Date;
 
-  @Field(() => String)
-  @IsNotEmpty()
-  country: string;
-
-  @IsOptional()
   @Field(() => Number, { nullable: true })
+  @IsOptional()
   like: number;
 
   @Field(() => String, { nullable: true })
@@ -46,13 +42,6 @@ export class CreateBlogInput {
   @Field(() => String, { nullable: true })
   @IsOptional()
   cover: string;
-
-  @Field(() => Visa_Types, {
-    defaultValue: Visa_Types.TOURIST,
-    nullable: true,
-  })
-  @IsOptional()
-  visaType: Visa_Types;
 
   @Field(() => Date, { nullable: true })
   @IsDate()
