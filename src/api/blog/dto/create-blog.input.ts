@@ -1,6 +1,6 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsDate, IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
-import { Blog_Status, Visa_Types } from '../entities/blog.entity';
+import { Blog_Status } from '../entities/blog.entity';
 
 @InputType()
 export class CreateBlogInput {
@@ -26,10 +26,6 @@ export class CreateBlogInput {
   @Field(() => String)
   @IsNotEmpty()
   description: string;
-
-  @Field(() => Date, { nullable: true })
-  @IsDate()
-  date: Date;
 
   @Field(() => Number, { nullable: true })
   @IsOptional()

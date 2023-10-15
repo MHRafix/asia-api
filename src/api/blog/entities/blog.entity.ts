@@ -45,10 +45,6 @@ export class Blog {
   status: Blog_Status;
 
   @Prop()
-  @Field(() => Date, { nullable: true })
-  date: Date;
-
-  @Prop()
   @Field(() => String)
   title: string;
 
