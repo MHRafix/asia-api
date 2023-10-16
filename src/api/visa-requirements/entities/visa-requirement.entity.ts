@@ -46,10 +46,6 @@ export class VisaReq {
   status: VisaReq_Status;
 
   @Prop()
-  @Field(() => Date, { nullable: true })
-  date: Date;
-
-  @Prop()
   @Field(() => String)
   title: string;
 
@@ -58,7 +54,7 @@ export class VisaReq {
   description: string;
 
   @Prop()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   country: string;
 
   @Prop()

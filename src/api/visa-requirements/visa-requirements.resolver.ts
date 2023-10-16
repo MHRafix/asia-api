@@ -17,11 +17,10 @@ import { VisaRequirementsService } from './visa-requirements.service';
 @Resolver(() => VisaReq)
 export class VisaRequirementsResolver {
   constructor(private readonly visaReqService: VisaRequirementsService) {}
-  @Mutation(() => Boolean)
+  @Mutation(() => VisaReq)
   // @UseGuards(GqlAuthGuard)
   async createVisaReq(@Args('input') input: CreateVisaRequirementInput) {
-    await this.visaReqService.create(input);
-    return true;
+    return this.visaReqService.create(input);
   }
 
   @Query(() => VisaReqPagination, { name: 'VisaRequirements' })

@@ -31,12 +31,9 @@ export class CreateVisaRequirementInput {
   @IsNotEmpty()
   description: string;
 
-  @Field(() => Date, { nullable: true })
-  @IsDate()
-  date: Date;
-
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsNotEmpty()
+  @IsOptional()
   country: string;
 
   @Field(() => String, { nullable: true })
