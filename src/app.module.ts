@@ -9,6 +9,7 @@ import { AppSettingsModule } from './api/app-settings/app-settings.module';
 import { AppointmentModule } from './api/appointment/appointment.module';
 import { AttendanceModule } from './api/attendance/attendance.module';
 import { BlogModule } from './api/blog/blog.module';
+import { ClientDataModule } from './api/client-data/client-data.module';
 import { NewsModule } from './api/news/news.module';
 import { PackageBookingModule } from './api/package-booking/package-booking.module';
 import { ServicesModule } from './api/services/services.module';
@@ -65,6 +66,7 @@ import { JwtStrategy } from './app/config/jwtStrategy';
     AttendanceModule,
     VisaReqModule,
     BlogModule,
+    ClientDataModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],
