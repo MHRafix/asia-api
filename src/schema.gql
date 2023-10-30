@@ -9,6 +9,124 @@ type PagniationMeta {
   totalPages: Float!
 }
 
+type User {
+  _id: ID
+  name: String
+  email: String
+  role: USER_ROLE!
+  password: String!
+  avatar: String
+  accessToken: String
+  phone: String
+}
+
+enum USER_ROLE {
+  ADMIN
+  MODERATOR
+  CUSTOMER
+}
+
+type UserPagination {
+  nodes: [User!]
+  meta: PagniationMeta
+}
+
+type Blog {
+  _id: ID
+  author: User!
+  status: Blog_Status
+  title: String!
+  description: String!
+  like: Float
+  image: String
+  cover: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+enum Blog_Status {
+  PUBLISHED
+  PAUSED
+  ARCHIVE
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type BlogPagination {
+  nodes: [Blog!]
+  meta: PagniationMeta
+}
+
+type TaskManagement_ClientDetails {
+  clientName: String!
+  clientEmail: String
+  clientPhone: String!
+  clientAddress: String
+}
+
+type TaskManagement_TaskDetails {
+  taskName: String!
+  taskAssignTo: User!
+  taskDescription: String
+  country: String
+  taskType: Task_Type!
+  visaType: Visa_Types!
+}
+
+enum Task_Type {
+  INDIAN_VISA
+  THAI_VISA
+  KSA_VISA
+  UAE_VISA
+  OTHERS
+}
+
+enum Visa_Types {
+  TOURIST
+  WORK_PERMIT
+  MEDICAL
+  BUSINESS
+}
+
+type TaskManagement {
+  _id: ID
+  taskCreateBy: User!
+  clientDetails: TaskManagement_ClientDetails!
+  taskDetails: TaskManagement_TaskDetails!
+  taskId: String!
+  totalBillAmount: Int!
+  paidBillAmount: Int!
+  progressStatus: Task_Progress_Status
+  paymentStatus: Payment_Status!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+enum Task_Progress_Status {
+  PENDING
+  PROCESSING
+  DONE
+  DONE_INFORMED
+  Delivered
+  Rejected
+}
+
+enum Payment_Status {
+  REFUNDED
+  PARTIALLY_PAID
+  PAID
+  DUE
+  REJECTED
+}
+
+type TaskManagementPagination {
+  nodes: [TaskManagement!]
+  meta: PagniationMeta
+}
+
 type BranchSchema {
   branchName: String
   email: String
@@ -31,28 +149,6 @@ type AppSettings {
 
 type AppSettingsPagination {
   nodes: [AppSettings!]
-  meta: PagniationMeta
-}
-
-type User {
-  _id: ID
-  name: String
-  email: String
-  role: USER_ROLE!
-  password: String!
-  avatar: String
-  accessToken: String
-  phone: String
-}
-
-enum USER_ROLE {
-  ADMIN
-  MODERATOR
-  CUSTOMER
-}
-
-type UserPagination {
-  nodes: [User!]
   meta: PagniationMeta
 }
 
@@ -121,37 +217,8 @@ enum Attendance_Status {
   NOT_PRESENT
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type AttendancePagination {
   nodes: [Attendance!]
-  meta: PagniationMeta
-}
-
-type Blog {
-  _id: ID
-  author: User!
-  status: Blog_Status
-  title: String!
-  description: String!
-  like: Float
-  image: String
-  cover: String
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-enum Blog_Status {
-  PUBLISHED
-  PAUSED
-  ARCHIVE
-}
-
-type BlogPagination {
-  nodes: [Blog!]
   meta: PagniationMeta
 }
 
@@ -353,13 +420,6 @@ enum VisaReq_Status {
   ARCHIVE
 }
 
-enum Visa_Types {
-  TOURIST
-  WORK_PERMIT
-  MEDICAL
-  BUSINESS
-}
-
 type VisaReqPagination {
   nodes: [VisaReq!]
   meta: PagniationMeta
@@ -389,6 +449,8 @@ type Query {
   Blog(input: CommonMatchInput!): Blog!
   Clients(input: ClientDataListQueryDto): ClientDataPagination!
   Client(input: CommonMatchInput!): ClientData!
+  taskManagements(input: TaskListQueryDto): TaskManagementPagination!
+  taskManagement(input: CommonMatchInput!): TaskManagement!
 }
 
 input UserListQueryDto {
@@ -528,6 +590,15 @@ input ClientDataListQueryDto {
   whereOperator: WHERE_OPERATOR
 }
 
+input TaskListQueryDto {
+  page: Int
+  limit: Int
+  sort: SortType
+  sortBy: String
+  where: [CommonMatchInput!]
+  whereOperator: WHERE_OPERATOR
+}
+
 type Mutation {
   signUp(input: CreateUserInput!): User!
   signIn(input: CreateUserInput!): User!
@@ -571,6 +642,9 @@ type Mutation {
   updateClientData(input: UpdateClientDataInput!): ClientData!
   removeClientData(input: CommonMatchInput!): Boolean
   bulkRemoveClientData(uIds: [String!]!): Boolean
+  createTaskManagement(input: CreateTaskManagementInput!): TaskManagement!
+  updateTaskManagement(input: UpdateTaskManagementInput!): Boolean!
+  removeTaskManagement(input: CommonMatchInput!): Boolean
 }
 
 input CreateUserInput {
@@ -976,4 +1050,49 @@ input UpdateClientDataInput {
   email: String
   facebook: String
   phone: String
+}
+
+input CreateTaskManagementInput {
+  _id: ID
+  taskCreateBy: String!
+  clientDetails: ClientDetails!
+  taskDetails: TaskDetails!
+  taskId: String!
+  totalBillAmount: Int!
+  paidBillAmount: Int!
+  progressStatus: Task_Progress_Status = PENDING
+  paymentStatus: Payment_Status! = DUE
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input ClientDetails {
+  clientName: String!
+  clientEmail: String
+  clientPhone: String!
+  clientAddress: String
+}
+
+input TaskDetails {
+  taskName: String!
+  taskAssignTo: String!
+  taskDescription: String
+  country: String
+  taskType: Task_Type!
+  visaType: Visa_Types!
+}
+
+input UpdateTaskManagementInput {
+  _id: ID
+  taskCreateBy: String
+  clientDetails: ClientDetails
+  taskDetails: TaskDetails
+  taskId: String
+  totalBillAmount: Int
+  paidBillAmount: Int
+  progressStatus: Task_Progress_Status = PENDING
+  paymentStatus: Payment_Status = DUE
+  createdAt: DateTime
+  updatedAt: DateTime
+  id: Int!
 }

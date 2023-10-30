@@ -1,3 +1,4 @@
+import { TaskManagementModule } from './api/task-management/task-management.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -67,6 +68,7 @@ import { JwtStrategy } from './app/config/jwtStrategy';
     VisaReqModule,
     BlogModule,
     ClientDataModule,
+    TaskManagementModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],
