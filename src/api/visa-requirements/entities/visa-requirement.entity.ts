@@ -55,7 +55,7 @@ export class VisaReq {
 
   @Prop()
   @Field(() => String, { nullable: true })
-  country: string;
+  destinationCountry: string;
 
   @Prop()
   @Field(() => String, { nullable: true })
