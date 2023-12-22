@@ -34,7 +34,7 @@ export class CreateVisaRequirementInput {
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
   @IsOptional()
-  country: string;
+  destinationCountry: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()

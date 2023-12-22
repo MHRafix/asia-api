@@ -22,6 +22,7 @@ export enum Visa_Types2 {
   WORK_PERMIT = 'WORK_PERMIT',
   MEDICAL = 'MEDICAL',
   BUSINESS = 'BUSINESS',
+  STUDENT = 'STUDENT',
 }
 
 registerEnumType(Visa_Types2, {
