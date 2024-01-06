@@ -1,4 +1,3 @@
-import { TaskManagementModule } from './api/task-management/task-management.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -11,9 +10,11 @@ import { AppointmentModule } from './api/appointment/appointment.module';
 import { AttendanceModule } from './api/attendance/attendance.module';
 import { BlogModule } from './api/blog/blog.module';
 import { ClientDataModule } from './api/client-data/client-data.module';
+import { MoneyReceiptModule } from './api/money-receipt/money-receipt.module';
 import { NewsModule } from './api/news/news.module';
 import { PackageBookingModule } from './api/package-booking/package-booking.module';
 import { ServicesModule } from './api/services/services.module';
+import { TaskManagementModule } from './api/task-management/task-management.module';
 import { TeamModule } from './api/team/team.module';
 import { TravelPackagesModule } from './api/travel-packages/travel-packages.module';
 import { UsersModule } from './api/users/users.module';
@@ -69,6 +70,7 @@ import { JwtStrategy } from './app/config/jwtStrategy';
     BlogModule,
     ClientDataModule,
     TaskManagementModule,
+    MoneyReceiptModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],
