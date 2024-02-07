@@ -53,4 +53,8 @@ export class CreateAppointmentInput {
   @Field(() => [ClientQuestionsInput], { nullable: true })
   @IsOptional()
   clientQuestions: ClientQuestionsInput[];
+
+  @Field(() => Date, { nullable: true })
+  @IsOptional()
+  createdAt: Date;
 }

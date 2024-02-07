@@ -68,6 +68,9 @@ export class Appointment {
   })
   @Field(() => [ClientQuestionsSchema], { nullable: true })
   clientQuestions: ClientQuestionsSchema[];
+
+  @Field(() => Date, { nullable: true })
+  createdAt: Date;
 }
 
 export const AppointmentSchema = SchemaFactory.createForClass(Appointment);

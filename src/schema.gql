@@ -90,6 +90,7 @@ type Appointment {
   subService: String!
   profession: String!
   clientQuestions: [ClientQuestionsSchema!]
+  createdAt: DateTime
 }
 
 enum APPOINTMENT_STATUS {
@@ -98,6 +99,11 @@ enum APPOINTMENT_STATUS {
   CANCELED
   COMPLETED
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type AppointmentPagination {
   nodes: [Appointment!]
@@ -120,11 +126,6 @@ enum Attendance_Status {
   PENDING
   NOT_PRESENT
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type AttendancePagination {
   nodes: [Attendance!]
@@ -836,6 +837,7 @@ input CreateAppointmentInput {
   subService: String!
   profession: String!
   clientQuestions: [ClientQuestionsInput!]
+  createdAt: DateTime
 }
 
 input ClientQuestionsInput {
@@ -853,6 +855,7 @@ input UpdateAppointmentInput {
   subService: String
   profession: String
   clientQuestions: [ClientQuestionsInput!]
+  createdAt: DateTime
 }
 
 input CreateServiceInput {
