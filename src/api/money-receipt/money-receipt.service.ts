@@ -4,6 +4,7 @@ import { filterBuilder } from '@/src/shared/utils/filterBuilder';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
+import { Service } from '../services/entities/service.entity';
 import { User } from '../users/entities/user.entity';
 import { CreateMoneyReceiptInput } from './dto/create-money-receipt.input';
 import { MoneyReceiptListQueryDto } from './dto/money-receipt-list-query-dto';
@@ -41,6 +42,14 @@ export class MoneyReceiptsService {
 
     const cursor = this.moneyReceiptModel.find(where);
 
+    // populate service
+    if (fields.includes('service')) {
+      cursor.populate({
+        path: 'service',
+        model: Service.name,
+      });
+    }
+
     // populate author of service
     if (fields.includes('authorizeBy')) {
       cursor.populate({
@@ -76,6 +85,14 @@ export class MoneyReceiptsService {
   ) {
     try {
       const cursor = this.moneyReceiptModel.findOne(filter);
+
+      // populate service
+      if (fields.includes('service')) {
+        cursor.populate({
+          path: 'service',
+          model: Service.name,
+        });
+      }
 
       // populate author of service
       if (fields.includes('authorizeBy')) {

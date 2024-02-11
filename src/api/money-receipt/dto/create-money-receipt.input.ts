@@ -48,10 +48,11 @@ export class CreateMoneyReceiptInput {
   @Field(() => Int, { nullable: true })
   amountInNumber: number;
 
+  @Field(() => String, { nullable: true })
   @ApiProperty()
   @IsOptional()
-  @Field(() => String, { nullable: true })
-  serviceName: string;
+  @IsMongoId()
+  service: string;
 
   @ApiProperty()
   @IsOptional()
@@ -79,6 +80,7 @@ export class CreateMoneyReceiptInput {
   deliveryDate: Date;
 
   @Field(() => String, { nullable: true })
+  @ApiProperty()
   @IsNotEmpty()
   @IsMongoId()
   authorizeBy: string;

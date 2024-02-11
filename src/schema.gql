@@ -180,7 +180,7 @@ type MoneyReceipt {
   paymentType: PAYMENT_METHOD
   amountInWords: String
   amountInNumber: Int
-  serviceName: String
+  service: Service
   serialNo: Int
   mrNo: Int
   quantity: Int
@@ -1152,7 +1152,7 @@ input CreateMoneyReceiptInput {
   paymentType: PAYMENT_METHOD
   amountInWords: String
   amountInNumber: Int
-  serviceName: String
+  service: String
   serialNo: Int
   mrNo: Int
   quantity: Int = 1
@@ -1173,7 +1173,7 @@ input UpdateMoneyReceiptInput {
   paymentType: PAYMENT_METHOD
   amountInWords: String
   amountInNumber: Int
-  serviceName: String
+  service: String
   serialNo: Int
   mrNo: Int
   quantity: Int = 1

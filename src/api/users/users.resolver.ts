@@ -35,6 +35,7 @@ export class UsersResolver {
       throw new BadRequestException(err.message);
     }
   }
+
   @Mutation(() => User)
   async adminSignIn(@Args('input') input: CreateUserInput) {
     try {

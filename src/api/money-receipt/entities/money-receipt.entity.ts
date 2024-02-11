@@ -3,6 +3,7 @@ import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { PAYMENT_METHOD } from '../../package-booking/enums/booking-status.enum';
+import { Service } from '../../services/entities/service.entity';
 import { User } from '../../users/entities/user.entity';
 
 export type MoneyReceiptDocument = MoneyReceipt & Document;
@@ -45,9 +46,9 @@ export class MoneyReceipt {
   @Field(() => Int, { nullable: true })
   amountInNumber: number;
 
-  @Prop()
-  @Field(() => String, { nullable: true })
-  serviceName: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Service.name })
+  @Field(() => Service, { nullable: true })
+  service: string;
 
   @Prop()
   @Field(() => Int, { nullable: true })
