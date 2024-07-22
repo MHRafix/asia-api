@@ -4,6 +4,7 @@ import { filterBuilder } from '@/src/shared/utils/filterBuilder';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
+import { ClientData } from '../client-data/entities/client-data.entity';
 import { User } from '../users/entities/user.entity';
 import { CreateTaskManagementInput } from './dto/create-task-management.input';
 import { TaskListQueryDto } from './dto/task-list-query.input';
@@ -21,7 +22,7 @@ export class TaskManagementService {
   ) {}
 
   /**
-   * create taskManagement
+   * create task
    * @param payload create payload
    * @returns
    */
@@ -30,7 +31,7 @@ export class TaskManagementService {
   }
 
   /**
-   * get all taskManagements
+   * get all task
    * @param input inputs
    * @param fields fields
    * @returns
@@ -42,9 +43,9 @@ export class TaskManagementService {
     const cursor = this.taskManagementModel.find(where);
 
     // populate post author info
-    if (fields.includes('taskCreateBy')) {
+    if (fields.includes('taskCreatedBy')) {
       cursor.populate({
-        path: 'taskCreateBy',
+        path: 'taskCreatedBy',
         model: User.name,
       });
     }
@@ -56,6 +57,17 @@ export class TaskManagementService {
         populate: {
           path: 'taskAssignTo',
           model: User.name,
+        },
+      });
+    }
+
+    // populate client info
+    if (fields.includes('client')) {
+      cursor.populate({
+        path: 'client',
+        populate: {
+          path: 'client',
+          model: ClientData.name,
         },
       });
     }
@@ -76,7 +88,7 @@ export class TaskManagementService {
   }
 
   /**
-   * get single taskManagement
+   * get single task
    * @param filter filter
    * @param fields fields
    * @returns
@@ -89,9 +101,9 @@ export class TaskManagementService {
       const cursor = this.taskManagementModel.findOne(filter);
 
       // populate post author info
-      if (fields.includes('taskCreateBy')) {
+      if (fields.includes('taskCreatedBy')) {
         cursor.populate({
-          path: 'taskCreateBy',
+          path: 'taskCreatedBy',
           model: User.name,
         });
       }
@@ -103,6 +115,17 @@ export class TaskManagementService {
           populate: {
             path: 'taskAssignTo',
             model: User.name,
+          },
+        });
+      }
+
+      // populate client info
+      if (fields.includes('client')) {
+        cursor.populate({
+          path: 'client',
+          populate: {
+            path: 'client',
+            model: ClientData.name,
           },
         });
       }
@@ -119,8 +142,8 @@ export class TaskManagementService {
   }
 
   /**
-   * update taskManagement
-   * @param _id taskManagement id
+   * update task
+   * @param _id task id
    * @param payload update payload
    * @returns
    */
@@ -129,7 +152,7 @@ export class TaskManagementService {
   }
 
   /**
-   * delete taskManagement
+   * delete task
    * @param filter filter
    * @returns
    */

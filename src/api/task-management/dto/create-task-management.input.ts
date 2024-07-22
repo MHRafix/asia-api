@@ -7,11 +7,9 @@ import {
   IsNotEmpty,
   IsOptional,
 } from 'class-validator';
-import { Visa_Types } from '../../blog/entities/blog.entity';
 import {
   Payment_Status,
   Task_Progress_Status,
-  Task_Type,
 } from '../entities/task-management.entity';
 
 @InputType()
@@ -51,17 +49,7 @@ export class TaskDetails {
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  country: string;
-
-  @Field(() => Task_Type)
-  @IsNotEmpty()
-  @IsEnum(Task_Type)
-  taskType: Task_Type;
-
-  @Field(() => Visa_Types)
-  @IsNotEmpty()
-  @IsEnum(Visa_Types)
-  visaType: Visa_Types;
+  issuesDescription: string;
 }
 
 @InputType()
@@ -72,16 +60,15 @@ export class CreateTaskManagementInput {
   @Field(() => String)
   @IsOptional()
   @IsMongoId()
-  taskCreateBy: string;
+  taskCreatedBy: string;
 
-  @Field(() => ClientDetails)
+  @Field(() => String)
   @IsNotEmpty()
-  // @ValidateNested()
-  clientDetails: ClientDetails;
+  @IsMongoId()
+  client: string;
 
   @Field(() => TaskDetails)
   @IsNotEmpty()
-  // @ValidateNested()
   taskDetails: TaskDetails;
 
   @Field(() => String)

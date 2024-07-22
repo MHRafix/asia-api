@@ -29,7 +29,7 @@ export class TaskManagementResolver {
     return this.taskManagementService.create(input);
   }
 
-  @Query(() => TaskManagementPagination, { name: 'taskManagements' })
+  @Query(() => TaskManagementPagination, { name: 'taskList' })
   findAll(
     @Args('input', { nullable: true }) input: TaskListQueryDto,
     @Info() info: any,
@@ -42,7 +42,7 @@ export class TaskManagementResolver {
     }
   }
 
-  @Query(() => TaskManagement, { name: 'taskManagement' })
+  @Query(() => TaskManagement, { name: 'task' })
   findOne(@Args('input') input: CommonMatchInput, @Info() info: any) {
     try {
       const fields = getGqlFields(info);
