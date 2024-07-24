@@ -344,42 +344,17 @@ type PackageBookingPagination {
   meta: PagniationMeta
 }
 
-type TaskManagement_ClientDetails {
-  clientName: String!
-  clientEmail: String
-  clientPhone: String!
-  clientAddress: String
-}
-
 type TaskManagement_TaskDetails {
   taskName: String!
   taskAssignTo: User!
   taskDescription: String
-  country: String
-  taskType: Task_Type!
-  visaType: Visa_Types!
-}
-
-enum Task_Type {
-  INDIAN_VISA
-  THAI_VISA
-  KSA_VISA
-  UAE_VISA
-  OTHERS
-}
-
-enum Visa_Types {
-  TOURIST
-  WORK_PERMIT
-  MEDICAL
-  BUSINESS
-  STUDENT
+  issuesDescription: String
 }
 
 type TaskManagement {
   _id: ID
-  taskCreateBy: User!
-  clientDetails: TaskManagement_ClientDetails!
+  taskCreatedBy: User!
+  client: ClientData!
   taskDetails: TaskManagement_TaskDetails!
   taskId: String!
   totalBillAmount: Int!
@@ -392,11 +367,11 @@ type TaskManagement {
 
 enum Task_Progress_Status {
   PENDING
-  PROCESSING
-  DONE
-  DONE_INFORMED
-  Delivered
-  Rejected
+  IN_PROGRESS
+  WORK_DONE
+  REVISION
+  COMPLETED
+  CANCELLED
 }
 
 enum Payment_Status {
@@ -404,7 +379,7 @@ enum Payment_Status {
   PARTIALLY_PAID
   PAID
   DUE
-  REJECTED
+  CANCELLED
 }
 
 type TaskManagementPagination {
@@ -448,6 +423,14 @@ enum VisaReq_Status {
   ARCHIVE
 }
 
+enum Visa_Types {
+  TOURIST
+  WORK_PERMIT
+  MEDICAL
+  BUSINESS
+  STUDENT
+}
+
 type VisaReqPagination {
   nodes: [VisaReq!]
   meta: PagniationMeta
@@ -477,8 +460,8 @@ type Query {
   Blog(input: CommonMatchInput!): Blog!
   Clients(input: ClientDataListQueryDto): ClientDataPagination!
   Client(input: CommonMatchInput!): ClientData!
-  taskManagements(input: TaskListQueryDto): TaskManagementPagination!
-  taskManagement(input: CommonMatchInput!): TaskManagement!
+  taskList(input: TaskListQueryDto): TaskManagementPagination!
+  task(input: CommonMatchInput!): TaskManagement!
   moneyReceipts(input: MoneyReceiptListQueryDto): MoneyReceiptPagination!
   moneyReceipt(input: CommonMatchInput!): MoneyReceipt!
 }
@@ -681,9 +664,9 @@ type Mutation {
   updateClientData(input: UpdateClientDataInput!): ClientData!
   removeClientData(input: CommonMatchInput!): Boolean
   bulkRemoveClientData(uIds: [String!]!): Boolean
-  createTaskManagement(input: CreateTaskManagementInput!): TaskManagement!
-  updateTaskManagement(input: UpdateTaskManagementInput!): Boolean!
-  removeTaskManagement(input: CommonMatchInput!): Boolean
+  createTask(input: CreateTaskManagementInput!): TaskManagement!
+  updateTask(input: UpdateTaskManagementInput!): Boolean!
+  removeTask(input: CommonMatchInput!): Boolean
   createMoneyReceipt(input: CreateMoneyReceiptInput!): MoneyReceipt!
   updateMoneyReceipt(input: UpdateMoneyReceiptInput!): MoneyReceipt!
   removeMoneyReceipt(input: CommonMatchInput!): Boolean
@@ -1099,8 +1082,8 @@ input UpdateClientDataInput {
 
 input CreateTaskManagementInput {
   _id: ID
-  taskCreateBy: String!
-  clientDetails: ClientDetails!
+  taskCreatedBy: String!
+  client: String!
   taskDetails: TaskDetails!
   taskId: String!
   totalBillAmount: Int!
@@ -1111,26 +1094,17 @@ input CreateTaskManagementInput {
   updatedAt: DateTime
 }
 
-input ClientDetails {
-  clientName: String!
-  clientEmail: String
-  clientPhone: String!
-  clientAddress: String
-}
-
 input TaskDetails {
   taskName: String!
   taskAssignTo: String!
   taskDescription: String
-  country: String
-  taskType: Task_Type!
-  visaType: Visa_Types!
+  issuesDescription: String
 }
 
 input UpdateTaskManagementInput {
-  _id: ID
-  taskCreateBy: String
-  clientDetails: ClientDetails
+  _id: String!
+  taskCreatedBy: String
+  client: String
   taskDetails: TaskDetails
   taskId: String
   totalBillAmount: Int
@@ -1139,7 +1113,6 @@ input UpdateTaskManagementInput {
   paymentStatus: Payment_Status = DUE
   createdAt: DateTime
   updatedAt: DateTime
-  id: Int!
 }
 
 input CreateMoneyReceiptInput {

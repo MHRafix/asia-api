@@ -82,7 +82,7 @@ export class TaskManagement {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: ClientData.name })
   @Field(() => ClientData)
-  clientReference: string;
+  client: string;
 
   @Prop()
   @Field(() => TaskManagement_TaskDetails)

@@ -22,7 +22,7 @@ export class TaskManagementResolver {
   constructor(private readonly taskManagementService: TaskManagementService) {}
 
   @Mutation(() => TaskManagement)
-  createTaskManagement(
+  createTask(
     @Args('input')
     input: CreateTaskManagementInput,
   ) {
@@ -55,7 +55,7 @@ export class TaskManagementResolver {
 
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
-  async updateTaskManagement(
+  async updateTask(
     @Args('input')
     input: UpdateTaskManagementInput,
   ) {
@@ -68,8 +68,8 @@ export class TaskManagementResolver {
   }
 
   @Mutation(() => Boolean, { nullable: true })
-  @UseGuards(GqlAuthGuard)
-  async removeTaskManagement(@Args('input') input: CommonMatchInput) {
+  // @UseGuards(GqlAuthGuard)
+  async removeTask(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);
       const res = await this.taskManagementService.remove(find);

@@ -42,6 +42,14 @@ export class TaskManagementService {
 
     const cursor = this.taskManagementModel.find(where);
 
+    // populate client info
+    if (fields.includes('client')) {
+      cursor.populate({
+        path: 'client',
+        model: ClientData.name,
+      });
+    }
+
     // populate post author info
     if (fields.includes('taskCreatedBy')) {
       cursor.populate({
@@ -57,17 +65,6 @@ export class TaskManagementService {
         populate: {
           path: 'taskAssignTo',
           model: User.name,
-        },
-      });
-    }
-
-    // populate client info
-    if (fields.includes('client')) {
-      cursor.populate({
-        path: 'client',
-        populate: {
-          path: 'client',
-          model: ClientData.name,
         },
       });
     }
@@ -123,10 +120,7 @@ export class TaskManagementService {
       if (fields.includes('client')) {
         cursor.populate({
           path: 'client',
-          populate: {
-            path: 'client',
-            model: ClientData.name,
-          },
+          model: ClientData.name,
         });
       }
 
