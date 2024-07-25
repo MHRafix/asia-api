@@ -14,7 +14,6 @@ import { MoneyReceiptModule } from './api/money-receipt/money-receipt.module';
 import { NewsModule } from './api/news/news.module';
 import { PackageBookingModule } from './api/package-booking/package-booking.module';
 import { ServicesModule } from './api/services/services.module';
-import { TaskManagementModule } from './api/task-management/task-management.module';
 import { TeamModule } from './api/team/team.module';
 import { TravelPackagesModule } from './api/travel-packages/travel-packages.module';
 import { UsersModule } from './api/users/users.module';
@@ -69,7 +68,7 @@ import { JwtStrategy } from './app/config/jwtStrategy';
     VisaReqModule,
     BlogModule,
     ClientDataModule,
-    TaskManagementModule,
+    // TaskManagementModule,
     MoneyReceiptModule,
   ],
   controllers: [AppController],
