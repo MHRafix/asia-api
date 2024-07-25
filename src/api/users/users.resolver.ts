@@ -30,7 +30,7 @@ export class UsersResolver {
   @Mutation(() => User)
   async signIn(@Args('input') input: CreateUserInput) {
     try {
-      return this.usersService.signin(input);
+      return this.usersService.signIn(input);
     } catch (err) {
       throw new BadRequestException(err.message);
     }
@@ -39,7 +39,7 @@ export class UsersResolver {
   @Mutation(() => User)
   async adminSignIn(@Args('input') input: CreateUserInput) {
     try {
-      return this.usersService.adminSignin(input);
+      return this.usersService.adminSignIn(input);
     } catch (err) {
       throw new BadRequestException(err.message);
     }

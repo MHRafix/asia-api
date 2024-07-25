@@ -14,7 +14,7 @@ import { FilterQuery, Model } from 'mongoose';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UserListQueryDto } from './dto/user-list-query.dto';
-import { User, UserDocument } from './entities/user.entity';
+import { User, USER_ROLE, UserDocument } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -54,7 +54,7 @@ export class UsersService {
     return newUser;
   }
 
-  async signin(payload: CreateUserInput) {
+  async signIn(payload: CreateUserInput) {
     const { email, password } = payload;
 
     // check is user exist
@@ -85,7 +85,7 @@ export class UsersService {
     return isUserExist;
   }
 
-  async adminSignin(payload: CreateUserInput) {
+  async adminSignIn(payload: CreateUserInput) {
     const { email, password } = payload;
 
     // check is user exist
@@ -104,7 +104,7 @@ export class UsersService {
       throw new UnauthorizedException('You entered wrong password!');
     }
 
-    if (isUserExist?.role !== 'ADMIN') {
+    if (isUserExist?.role === USER_ROLE.CUSTOMER) {
       throw new UnauthorizedException('Access cancelled!');
     }
 

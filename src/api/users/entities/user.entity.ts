@@ -8,6 +8,7 @@ export type UserDocument = User & Document;
 export enum USER_ROLE {
   ADMIN = 'ADMIN',
   MODERATOR = 'MODERATOR',
+  EMPLOYEE = 'EMPLOYEE',
   CUSTOMER = 'CUSTOMER',
 }
 
