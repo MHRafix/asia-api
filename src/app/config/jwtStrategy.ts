@@ -1,3 +1,4 @@
+import { USER_ROLE } from '@/src/api/users/entities/user.entity';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -13,10 +14,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload) {
-    const { id, role, email } = payload;
+    const { role } = payload;
 
     if (role) {
-      if (role !== 'ADMIN') {
+      if (role === USER_ROLE.CUSTOMER) {
         throw new UnauthorizedException(
           "You're not allowed to get access this.",
         );
