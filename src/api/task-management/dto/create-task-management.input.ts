@@ -98,6 +98,11 @@ export class CreateTaskManagementInput {
   @IsEnum(Payment_Status)
   paymentStatus: Payment_Status;
 
+  @Field(() => Date)
+  @IsDate()
+  @IsNotEmpty()
+  deadLine: Date;
+
   @Field(() => Date, { nullable: true })
   @IsDate()
   @IsOptional()

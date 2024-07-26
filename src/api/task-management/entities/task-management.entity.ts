@@ -114,6 +114,10 @@ export class TaskManagement {
   paymentStatus: Payment_Status;
 
   @Prop()
+  @Field(() => Date)
+  deadLine: Date;
+
+  @Prop()
   @Field(() => Date, { nullable: true })
   createdAt: Date;
 
