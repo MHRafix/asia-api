@@ -14,6 +14,7 @@ export enum Task_Progress_Status {
   REVISION = 'REVISION',
   COMPLETED = 'COMPLETED',
   CANCELLED = 'CANCELLED',
+  ARCHIVED = 'ARCHIVED',
 }
 
 registerEnumType(Task_Progress_Status, {
