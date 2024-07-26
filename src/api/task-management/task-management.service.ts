@@ -5,6 +5,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { ClientData } from '../client-data/entities/client-data.entity';
+import { Team } from '../team/entities/team.entity';
 import { User } from '../users/entities/user.entity';
 import { CreateTaskManagementInput } from './dto/create-task-management.input';
 import { TaskListQueryDto } from './dto/task-list-query.input';
@@ -64,7 +65,7 @@ export class TaskManagementService {
         path: 'taskDetails',
         populate: {
           path: 'taskAssignTo',
-          model: User.name,
+          model: Team.name,
         },
       });
     }
@@ -111,7 +112,7 @@ export class TaskManagementService {
           path: 'taskDetails',
           populate: {
             path: 'taskAssignTo',
-            model: User.name,
+            model: Team.name,
           },
         });
       }

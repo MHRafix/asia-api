@@ -3,6 +3,7 @@ import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { ClientData } from '../../client-data/entities/client-data.entity';
+import { Team } from '../../team/entities/team.entity';
 import { User } from '../../users/entities/user.entity';
 
 export type TaskManagementDocument = TaskManagement & Document;
@@ -58,8 +59,8 @@ export class TaskManagement_TaskDetails {
   @Field(() => String)
   taskName: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
-  @Field(() => User)
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Team.name })
+  @Field(() => Team)
   taskAssignTo: string;
 
   @Prop()
