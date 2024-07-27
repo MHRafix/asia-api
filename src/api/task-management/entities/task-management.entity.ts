@@ -102,6 +102,10 @@ export class TaskManagement {
   @Field(() => Int)
   paidBillAmount: number;
 
+  @Prop()
+  @Field(() => Int)
+  dueAmount: number;
+
   @Prop({ default: Task_Progress_Status.PENDING })
   @Field(() => Task_Progress_Status, {
     defaultValue: Task_Progress_Status.PENDING,

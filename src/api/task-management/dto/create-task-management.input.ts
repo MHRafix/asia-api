@@ -83,6 +83,10 @@ export class CreateTaskManagementInput {
   @IsNotEmpty()
   paidBillAmount: number;
 
+  @Field(() => Int)
+  @IsNotEmpty()
+  dueAmount: number;
+
   @Field(() => Task_Progress_Status, {
     defaultValue: Task_Progress_Status.PENDING,
     nullable: true,
