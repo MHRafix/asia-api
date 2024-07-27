@@ -48,6 +48,7 @@ type User {
 enum USER_ROLE {
   ADMIN
   MODERATOR
+  EMPLOYEE
   CUSTOMER
 }
 
@@ -161,7 +162,6 @@ type ClientData {
   name: String!
   address: String
   email: String
-  facebook: String
   phone: String
 }
 
@@ -344,9 +344,24 @@ type PackageBookingPagination {
   meta: PagniationMeta
 }
 
+type Team {
+  _id: ID
+  name: String!
+  post: String!
+  avatar: String
+  email: String!
+  salary: Float
+  phone: String
+}
+
+type TeamPagination {
+  nodes: [Team!]
+  meta: PagniationMeta
+}
+
 type TaskManagement_TaskDetails {
   taskName: String!
-  taskAssignTo: User!
+  taskAssignTo: Team!
   taskDescription: String
   issuesDescription: String
 }
@@ -359,8 +374,10 @@ type TaskManagement {
   taskId: String!
   totalBillAmount: Int!
   paidBillAmount: Int!
+  dueAmount: Int!
   progressStatus: Task_Progress_Status
   paymentStatus: Payment_Status!
+  deadLine: DateTime!
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -372,6 +389,7 @@ enum Task_Progress_Status {
   REVISION
   COMPLETED
   CANCELLED
+  ARCHIVED
 }
 
 enum Payment_Status {
@@ -384,22 +402,6 @@ enum Payment_Status {
 
 type TaskManagementPagination {
   nodes: [TaskManagement!]
-  meta: PagniationMeta
-}
-
-type Team {
-  _id: ID
-  name: String!
-  post: String!
-  avatar: String
-  email: String!
-  facebook: String
-  linkedin: String
-  phone: String
-}
-
-type TeamPagination {
-  nodes: [Team!]
   meta: PagniationMeta
 }
 
@@ -875,8 +877,7 @@ input CreateTeamInput {
   post: String!
   avatar: String!
   email: String!
-  facebook: String
-  linkedin: String
+  salary: Float
   phone: String
 }
 
@@ -886,8 +887,7 @@ input UpdateTeamInput {
   post: String
   avatar: String
   email: String
-  facebook: String
-  linkedin: String
+  salary: Float
   phone: String
 }
 
@@ -1067,7 +1067,6 @@ input CreateClientDataInput {
   name: String!
   address: String
   email: String
-  facebook: String
   phone: String
 }
 
@@ -1076,7 +1075,6 @@ input UpdateClientDataInput {
   name: String
   address: String
   email: String
-  facebook: String
   phone: String
 }
 
@@ -1088,8 +1086,10 @@ input CreateTaskManagementInput {
   taskId: String!
   totalBillAmount: Int!
   paidBillAmount: Int!
+  dueAmount: Int!
   progressStatus: Task_Progress_Status = PENDING
   paymentStatus: Payment_Status! = DUE
+  deadLine: DateTime!
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -1109,8 +1109,10 @@ input UpdateTaskManagementInput {
   taskId: String
   totalBillAmount: Int
   paidBillAmount: Int
+  dueAmount: Int
   progressStatus: Task_Progress_Status = PENDING
   paymentStatus: Payment_Status = DUE
+  deadLine: DateTime
   createdAt: DateTime
   updatedAt: DateTime
 }
