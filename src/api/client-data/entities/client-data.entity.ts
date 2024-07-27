@@ -24,10 +24,6 @@ export class ClientData {
 
   @Prop()
   @Field(() => String, { nullable: true })
-  facebook: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
   phone: string;
 }
 

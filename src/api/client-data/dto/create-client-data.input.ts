@@ -41,9 +41,5 @@ export class CreateClientDataInput {
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  facebook: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
   phone: string;
 }
