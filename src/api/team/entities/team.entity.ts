@@ -12,7 +12,7 @@ export class Team {
 
   @Prop()
   @Field(() => String)
-  public name: string;
+  name: string;
 
   @Prop()
   @Field(() => String)
@@ -20,19 +20,15 @@ export class Team {
 
   @Prop()
   @Field(() => String, { nullable: true })
-  public avatar: string;
+  avatar: string;
 
   @Prop()
   @Field(() => String)
   email: string;
 
   @Prop()
-  @Field(() => String, { nullable: true })
-  facebook: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  linkedin: string;
+  @Field(() => Number, { nullable: true })
+  salary: number;
 
   @Prop()
   @Field(() => String, { nullable: true })

@@ -2,26 +2,6 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 
 @InputType()
-export class SocialInfo {
-  @Field(() => String)
-  @IsNotEmpty()
-  @IsEmail()
-  public email: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  public facebook: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  public linkedin: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  public phone: string;
-}
-
-@InputType()
 export class CreateTeamInput {
   @Field(() => ID, { nullable: true })
   _id: string;
@@ -43,13 +23,9 @@ export class CreateTeamInput {
   @IsEmail()
   email: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => Number, { nullable: true })
   @IsOptional()
-  facebook: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  linkedin: string;
+  salary: number;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
