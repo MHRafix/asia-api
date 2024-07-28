@@ -4,6 +4,7 @@ import { filterBuilder } from '@/src/shared/utils/filterBuilder';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
+import { User } from '../users/entities/user.entity';
 import { CreateTeamInput } from './dto/create-team.input';
 import { TeamListQueryDto } from './dto/team-list-query-input.dto';
 import { UpdateTeamInput } from './dto/update-team.input';
@@ -36,6 +37,15 @@ export class TeamService {
     const where = filterBuilder(input.where, input.whereOperator);
 
     const cursor = this.teamModel.find(where);
+
+    // populate employee info
+    if (fields.includes('employee')) {
+      cursor.populate({
+        path: 'employee',
+        model: User.name,
+      });
+    }
+
     const count = await this.teamModel.countDocuments(where);
     const skip = (page - 1) * limit;
     const data = await cursor
@@ -59,7 +69,17 @@ export class TeamService {
    */
   async findOne(filter: FilterQuery<TeamDocument>, fields: string[] = []) {
     try {
-      const data = await this.teamModel.findOne(filter);
+      const cursor = this.teamModel.findOne(filter);
+
+      // populate employee info
+      if (fields.includes('employee')) {
+        cursor.populate({
+          path: 'employee',
+          model: User.name,
+        });
+      }
+
+      const data = await cursor;
 
       if (!data) {
         throw new ForbiddenException('Data is not found');
