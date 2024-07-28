@@ -16,7 +16,7 @@ export class CreateTeamInput {
   post: string;
 
   @Field(() => String)
-  @IsNotEmpty()
+  @IsOptional()
   phone: string;
 
   @Field(() => USER_ROLE)
