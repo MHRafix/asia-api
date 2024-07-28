@@ -346,9 +346,13 @@ type PackageBookingPagination {
 
 type Team {
   _id: ID
-  employee: User!
+  name: String!
   post: String!
+  role: USER_ROLE!
+  avatar: String
+  email: String!
   salary: Float
+  phone: String
 }
 
 type TeamPagination {
@@ -870,15 +874,23 @@ input UpdateServiceInput {
 
 input CreateTeamInput {
   _id: ID
-  employee: String!
+  name: String!
   post: String!
+  phone: String!
+  role: USER_ROLE!
+  avatar: String!
+  email: String!
   salary: Float
 }
 
 input UpdateTeamInput {
   _id: String!
-  employee: String
+  name: String
   post: String
+  phone: String
+  role: USER_ROLE
+  avatar: String
+  email: String
   salary: Float
 }
 

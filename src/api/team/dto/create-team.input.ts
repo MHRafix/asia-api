@@ -1,5 +1,6 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
+import { USER_ROLE } from '../../users/entities/user.entity';
 
 @InputType()
 export class CreateTeamInput {
@@ -8,12 +9,28 @@ export class CreateTeamInput {
 
   @Field(() => String)
   @IsNotEmpty()
-  @IsMongoId()
-  employee: string;
+  name: string;
 
   @Field(() => String)
   @IsNotEmpty()
   post: string;
+
+  @Field(() => String)
+  @IsNotEmpty()
+  phone: string;
+
+  @Field(() => USER_ROLE)
+  @IsNotEmpty()
+  role: USER_ROLE;
+
+  @Field(() => String)
+  @IsNotEmpty()
+  avatar: string;
+
+  @Field(() => String)
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
 
   @Field(() => Number, { nullable: true })
   @IsOptional()

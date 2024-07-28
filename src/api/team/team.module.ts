@@ -9,5 +9,6 @@ import { TeamService } from './team.service';
     MongooseModule.forFeature([{ name: Team.name, schema: TeamSchema }]),
   ],
   providers: [TeamResolver, TeamService],
+  exports: [TeamService],
 })
 export class TeamModule {}
