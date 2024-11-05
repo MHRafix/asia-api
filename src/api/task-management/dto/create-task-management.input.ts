@@ -1,5 +1,6 @@
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import {
+  IsArray,
   IsDate,
   IsEmail,
   IsEnum,
@@ -83,9 +84,10 @@ export class CreateTaskManagementInput {
   @IsNotEmpty()
   taskId: string;
 
-  @Field(() => ServerFileReferenceInput, { nullable: true })
+  @Field(() => [ServerFileReferenceInput], { nullable: true })
   @IsOptional()
-  files: ServerFileReferenceInput;
+  @IsArray()
+  files: [ServerFileReferenceInput];
 
   @Field(() => Int)
   @IsNotEmpty()

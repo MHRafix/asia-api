@@ -102,8 +102,8 @@ export class TaskManagement {
   taskId: string;
 
   @Prop()
-  @Field(() => ServerFileReference, { nullable: true })
-  files: ServerFileReference;
+  @Field(() => [ServerFileReference], { nullable: true })
+  files: [ServerFileReference];
 
   @Prop()
   @Field(() => Int)
