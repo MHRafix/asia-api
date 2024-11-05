@@ -54,6 +54,13 @@ export class TaskManagement_ClientDetails {
 }
 
 @ObjectType()
+export class ServerFileReference {
+  @Prop()
+  @Field(() => String)
+  fileUrl: string;
+}
+
+@ObjectType()
 export class TaskManagement_TaskDetails {
   @Prop()
   @Field(() => String)
@@ -93,6 +100,10 @@ export class TaskManagement {
   @Prop()
   @Field(() => String)
   taskId: string;
+
+  @Prop()
+  @Field(() => ServerFileReference, { nullable: true })
+  files: ServerFileReference;
 
   @Prop()
   @Field(() => Int)

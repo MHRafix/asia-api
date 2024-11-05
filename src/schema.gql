@@ -360,6 +360,10 @@ type TeamPagination {
   meta: PagniationMeta
 }
 
+type ServerFileReference {
+  fileUrl: String!
+}
+
 type TaskManagement_TaskDetails {
   taskName: String!
   taskAssignTo: Team!
@@ -373,6 +377,7 @@ type TaskManagement {
   client: ClientData!
   taskDetails: TaskManagement_TaskDetails!
   taskId: String!
+  files: ServerFileReference
   totalBillAmount: Int!
   paidBillAmount: Int!
   dueAmount: Int!
@@ -876,7 +881,7 @@ input CreateTeamInput {
   _id: ID
   name: String!
   post: String!
-  phone: String!
+  phone: String
   role: USER_ROLE!
   avatar: String!
   email: String!
@@ -1087,6 +1092,7 @@ input CreateTaskManagementInput {
   client: String!
   taskDetails: TaskDetails!
   taskId: String!
+  files: ServerFileReferenceInput
   totalBillAmount: Int!
   paidBillAmount: Int!
   dueAmount: Int!
@@ -1104,12 +1110,17 @@ input TaskDetails {
   issuesDescription: String
 }
 
+input ServerFileReferenceInput {
+  fileUrl: String!
+}
+
 input UpdateTaskManagementInput {
   _id: String!
   taskCreatedBy: String
   client: String
   taskDetails: TaskDetails
   taskId: String
+  files: ServerFileReferenceInput
   totalBillAmount: Int
   paidBillAmount: Int
   dueAmount: Int

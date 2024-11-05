@@ -11,6 +11,7 @@ import {
   Payment_Status,
   Task_Progress_Status,
 } from '../entities/task-management.entity';
+import { Prop } from '@nestjs/mongoose';
 
 @InputType()
 export class ClientDetails {
@@ -30,6 +31,13 @@ export class ClientDetails {
   @Field(() => String, { nullable: true })
   @IsOptional()
   clientAddress: string;
+}
+
+@InputType()
+export class ServerFileReferenceInput {
+  @Field(() => String)
+  @IsNotEmpty()
+  fileUrl: string;
 }
 
 @InputType()
@@ -74,6 +82,10 @@ export class CreateTaskManagementInput {
   @Field(() => String)
   @IsNotEmpty()
   taskId: string;
+
+  @Field(() => ServerFileReferenceInput, { nullable: true })
+  @IsOptional()
+  files: ServerFileReferenceInput;
 
   @Field(() => Int)
   @IsNotEmpty()
