@@ -61,7 +61,7 @@ export class PackageBookingController {
 
     // new bookings
     const newBookings = await this.getDateRangeFilteredBookings(
-      BOOKING_STATUS.PENDING,
+      // BOOKING_STATUS.PENDING,
       {
         firstDate: dateRange[0].toISOString(),
         lastDate: dateRange[1].toISOString(),
@@ -70,22 +70,16 @@ export class PackageBookingController {
 
     // new appointments
     const newAppointments =
-      await this.appointmentService.findAppointmentsWithDateRange(
-        BOOKING_STATUS.PENDING,
-        {
-          firstDate: dateRange[0].toISOString(),
-          lastDate: dateRange[1].toISOString(),
-        },
-      );
-
-    // total transaction
-    const totalTransactions = await this.calculateBookingPrice(
-      BOOKING_STATUS.APPROVED,
-      {
+      await this.appointmentService.findAppointmentsWithDateRange({
         firstDate: dateRange[0].toISOString(),
         lastDate: dateRange[1].toISOString(),
-      },
-    );
+      });
+
+    // total transaction
+    const totalTransactions = await this.calculateBookingPrice({
+      firstDate: dateRange[0].toISOString(),
+      lastDate: dateRange[1].toISOString(),
+    });
 
     return {
       bookingsChartAnalytics: {
@@ -104,9 +98,9 @@ export class PackageBookingController {
   }
 
   // calculate booking amount
-  async calculateBookingPrice(status: string, payload: DashboardOverviewInput) {
+  async calculateBookingPrice(payload: DashboardOverviewInput) {
     let totalAmount = 0;
-    const bookings = await this.getDateRangeFilteredBookings(status, payload);
+    const bookings = await this.getDateRangeFilteredBookings(payload);
     bookings.map(
       (booking) =>
         (totalAmount = booking?.paymentDetails?.totalAmount + totalAmount),
@@ -116,7 +110,7 @@ export class PackageBookingController {
 
   // filter booking with date range and status
   async getDateRangeFilteredBookings(
-    status: string,
+    // status: string,
     filter: DashboardOverviewInput,
   ) {
     return this.bookingModel.find({
@@ -124,7 +118,7 @@ export class PackageBookingController {
         $gte: filter?.firstDate,
         $lte: filter?.lastDate,
       },
-      status: { $eq: status },
+      // status: { $eq: status },
     });
   }
 

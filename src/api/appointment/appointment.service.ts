@@ -65,16 +65,12 @@ export class AppointmentService {
     });
   }
 
-  findAppointmentsWithDateRange(
-    status: string,
-    filter: DashboardOverviewInput,
-  ) {
+  findAppointmentsWithDateRange(filter: DashboardOverviewInput) {
     return this.appointmentModel.find({
       createdAt: {
         $gte: filter?.firstDate,
         $lte: filter?.lastDate,
       },
-      status: { $eq: status },
     });
   }
 
