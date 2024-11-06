@@ -377,7 +377,7 @@ type TaskManagement {
   client: ClientData!
   taskDetails: TaskManagement_TaskDetails!
   taskId: String!
-  files: ServerFileReference
+  files: [ServerFileReference!]
   totalBillAmount: Int!
   paidBillAmount: Int!
   dueAmount: Int!
@@ -1092,7 +1092,7 @@ input CreateTaskManagementInput {
   client: String!
   taskDetails: TaskDetails!
   taskId: String!
-  files: ServerFileReferenceInput
+  files: [ServerFileReferenceInput!]
   totalBillAmount: Int!
   paidBillAmount: Int!
   dueAmount: Int!
@@ -1120,7 +1120,7 @@ input UpdateTaskManagementInput {
   client: String
   taskDetails: TaskDetails
   taskId: String
-  files: ServerFileReferenceInput
+  files: [ServerFileReferenceInput!]
   totalBillAmount: Int
   paidBillAmount: Int
   dueAmount: Int

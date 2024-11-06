@@ -65,12 +65,16 @@ export class AppointmentService {
     });
   }
 
-  findAppointmentsWithDateRange(filter: DashboardOverviewInput) {
+  findAppointmentsWithDateRange(
+    status: string,
+    filter: DashboardOverviewInput,
+  ) {
     return this.appointmentModel.find({
       createdAt: {
         $gte: filter?.firstDate,
         $lte: filter?.lastDate,
       },
+      status: { $eq: status },
     });
   }
 
@@ -133,6 +137,21 @@ export class AppointmentService {
   removeBulk(uIds: string[]) {
     return this.appointmentModel.deleteMany({
       _id: { $in: uIds },
+    });
+  }
+
+  /**
+   * remove many appointment
+   * @param uIds string[]
+   * @returns
+   */
+  appointmentsInTheDay(startDate: any, endDate: any) {
+    return this.appointmentModel.find({
+      createdAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+      // status: { $eq: status },
     });
   }
 }

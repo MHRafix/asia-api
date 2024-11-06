@@ -1,3 +1,8 @@
+import {
+  Appointment,
+  AppointmentDocument,
+} from './../appointment/entities/appointment.entity';
+import { AppointmentModule } from './../appointment/appointment.module';
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AuthGuard } from '@nestjs/passport';
@@ -18,6 +23,7 @@ export class PackageBookingController {
   constructor(
     @InjectModel(PackageBooking.name)
     private bookingModel: Model<PackageBookingDocument>,
+    // private apointmentModel: Model<AppointmentDocument>,
     private appointmentService: AppointmentService,
   ) {}
 
@@ -28,29 +34,29 @@ export class PackageBookingController {
      * chart analytics of bookings [pending, approved, completed, canceled]
      */
 
-    // pending bookings by date
-    const pendingBookings = await this.getDateFilteredBookings(
-      BOOKING_STATUS.PENDING,
+    // bookings by date
+    const bookings = await this.getDateFilteredBookings(
+      // BOOKING_STATUS.PENDING,
       payload,
     );
 
-    // approved bookings by date
-    const approvedBookings = await this.getDateFilteredBookings(
-      BOOKING_STATUS.APPROVED,
+    // appointments bookings by date
+    const appointments = await this.getDateFilteredAppointments(
+      // BOOKING_STATUS.APPROVED,
       payload,
     );
 
-    // completed bookings by date
-    const completedBookings = await this.getDateFilteredBookings(
-      BOOKING_STATUS.COMPLETED,
-      payload,
-    );
+    // // completed bookings by date
+    // const completedBookings = await this.getDateFilteredBookings(
+    //   BOOKING_STATUS.COMPLETED,
+    //   payload,
+    // );
 
-    // canceled bookings by date
-    const canceledBookings = await this.getDateFilteredBookings(
-      BOOKING_STATUS.CANCELED,
-      payload,
-    );
+    // // canceled bookings by date
+    // const canceledBookings = await this.getDateFilteredBookings(
+    //   BOOKING_STATUS.CANCELED,
+    //   payload,
+    // );
 
     /**
      * dashboard grid card overview data [new appointments, new bookings, new flights, total transactions]
@@ -61,7 +67,7 @@ export class PackageBookingController {
 
     // new bookings
     const newBookings = await this.getDateRangeFilteredBookings(
-      // BOOKING_STATUS.PENDING,
+      BOOKING_STATUS.PENDING,
       {
         firstDate: dateRange[0].toISOString(),
         lastDate: dateRange[1].toISOString(),
@@ -70,23 +76,27 @@ export class PackageBookingController {
 
     // new appointments
     const newAppointments =
-      await this.appointmentService.findAppointmentsWithDateRange({
-        firstDate: dateRange[0].toISOString(),
-        lastDate: dateRange[1].toISOString(),
-      });
+      await this.appointmentService.findAppointmentsWithDateRange(
+        BOOKING_STATUS.PENDING,
+        {
+          firstDate: dateRange[0].toISOString(),
+          lastDate: dateRange[1].toISOString(),
+        },
+      );
 
     // total transaction
-    const totalTransactions = await this.calculateBookingPrice({
-      firstDate: dateRange[0].toISOString(),
-      lastDate: dateRange[1].toISOString(),
-    });
+    const totalTransactions = await this.calculateBookingPrice(
+      BOOKING_STATUS.APPROVED,
+      {
+        firstDate: dateRange[0].toISOString(),
+        lastDate: dateRange[1].toISOString(),
+      },
+    );
 
     return {
       bookingsChartAnalytics: {
-        pending: pendingBookings,
-        approved: approvedBookings,
-        completed: completedBookings,
-        canceled: canceledBookings,
+        appointments: appointments,
+        bookings: bookings,
       },
       overViewCardData: {
         newAppointments: newAppointments.length,
@@ -98,9 +108,9 @@ export class PackageBookingController {
   }
 
   // calculate booking amount
-  async calculateBookingPrice(payload: DashboardOverviewInput) {
+  async calculateBookingPrice(status: string, payload: DashboardOverviewInput) {
     let totalAmount = 0;
-    const bookings = await this.getDateRangeFilteredBookings(payload);
+    const bookings = await this.getDateRangeFilteredBookings(status, payload);
     bookings.map(
       (booking) =>
         (totalAmount = booking?.paymentDetails?.totalAmount + totalAmount),
@@ -110,7 +120,7 @@ export class PackageBookingController {
 
   // filter booking with date range and status
   async getDateRangeFilteredBookings(
-    // status: string,
+    status: string,
     filter: DashboardOverviewInput,
   ) {
     return this.bookingModel.find({
@@ -118,13 +128,13 @@ export class PackageBookingController {
         $gte: filter?.firstDate,
         $lte: filter?.lastDate,
       },
-      // status: { $eq: status },
+      status: { $eq: status },
     });
   }
 
   // filter booking with date and status
   async getDateFilteredBookings(
-    status: string,
+    // status: string,
     filter: DashboardOverviewInput,
   ) {
     var getDaysArray = function (s, e) {
@@ -148,11 +158,39 @@ export class PackageBookingController {
           $gte: startDate,
           $lt: endDate,
         },
-        status: { $eq: status },
+        // status: { $eq: status },
       });
       bookings.push(bookingsInTheDay?.length);
     });
     return bookings;
+  }
+
+  // filter booking with date and status
+  async getDateFilteredAppointments(
+    // status: string,
+    filter: DashboardOverviewInput,
+  ) {
+    var getDaysArray = function (s, e) {
+      for (
+        var a = [], d = new Date(s);
+        d <= new Date(e);
+        d.setDate(d.getDate() + 1)
+      ) {
+        a.push(new Date(d));
+      }
+      return a;
+    };
+
+    let appointments = [];
+    getDaysArray(filter?.firstDate, filter?.lastDate)?.map(async (date) => {
+      const startDate = subDays(new Date(date), 1);
+      const endDate = addDays(startDate, 1);
+
+      const appointmentsInTheDay =
+        await this.appointmentService.appointmentsInTheDay(startDate, endDate);
+      appointments.push(appointmentsInTheDay?.length);
+    });
+    return appointments;
   }
 
   getDateRange = (): [Date, Date] => {
