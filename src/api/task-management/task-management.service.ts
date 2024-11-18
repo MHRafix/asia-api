@@ -154,4 +154,13 @@ export class TaskManagementService {
   remove(filter: FilterQuery<TaskManagementDocument>) {
     return this.taskManagementModel.deleteOne(filter);
   }
+
+  /**
+   *
+   * @param employeeId string
+   * @returns string
+   */
+  taskRevinewCalculation(employeeId: string): string {
+    return employeeId;
+  }
 }

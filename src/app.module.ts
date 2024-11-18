@@ -56,7 +56,7 @@ import { JwtStrategy } from './app/config/jwtStrategy';
       },
     }),
     MongooseModule.forRoot(process.env.MONGODB_CONNECTION_URI),
-    // APIs
+    // APIs Module
     UsersModule,
     TravelPackagesModule,
     AppointmentModule,
