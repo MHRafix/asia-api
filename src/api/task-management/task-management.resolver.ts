@@ -80,7 +80,7 @@ export class TaskManagementResolver {
   }
 
   @Query(() => [Number], {
-    name: 'taskRevinewCalculationTask',
+    name: 'taskRevinew',
   })
   async taskRevinewCalculationTask(
     @Args('employeeId', { type: () => String, nullable: true })
