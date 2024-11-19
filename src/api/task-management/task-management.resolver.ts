@@ -82,10 +82,14 @@ export class TaskManagementResolver {
   @Query(() => [Number], {
     name: 'taskRevinewCalculationTask',
   })
-  async taskRevinewCalculationTask(@Args('employeeId') employeeId: string) {
+  async taskRevinewCalculationTask(
+    @Args('employeeId', { type: () => String, nullable: true })
+    employeeId?: string,
+  ) {
     try {
-      // const find = mongodbFindObjectBuilder(employeeId);
-      return this.taskManagementService.taskRevinewCalculation(employeeId);
+      return await this.taskManagementService.taskRevinewCalculation(
+        employeeId || null,
+      );
     } catch (error) {
       throw new ForbiddenException(error.message);
     }

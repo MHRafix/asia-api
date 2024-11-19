@@ -161,22 +161,37 @@ export class TaskManagementService {
    * @returns string
    */
   async taskRevinewCalculation(employeeId: string) {
+    const allTask = await this.taskManagementModel.find({});
+
     if (employeeId) {
-      const taskByEmployee = await this.taskManagementModel.find({
-        where: {
-          'taskDetails.taskAssignTo': employeeId,
-        },
-      });
+      const taskByEmployee = allTask?.filter(
+        (task: TaskManagement) =>
+          task?.taskDetails?.taskAssignTo === employeeId,
+      );
 
-      let totalAmount = 0;
+      const totalAmount = taskByEmployee?.reduce(
+        (sum, task: TaskManagement) => sum + (task?.totalBillAmount || 0),
+        0,
+      );
 
-      taskByEmployee?.filter((task: TaskManagement) => {
-        totalAmount = totalAmount + task?.totalBillAmount;
-      });
+      const paidAmount = taskByEmployee?.reduce(
+        (sum, task: TaskManagement) => sum + (task?.paidBillAmount || 0),
+        0,
+      );
 
-      return [totalAmount, 0];
+      return [totalAmount, paidAmount, totalAmount - paidAmount]; // [total amount | paid amount | due amount]
     } else {
-      return 0;
+      const totalAmount = allTask?.reduce(
+        (sum, task: TaskManagement) => sum + (task?.totalBillAmount || 0),
+        0,
+      );
+
+      const paidAmount = allTask?.reduce(
+        (sum, task: TaskManagement) => sum + (task?.paidBillAmount || 0),
+        0,
+      );
+
+      return [totalAmount, paidAmount, totalAmount - paidAmount]; // [total amount | paid amount | due amount]
     }
   }
 }
