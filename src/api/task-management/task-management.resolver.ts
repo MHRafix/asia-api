@@ -79,19 +79,19 @@ export class TaskManagementResolver {
     }
   }
 
-  @Query(() => [Number], {
-    name: 'taskRevinew',
-  })
-  async taskRevinewCalculationTask(
-    @Args('employeeId', { type: () => String, nullable: true })
-    employeeId?: string,
-  ) {
-    try {
-      return await this.taskManagementService.taskRevinewCalculation(
-        employeeId || null,
-      );
-    } catch (error) {
-      throw new ForbiddenException(error.message);
-    }
-  }
+  // @Query(() => RevinewByEmployee, {
+  //   name: 'taskRevinew',
+  // })
+  // async taskRevinewCalculationTask(
+  //   @Args('employeeIds', { type: () => [String], nullable: true })
+  //   employeeIds?: string[],
+  // ) {
+  //   try {
+  //     return await this.taskManagementService.taskRevinewCalculation(
+  //       employeeIds || null,
+  //     );
+  //   } catch (error) {
+  //     throw new ForbiddenException(error.message);
+  //   }
+  // }
 }

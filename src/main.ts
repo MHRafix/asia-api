@@ -25,7 +25,7 @@ async function bootstrap() {
 
   // swagger config
   const config = new DocumentBuilder()
-    .setTitle('Reserve Table API')
+    .setTitle('Asia Adventures API')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);

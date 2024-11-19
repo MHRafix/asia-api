@@ -4,6 +4,7 @@ import {
   TaskManagement,
   TaskManagementSchema,
 } from './entities/task-management.entity';
+import { TaskManagementController } from './task-management.controller';
 import { TaskManagementResolver } from './task-management.resolver';
 import { TaskManagementService } from './task-management.service';
 
@@ -13,6 +14,7 @@ import { TaskManagementService } from './task-management.service';
       { name: TaskManagement.name, schema: TaskManagementSchema },
     ]),
   ],
+  controllers: [TaskManagementController],
   providers: [TaskManagementResolver, TaskManagementService],
 })
 export class TaskManagementModule {}

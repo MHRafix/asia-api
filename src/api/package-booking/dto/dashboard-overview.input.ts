@@ -1,6 +1,6 @@
 import { ObjectType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 @ObjectType()
 export class DashboardOverviewInput {
@@ -13,4 +13,12 @@ export class DashboardOverviewInput {
   @IsNotEmpty()
   @IsString()
   lastDate: string;
+}
+
+@ObjectType()
+export class DashboardTaskRevinewInput {
+  @ApiProperty()
+  @IsOptional()
+  @IsArray()
+  employeeIds?: string[];
 }

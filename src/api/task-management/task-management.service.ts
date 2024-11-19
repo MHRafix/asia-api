@@ -5,6 +5,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { ClientData } from '../client-data/entities/client-data.entity';
+import { DashboardTaskRevinewInput } from '../package-booking/dto/dashboard-overview.input';
 import { Team } from '../team/entities/team.entity';
 import { User } from '../users/entities/user.entity';
 import { CreateTaskManagementInput } from './dto/create-task-management.input';
@@ -157,41 +158,73 @@ export class TaskManagementService {
 
   /**
    *
-   * @param employeeId string
+   * @param employeeIds string[]
    * @returns string
    */
-  async taskRevinewCalculation(employeeId: string) {
+  async taskRevinewCalculation(payload?: DashboardTaskRevinewInput) {
+    console.log({ payload });
+
     const allTask = await this.taskManagementModel.find({});
 
-    if (employeeId) {
-      const taskByEmployee = allTask?.filter(
-        (task: TaskManagement) =>
-          task?.taskDetails?.taskAssignTo === employeeId,
-      );
+    // revinew by employee
+    const revinewByEmployee = [];
 
-      const totalAmount = taskByEmployee?.reduce(
-        (sum, task: TaskManagement) => sum + (task?.totalBillAmount || 0),
-        0,
-      );
+    if (payload?.employeeIds?.length) {
+      console.log({ start: revinewByEmployee });
+      await Promise.all(
+        payload?.employeeIds.map(async (employeeId: string) => {
+          // Simulate an async operation, e.g., fetching tasks
+          const taskByEmployee = await Promise.resolve(
+            allTask?.filter(
+              (task: TaskManagement) =>
+                task?.taskDetails?.taskAssignTo === employeeId,
+            ) || [],
+          );
 
-      const paidAmount = taskByEmployee?.reduce(
-        (sum, task: TaskManagement) => sum + (task?.paidBillAmount || 0),
-        0,
-      );
+          // Calculate totalAmount and paidAmount
+          const { totalAmount, paidAmount } = taskByEmployee.reduce(
+            (acc, task: TaskManagement) => {
+              acc.totalAmount += task?.totalBillAmount || 0;
+              acc.paidAmount += task?.paidBillAmount || 0;
+              return acc;
+            },
+            { totalAmount: 0, paidAmount: 0 }, // Initial accumulator values
+          );
 
-      return [totalAmount, paidAmount, totalAmount - paidAmount]; // [total amount | paid amount | due amount]
+          // Add calculated data to the revenue array
+          revinewByEmployee.push({
+            title: 'taskByEmployee',
+            totalAmount,
+            paidAmount,
+            dueAmount: totalAmount - paidAmount,
+          });
+          console.log({ end: revinewByEmployee });
+        }),
+      );
+      return revinewByEmployee;
     } else {
+      // total amount
       const totalAmount = allTask?.reduce(
         (sum, task: TaskManagement) => sum + (task?.totalBillAmount || 0),
         0,
       );
 
+      // paid amount
       const paidAmount = allTask?.reduce(
         (sum, task: TaskManagement) => sum + (task?.paidBillAmount || 0),
         0,
       );
 
-      return [totalAmount, paidAmount, totalAmount - paidAmount]; // [total amount | paid amount | due amount]
+      // due amount
+      const dueAmount = totalAmount - paidAmount;
+
+      revinewByEmployee?.push({
+        title: 'Grand Revinew',
+        totalAmount,
+        paidAmount,
+        dueAmount,
+      });
+      return revinewByEmployee;
     }
   }
 }

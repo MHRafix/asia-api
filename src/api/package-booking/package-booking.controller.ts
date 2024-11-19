@@ -1,8 +1,3 @@
-import {
-  Appointment,
-  AppointmentDocument,
-} from './../appointment/entities/appointment.entity';
-import { AppointmentModule } from './../appointment/appointment.module';
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AuthGuard } from '@nestjs/passport';
@@ -23,13 +18,12 @@ export class PackageBookingController {
   constructor(
     @InjectModel(PackageBooking.name)
     private bookingModel: Model<PackageBookingDocument>,
-    // private apointmentModel: Model<AppointmentDocument>,
     private appointmentService: AppointmentService,
   ) {}
 
   @Get('overview')
   @UseGuards(AuthGuard())
-  async getOverviewData(@Query() payload: DashboardOverviewInput) {
+  async getOverviewData(@Query() payload?: DashboardOverviewInput) {
     /**
      * chart analytics of bookings [pending, approved, completed, canceled]
      */

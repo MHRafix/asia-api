@@ -1,4 +1,4 @@
-import { Field, ID, InputType, Int } from '@nestjs/graphql';
+import { Field, ID, InputType, Int, ObjectType } from '@nestjs/graphql';
 import {
   IsArray,
   IsDate,
@@ -8,6 +8,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  IsString,
 } from 'class-validator';
 import {
   Payment_Status,
@@ -130,4 +131,27 @@ export class CreateTaskManagementInput {
   @IsDate()
   @IsOptional()
   updatedAt: Date;
+}
+
+@ObjectType()
+export class RevinewByEmployee {
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @IsOptional()
+  title: string;
+
+  @Field(() => String, { nullable: true })
+  @IsNumber()
+  @IsOptional()
+  totalAmount: number;
+
+  @Field(() => String, { nullable: true })
+  @IsNumber()
+  @IsOptional()
+  paidAmount: number;
+
+  @Field(() => String, { nullable: true })
+  @IsNumber()
+  @IsOptional()
+  dueAmount: number;
 }
