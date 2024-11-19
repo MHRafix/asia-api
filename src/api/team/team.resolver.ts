@@ -36,6 +36,14 @@ export class TeamResolver {
       throw new BadRequestException(err.message);
     }
   }
+  @Query(() => [String], { name: 'allEmployeeIds' })
+  findAllEmployeeIds() {
+    try {
+      return this.teamService.findAllEmployeeIds();
+    } catch (err) {
+      throw new BadRequestException(err.message);
+    }
+  }
 
   @Query(() => Team, { name: 'team' })
   @UseGuards(GqlAuthGuard)

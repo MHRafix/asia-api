@@ -454,6 +454,7 @@ type Query {
   services(input: ServiceListQueryDto): ServicePagination!
   service(input: CommonMatchInput!): Service!
   teams(input: TeamListQueryDto): TeamPagination!
+  allEmployeeIds: [String!]!
   team(input: CommonMatchInput!): Team!
   allNews(input: NewsListQueryDto): NewsPagination!
   news(input: CommonMatchInput!): News!
@@ -470,7 +471,7 @@ type Query {
   Client(input: CommonMatchInput!): ClientData!
   taskList(input: TaskListQueryDto): TaskManagementPagination!
   task(input: CommonMatchInput!): TaskManagement!
-  taskRevinewCalculationTask(employeeId: String): [Float!]!
+  taskRevinew(employeeId: String): [Float!]!
   moneyReceipts(input: MoneyReceiptListQueryDto): MoneyReceiptPagination!
   moneyReceipt(input: CommonMatchInput!): MoneyReceipt!
 }

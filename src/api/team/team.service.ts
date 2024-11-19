@@ -61,6 +61,15 @@ export class TeamService {
     });
   }
 
+  async findAllEmployeeIds() {
+    const employees = await this.teamModel.find({});
+
+    const employeesIds =
+      employees?.map((employee: Team) => employee?._id) || [];
+    console.log(employeesIds);
+    return employeesIds;
+  }
+
   /**
    * get single team
    * @param filter filter
