@@ -470,6 +470,7 @@ type Query {
   Client(input: CommonMatchInput!): ClientData!
   taskList(input: TaskListQueryDto): TaskManagementPagination!
   task(input: CommonMatchInput!): TaskManagement!
+  taskRevinewCalculationTask(employeeId: String!): [Float!]!
   moneyReceipts(input: MoneyReceiptListQueryDto): MoneyReceiptPagination!
   moneyReceipt(input: CommonMatchInput!): MoneyReceipt!
 }

@@ -160,7 +160,23 @@ export class TaskManagementService {
    * @param employeeId string
    * @returns string
    */
-  taskRevinewCalculation(employeeId: string): string {
-    return employeeId;
+  async taskRevinewCalculation(employeeId: string) {
+    if (employeeId) {
+      const taskByEmployee = await this.taskManagementModel.find({
+        where: {
+          'taskDetails.taskAssignTo': employeeId,
+        },
+      });
+
+      let totalAmount = 0;
+
+      taskByEmployee?.filter((task: TaskManagement) => {
+        totalAmount = totalAmount + task?.totalBillAmount;
+      });
+
+      return [totalAmount, 0];
+    } else {
+      return 0;
+    }
   }
 }

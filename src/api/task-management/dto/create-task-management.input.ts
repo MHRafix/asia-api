@@ -6,13 +6,13 @@ import {
   IsEnum,
   IsMongoId,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
 } from 'class-validator';
 import {
   Payment_Status,
   Task_Progress_Status,
 } from '../entities/task-management.entity';
-import { Prop } from '@nestjs/mongoose';
 
 @InputType()
 export class ClientDetails {

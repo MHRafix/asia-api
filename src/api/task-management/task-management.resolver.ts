@@ -78,4 +78,16 @@ export class TaskManagementResolver {
       throw new ForbiddenException(error.message);
     }
   }
+
+  @Query(() => [Number], {
+    name: 'taskRevinewCalculationTask',
+  })
+  async taskRevinewCalculationTask(@Args('employeeId') employeeId: string) {
+    try {
+      // const find = mongodbFindObjectBuilder(employeeId);
+      return this.taskManagementService.taskRevinewCalculation(employeeId);
+    } catch (error) {
+      throw new ForbiddenException(error.message);
+    }
+  }
 }
