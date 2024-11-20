@@ -35,26 +35,7 @@ export class PackageBookingController {
     );
 
     // appointments bookings by date
-    const appointments = await this.getDateFilteredAppointments(
-      // BOOKING_STATUS.APPROVED,
-      payload,
-    );
-
-    // // completed bookings by date
-    // const completedBookings = await this.getDateFilteredBookings(
-    //   BOOKING_STATUS.COMPLETED,
-    //   payload,
-    // );
-
-    // // canceled bookings by date
-    // const canceledBookings = await this.getDateFilteredBookings(
-    //   BOOKING_STATUS.CANCELED,
-    //   payload,
-    // );
-
-    /**
-     * dashboard grid card overview data [new appointments, new bookings, new flights, total transactions]
-     */
+    const appointments = await this.getDateFilteredAppointments(payload);
 
     // date range
     const dateRange = this.getDateRange();

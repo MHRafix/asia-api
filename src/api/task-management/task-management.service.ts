@@ -171,7 +171,7 @@ export class TaskManagementService {
 
     if (payload?.employeeIds?.length) {
       await Promise.all(
-        payload?.employeeIds.map(async (employeeId: string, idx: number) => {
+        payload?.employeeIds.map(async (employeeId: string) => {
           const employee = await this.teamService.findOne({
             _id: employeeId,
           });
