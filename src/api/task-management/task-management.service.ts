@@ -7,6 +7,7 @@ import { FilterQuery, Model } from 'mongoose';
 import { ClientData } from '../client-data/entities/client-data.entity';
 import { DashboardTaskRevinewInput } from '../package-booking/dto/dashboard-overview.input';
 import { Team } from '../team/entities/team.entity';
+import { TeamService } from '../team/team.service';
 import { User } from '../users/entities/user.entity';
 import { CreateTaskManagementInput } from './dto/create-task-management.input';
 import { TaskListQueryDto } from './dto/task-list-query.input';
@@ -21,6 +22,7 @@ export class TaskManagementService {
   constructor(
     @InjectModel(TaskManagement.name)
     private taskManagementModel: Model<TaskManagementDocument>,
+    private teamService: TeamService,
   ) {}
 
   /**
@@ -162,18 +164,19 @@ export class TaskManagementService {
    * @returns string
    */
   async taskRevinewCalculation(payload?: DashboardTaskRevinewInput) {
-    console.log({ payload });
-
     const allTask = await this.taskManagementModel.find({});
 
     // revinew by employee
     const revinewByEmployee = [];
 
     if (payload?.employeeIds?.length) {
-      console.log({ start: revinewByEmployee });
       await Promise.all(
-        payload?.employeeIds.map(async (employeeId: string) => {
-          // Simulate an async operation, e.g., fetching tasks
+        payload?.employeeIds.map(async (employeeId: string, idx: number) => {
+          const employee = await this.teamService.findOne({
+            _id: employeeId,
+          });
+
+          // Simulate an async operation, fetching tasks
           const taskByEmployee = await Promise.resolve(
             allTask?.filter(
               (task: TaskManagement) =>
@@ -186,6 +189,7 @@ export class TaskManagementService {
             (acc, task: TaskManagement) => {
               acc.totalAmount += task?.totalBillAmount || 0;
               acc.paidAmount += task?.paidBillAmount || 0;
+
               return acc;
             },
             { totalAmount: 0, paidAmount: 0 }, // Initial accumulator values
@@ -193,12 +197,11 @@ export class TaskManagementService {
 
           // Add calculated data to the revenue array
           revinewByEmployee.push({
-            title: 'taskByEmployee',
+            title: employee?.name,
             totalAmount,
             paidAmount,
             dueAmount: totalAmount - paidAmount,
           });
-          console.log({ end: revinewByEmployee });
         }),
       );
       return revinewByEmployee;

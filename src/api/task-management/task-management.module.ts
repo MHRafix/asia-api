@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { TeamModule } from '../team/team.module';
 import {
   TaskManagement,
   TaskManagementSchema,
@@ -13,6 +14,7 @@ import { TaskManagementService } from './task-management.service';
     MongooseModule.forFeature([
       { name: TaskManagement.name, schema: TaskManagementSchema },
     ]),
+    TeamModule,
   ],
   controllers: [TaskManagementController],
   providers: [TaskManagementResolver, TaskManagementService],
