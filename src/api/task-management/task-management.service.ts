@@ -161,73 +161,81 @@ export class TaskManagementService {
   /**
    *
    * @param employeeIds string[]
-   * @returns string
+   * @returns [{ name: string, totalAmount: number, paidAmount: number, dueAmount: number }]
    */
-  async taskRevinewCalculation(payload?: DashboardTaskRevinewInput) {
+  async taskRevinewByEmployeeCalculation(payload?: DashboardTaskRevinewInput) {
     const allTask = await this.taskManagementModel.find({});
 
     // revinew by employee
     const revinewByEmployee = [];
 
-    if (payload?.employeeIds?.length) {
-      await Promise.all(
-        payload?.employeeIds.map(async (employeeId: string) => {
-          const employee = await this.teamService.findOne({
-            _id: employeeId,
-          });
+    await Promise.all(
+      payload?.employeeIds.map(async (employeeId: string) => {
+        const employee = await this.teamService.findOne({
+          _id: employeeId,
+        });
 
-          // Simulate an async operation, fetching tasks
-          const taskByEmployee = await Promise.resolve(
-            allTask?.filter(
-              (task: TaskManagement) =>
-                task?.taskDetails?.taskAssignTo === employeeId,
-            ) || [],
-          );
+        // Simulate an async operation, fetching tasks
+        const taskByEmployee = await Promise.resolve(
+          allTask?.filter(
+            (task: TaskManagement) =>
+              task?.taskDetails?.taskAssignTo === employeeId,
+          ) || [],
+        );
 
-          // Calculate totalAmount and paidAmount
-          const { totalAmount, paidAmount } = taskByEmployee.reduce(
-            (acc, task: TaskManagement) => {
-              acc.totalAmount += task?.totalBillAmount || 0;
-              acc.paidAmount += task?.paidBillAmount || 0;
+        // Calculate totalAmount and paidAmount
+        const { totalAmount, paidAmount } = taskByEmployee.reduce(
+          (acc, task: TaskManagement) => {
+            acc.totalAmount += task?.totalBillAmount || 0;
+            acc.paidAmount += task?.paidBillAmount || 0;
 
-              return acc;
-            },
-            { totalAmount: 0, paidAmount: 0 }, // Initial accumulator values
-          );
+            return acc;
+          },
+          { totalAmount: 0, paidAmount: 0 }, // Initial accumulator values
+        );
 
-          // Add calculated data to the revenue array
-          revinewByEmployee.push({
-            title: employee?.name,
-            totalAmount,
-            paidAmount,
-            dueAmount: totalAmount - paidAmount,
-          });
-        }),
-      );
-      return revinewByEmployee;
-    } else {
-      // total amount
-      const totalAmount = allTask?.reduce(
-        (sum, task: TaskManagement) => sum + (task?.totalBillAmount || 0),
-        0,
-      );
+        // Add calculated data to the revenue array
+        revinewByEmployee.push({
+          title: employee?.name,
+          totalAmount,
+          paidAmount,
+          dueAmount: totalAmount - paidAmount,
+        });
+      }),
+    );
+    return revinewByEmployee;
+  }
 
-      // paid amount
-      const paidAmount = allTask?.reduce(
-        (sum, task: TaskManagement) => sum + (task?.paidBillAmount || 0),
-        0,
-      );
+  /**
+   * return { name: string, totalAmount: number, paidAmount: number, dueAmount: number }
+   */
+  async taskGrandRevinewCalculation() {
+    const allTask = await this.taskManagementModel.find({});
 
-      // due amount
-      const dueAmount = totalAmount - paidAmount;
+    // total amount
+    const totalAmount = allTask?.reduce(
+      (sum, task: TaskManagement) => sum + (task?.totalBillAmount || 0),
+      0,
+    );
 
-      revinewByEmployee?.push({
-        title: 'Grand Revinew',
-        totalAmount,
-        paidAmount,
-        dueAmount,
-      });
-      return revinewByEmployee;
-    }
+    // paid amount
+    const paidAmount = allTask?.reduce(
+      (sum, task: TaskManagement) => sum + (task?.paidBillAmount || 0),
+      0,
+    );
+
+    // due amount
+    const dueAmount = totalAmount - paidAmount;
+
+    // total expence
+    const totalExpence = 100000;
+
+    return {
+      totalExpence,
+      totalRevinew: totalAmount,
+      totalPaidRevinew: paidAmount,
+      totalDueRavinew: dueAmount,
+      grandRevinew: totalAmount - totalExpence,
+    };
   }
 }

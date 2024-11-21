@@ -1,4 +1,10 @@
-import { Body, Controller, ForbiddenException, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  ForbiddenException,
+  Get,
+  Post,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { DashboardTaskRevinewInput } from '../package-booking/dto/dashboard-overview.input';
 import { TaskManagementService } from './task-management.service';
@@ -8,13 +14,23 @@ import { TaskManagementService } from './task-management.service';
 export class TaskManagementController {
   constructor(private readonly taskManagementService: TaskManagementService) {}
 
-  @Post('task-revinew')
+  @Post('task-revinew-by-employee')
   // @UseGuards(AuthGuard())
-  async taskRevinew(@Body() payload?: DashboardTaskRevinewInput) {
+  async taskRevinewByEmployee(@Body() payload?: DashboardTaskRevinewInput) {
     try {
-      return await this.taskManagementService.taskRevinewCalculation(
+      return await this.taskManagementService.taskRevinewByEmployeeCalculation(
         payload || null,
       );
+    } catch (error) {
+      throw new ForbiddenException(error.message);
+    }
+  }
+
+  @Get('task-grand-revinew')
+  // @UseGuards(AuthGuard())
+  async taskGrandRevinew() {
+    try {
+      return await this.taskManagementService.taskGrandRevinewCalculation();
     } catch (error) {
       throw new ForbiddenException(error.message);
     }
