@@ -16,10 +16,6 @@ export class ClientData {
 
   @Prop()
   @Field(() => String, { nullable: true })
-  address: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
   email: string;
 
   @Prop()

@@ -10,6 +10,7 @@ import { AppointmentModule } from './api/appointment/appointment.module';
 import { AttendanceModule } from './api/attendance/attendance.module';
 import { BlogModule } from './api/blog/blog.module';
 import { ClientDataModule } from './api/client-data/client-data.module';
+import { ExpenseCalculationModule } from './api/expense-calculation/expense-calculation.module';
 import { MoneyReceiptModule } from './api/money-receipt/money-receipt.module';
 import { NewsModule } from './api/news/news.module';
 import { PackageBookingModule } from './api/package-booking/package-booking.module';
@@ -71,6 +72,7 @@ import { JwtStrategy } from './app/config/jwtStrategy';
     ClientDataModule,
     TaskManagementModule,
     MoneyReceiptModule,
+    ExpenseCalculationModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ExpenseCalculationModule } from '../expense-calculation/expense-calculation.module';
 import { TeamModule } from '../team/team.module';
 import {
   TaskManagement,
@@ -15,6 +16,7 @@ import { TaskManagementService } from './task-management.service';
       { name: TaskManagement.name, schema: TaskManagementSchema },
     ]),
     TeamModule,
+    ExpenseCalculationModule,
   ],
   controllers: [TaskManagementController],
   providers: [TaskManagementResolver, TaskManagementService],

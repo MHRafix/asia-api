@@ -160,13 +160,23 @@ type BlogPagination {
 type ClientData {
   _id: ID
   name: String!
-  address: String
   email: String
   phone: String
 }
 
 type ClientDataPagination {
   nodes: [ClientData!]
+  meta: PagniationMeta
+}
+
+type Expense {
+  title: String!
+  description: String!
+  amount: Float!
+}
+
+type ExpenseCalculationPagination {
+  nodes: [Expense!]
   meta: PagniationMeta
 }
 
@@ -471,6 +481,10 @@ type Query {
   Client(input: CommonMatchInput!): ClientData!
   taskList(input: TaskListQueryDto): TaskManagementPagination!
   task(input: CommonMatchInput!): TaskManagement!
+  expenseCalculationList(
+    input: ExpenseListQueryDto
+  ): ExpenseCalculationPagination!
+  expenseCalculation(input: CommonMatchInput!): Expense!
   moneyReceipts(input: MoneyReceiptListQueryDto): MoneyReceiptPagination!
   moneyReceipt(input: CommonMatchInput!): MoneyReceipt!
 }
@@ -621,6 +635,15 @@ input TaskListQueryDto {
   whereOperator: WHERE_OPERATOR
 }
 
+input ExpenseListQueryDto {
+  page: Int
+  limit: Int
+  sort: SortType
+  sortBy: String
+  where: [CommonMatchInput!]
+  whereOperator: WHERE_OPERATOR
+}
+
 input MoneyReceiptListQueryDto {
   page: Int
   limit: Int
@@ -676,6 +699,11 @@ type Mutation {
   createTask(input: CreateTaskManagementInput!): TaskManagement!
   updateTask(input: UpdateTaskManagementInput!): Boolean!
   removeTask(input: CommonMatchInput!): Boolean
+  createExpenseCalculation(input: ExpenseCalculationInput!): Boolean!
+  updateExpenseCalculation(
+    updateExpenseCalculationInput: UpdateExpenseCalculationInput!
+  ): Expense!
+  removeExpenseCalculation(_id: String!): Expense!
   createMoneyReceipt(input: CreateMoneyReceiptInput!): MoneyReceipt!
   updateMoneyReceipt(input: UpdateMoneyReceiptInput!): MoneyReceipt!
   removeMoneyReceipt(input: CommonMatchInput!): Boolean
@@ -1074,7 +1102,6 @@ input UpdateBlogInput {
 input CreateClientDataInput {
   _id: ID
   name: String!
-  address: String
   email: String
   phone: String
 }
@@ -1082,7 +1109,6 @@ input CreateClientDataInput {
 input UpdateClientDataInput {
   _id: String!
   name: String
-  address: String
   email: String
   phone: String
 }
@@ -1130,6 +1156,19 @@ input UpdateTaskManagementInput {
   deadLine: DateTime
   createdAt: DateTime
   updatedAt: DateTime
+}
+
+input ExpenseCalculationInput {
+  title: String!
+  description: String
+  amount: Float!
+}
+
+input UpdateExpenseCalculationInput {
+  title: String
+  description: String
+  amount: Float
+  _id: String!
 }
 
 input CreateMoneyReceiptInput {

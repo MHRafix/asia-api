@@ -1,29 +1,85 @@
-import { Injectable } from '@nestjs/common';
-import { CreateExpenseCalculationInput } from './dto/create-expense-calculation.input';
+import { AppPaginationResponse } from '@/src/shared/contracts/app-pagination-response';
+import { SortType } from '@/src/shared/dto/CommonPaginationDto';
+import { filterBuilder } from '@/src/shared/utils/filterBuilder';
+import { ForbiddenException, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { FilterQuery, Model } from 'mongoose';
+import { ExpenseCalculationInput } from './dto/create-expense-calculation.input';
+import { ExpenseListQueryDto } from './dto/expense-list-query.dto';
 import { UpdateExpenseCalculationInput } from './dto/update-expense-calculation.input';
+import {
+  Expense,
+  ExpenseDocument,
+} from './entities/expense-calculation.entity';
 
 @Injectable()
 export class ExpenseCalculationService {
-  create(createExpenseCalculationInput: CreateExpenseCalculationInput) {
-    return 'This action adds a new expenseCalculation';
+  constructor(
+    @InjectModel(Expense.name)
+    private expenseModel: Model<ExpenseDocument>,
+  ) {}
+
+  /**
+   *
+   * @param payload ExpenseCalculationInput
+   * @returns ExpenseCalculation
+   */
+  create(payload: ExpenseCalculationInput) {
+    return this.expenseModel.create(payload);
   }
 
-  findAll() {
-    return `This action returns all expenseCalculation`;
+  /**
+   *
+   * @param input ExpenseListQueryDto
+   * @param fields string[] | string
+   * @returns [ExpenseCalculation]
+   */
+  async findAll(input: ExpenseListQueryDto, fields: string[] | string) {
+    const { page = 1, limit = 10 } = input;
+    const where = filterBuilder(input.where, input.whereOperator);
+
+    const cursor = this.expenseModel.find(where);
+    const count = await this.expenseModel.countDocuments(where);
+    const skip = (page - 1) * limit;
+    const data = await cursor
+      .sort({ [input?.sortBy]: input?.sort == SortType.DESC ? -1 : 1 })
+      .skip(skip)
+      .limit(limit);
+
+    return new AppPaginationResponse(data, {
+      totalCount: count,
+      currentPage: page,
+      hasNextPage: page * limit < count,
+      totalPages: Math.ceil(count / limit),
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} expenseCalculation`;
+  /**
+   *
+   * @returns [ExpenseCalculation]
+   */
+  async findAllExpense() {
+    return this.expenseModel.find({});
   }
 
-  update(
-    id: number,
-    updateExpenseCalculationInput: UpdateExpenseCalculationInput,
-  ) {
-    return `This action updates a #${id} expenseCalculation`;
+  async findOne(filter: FilterQuery<ExpenseDocument>) {
+    try {
+      const data = await this.expenseModel.findOne(filter);
+
+      if (!data) {
+        throw new ForbiddenException('Data is not found');
+      }
+      return data;
+    } catch (err) {
+      throw new ForbiddenException(err.message);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} expenseCalculation`;
+  update(_id: string, payload: UpdateExpenseCalculationInput) {
+    return `This action updates a #${_id} expenseCalculation`;
+  }
+
+  remove(_id: string) {
+    return `This action removes a #${_id} expenseCalculation`;
   }
 }

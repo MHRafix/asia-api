@@ -1,10 +1,10 @@
-import { CreateExpenseCalculationInput } from './create-expense-calculation.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { Field, InputType, PartialType } from '@nestjs/graphql';
+import { ExpenseCalculationInput } from './create-expense-calculation.input';
 
 @InputType()
 export class UpdateExpenseCalculationInput extends PartialType(
-  CreateExpenseCalculationInput,
+  ExpenseCalculationInput,
 ) {
-  @Field(() => Int)
-  id: number;
+  @Field(() => String)
+  _id: string;
 }

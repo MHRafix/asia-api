@@ -12,10 +12,6 @@ export class CreateClientDataInput {
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  address: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
   @IsEmail()
   email: string;
 

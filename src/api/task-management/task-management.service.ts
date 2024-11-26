@@ -5,6 +5,8 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { ClientData } from '../client-data/entities/client-data.entity';
+import { Expense } from '../expense-calculation/entities/expense-calculation.entity';
+import { ExpenseCalculationService } from '../expense-calculation/expense-calculation.service';
 import { DashboardTaskRevinewInput } from '../package-booking/dto/dashboard-overview.input';
 import { Team } from '../team/entities/team.entity';
 import { TeamService } from '../team/team.service';
@@ -23,6 +25,7 @@ export class TaskManagementService {
     @InjectModel(TaskManagement.name)
     private taskManagementModel: Model<TaskManagementDocument>,
     private teamService: TeamService,
+    private readonly expenseService: ExpenseCalculationService,
   ) {}
 
   /**
@@ -226,15 +229,20 @@ export class TaskManagementService {
     // due amount
     const dueAmount = totalAmount - paidAmount;
 
+    const expenseList = await this.expenseService.findAllExpense();
+
     // total expence
-    const totalExpence = 100000;
+    const totalExpense = expenseList?.reduce(
+      (sum, expense: Expense) => sum + (expense?.amount || 0),
+      0,
+    );
 
     return {
-      totalExpence,
+      totalExpense,
       totalRevinew: totalAmount,
       totalPaidRevinew: paidAmount,
       totalDueRavinew: dueAmount,
-      grandRevinew: totalAmount - totalExpence,
+      grandRevinew: totalAmount - totalExpense,
     };
   }
 }

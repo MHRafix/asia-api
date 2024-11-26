@@ -1,46 +1,68 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { ExpenseCalculationService } from './expense-calculation.service';
-import { ExpenseCalculation } from './entities/expense-calculation.entity';
-import { CreateExpenseCalculationInput } from './dto/create-expense-calculation.input';
+import { CommonMatchInput } from '@/src/shared/dto/CommonFindOneDto';
+import { mongodbFindObjectBuilder } from '@/src/shared/utils/filterBuilder';
+import getGqlFields from '@/src/shared/utils/get-gql-fields';
+import { BadRequestException } from '@nestjs/common';
+import { Args, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { ExpenseCalculationInput } from './dto/create-expense-calculation.input';
+import { ExpenseListQueryDto } from './dto/expense-list-query.dto';
 import { UpdateExpenseCalculationInput } from './dto/update-expense-calculation.input';
+import {
+  Expense,
+  ExpenseCalculationPagination,
+} from './entities/expense-calculation.entity';
+import { ExpenseCalculationService } from './expense-calculation.service';
 
-@Resolver(() => ExpenseCalculation)
+@Resolver(() => Expense)
 export class ExpenseCalculationResolver {
   constructor(
     private readonly expenseCalculationService: ExpenseCalculationService,
   ) {}
 
-  @Mutation(() => ExpenseCalculation)
-  createExpenseCalculation(
-    @Args('createExpenseCalculationInput')
-    createExpenseCalculationInput: CreateExpenseCalculationInput,
+  @Mutation(() => Boolean)
+  async createExpenseCalculation(
+    @Args('input')
+    input: ExpenseCalculationInput,
   ) {
-    return this.expenseCalculationService.create(createExpenseCalculationInput);
+    await this.expenseCalculationService.create(input);
+    return true;
   }
 
-  @Query(() => [ExpenseCalculation], { name: 'expenseCalculation' })
-  findAll() {
-    return this.expenseCalculationService.findAll();
+  @Query(() => ExpenseCalculationPagination, { name: 'expenseCalculationList' })
+  findAll(
+    @Args('input', { nullable: true }) input: ExpenseListQueryDto,
+    @Info() info: any,
+  ) {
+    try {
+      const fields = getGqlFields(info, 'nodes');
+      return this.expenseCalculationService.findAll(input, fields);
+    } catch (err) {
+      throw new BadRequestException(err.message);
+    }
   }
 
-  @Query(() => ExpenseCalculation, { name: 'expenseCalculation' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.expenseCalculationService.findOne(id);
+  @Query(() => Expense, { name: 'expenseCalculation' })
+  findOne(@Args('input') input: CommonMatchInput) {
+    try {
+      const find = mongodbFindObjectBuilder(input);
+      return this.expenseCalculationService.findOne(find);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
-  @Mutation(() => ExpenseCalculation)
+  @Mutation(() => Expense)
   updateExpenseCalculation(
     @Args('updateExpenseCalculationInput')
     updateExpenseCalculationInput: UpdateExpenseCalculationInput,
   ) {
     return this.expenseCalculationService.update(
-      updateExpenseCalculationInput.id,
+      updateExpenseCalculationInput._id,
       updateExpenseCalculationInput,
     );
   }
 
-  @Mutation(() => ExpenseCalculation)
-  removeExpenseCalculation(@Args('id', { type: () => Int }) id: number) {
-    return this.expenseCalculationService.remove(id);
+  @Mutation(() => Expense)
+  removeExpenseCalculation(@Args('_id', { type: () => String }) _id: string) {
+    return this.expenseCalculationService.remove(_id);
   }
 }
