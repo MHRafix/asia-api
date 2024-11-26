@@ -166,43 +166,42 @@ export class TaskManagementService {
   async taskRevinewByEmployeeCalculation(payload?: DashboardTaskRevinewInput) {
     const allTask = await this.taskManagementModel.find({});
 
-    // revinew by employee
+    // Revenue by employee
     const revinewByEmployee = [];
 
-    await Promise.all(
-      payload?.employeeIds.map(async (employeeId: string) => {
-        const employee = await this.teamService.findOne({
-          _id: employeeId,
-        });
+    // Loop through each employee ID in the payload
+    for (const employeeId of payload?.employeeIds || []) {
+      // Find the employee details
+      const employee = await this.teamService.findOne({
+        _id: employeeId,
+      });
 
-        // Simulate an async operation, fetching tasks
-        const taskByEmployee = await Promise.resolve(
-          allTask?.filter(
-            (task: TaskManagement) =>
-              task?.taskDetails?.taskAssignTo === employeeId,
-          ) || [],
-        );
+      // Filter tasks assigned to the current employee
+      const taskByEmployee =
+        allTask?.filter(
+          (task: TaskManagement) =>
+            task?.taskDetails?.taskAssignTo === employeeId,
+        ) || [];
 
-        // Calculate totalAmount and paidAmount
-        const { totalAmount, paidAmount } = taskByEmployee.reduce(
-          (acc, task: TaskManagement) => {
-            acc.totalAmount += task?.totalBillAmount || 0;
-            acc.paidAmount += task?.paidBillAmount || 0;
+      // Calculate totalAmount and paidAmount
+      const { totalAmount, paidAmount } = taskByEmployee.reduce(
+        (acc, task: TaskManagement) => {
+          acc.totalAmount += task?.totalBillAmount || 0;
+          acc.paidAmount += task?.paidBillAmount || 0;
+          return acc;
+        },
+        { totalAmount: 0, paidAmount: 0 }, // Initial accumulator values
+      );
 
-            return acc;
-          },
-          { totalAmount: 0, paidAmount: 0 }, // Initial accumulator values
-        );
+      // Add calculated data to the revenue array
+      revinewByEmployee.push({
+        title: employee?.name,
+        totalAmount,
+        paidAmount,
+        dueAmount: totalAmount - paidAmount,
+      });
+    }
 
-        // Add calculated data to the revenue array
-        revinewByEmployee.push({
-          title: employee?.name,
-          totalAmount,
-          paidAmount,
-          dueAmount: totalAmount - paidAmount,
-        });
-      }),
-    );
     return revinewByEmployee;
   }
 
