@@ -50,19 +50,31 @@ export class ExpenseCalculationResolver {
     }
   }
 
-  @Mutation(() => Expense)
-  updateExpenseCalculation(
+  @Mutation(() => Boolean)
+  async updateExpenseCalculation(
     @Args('updateExpenseCalculationInput')
     updateExpenseCalculationInput: UpdateExpenseCalculationInput,
   ) {
-    return this.expenseCalculationService.update(
-      updateExpenseCalculationInput._id,
-      updateExpenseCalculationInput,
-    );
+    try {
+      this.expenseCalculationService.update(
+        updateExpenseCalculationInput._id,
+        updateExpenseCalculationInput,
+      );
+      return true;
+    } catch (err) {
+      throw new BadRequestException(err.message);
+    }
   }
 
-  @Mutation(() => Expense)
-  removeExpenseCalculation(@Args('_id', { type: () => String }) _id: string) {
-    return this.expenseCalculationService.remove(_id);
+  @Mutation(() => Boolean)
+  async removeExpenseCalculation(
+    @Args('_id', { type: () => String }) _id: string,
+  ) {
+    try {
+      await this.expenseCalculationService.remove(_id);
+      return true;
+    } catch (err) {
+      throw new BadRequestException(err.message);
+    }
   }
 }

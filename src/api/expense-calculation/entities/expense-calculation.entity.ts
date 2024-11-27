@@ -1,5 +1,5 @@
 import { Paginated } from '@/src/shared/object-types/paginationObject';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type ExpenseDocument = Expense & Document;
@@ -7,6 +7,9 @@ export type ExpenseDocument = Expense & Document;
 @ObjectType()
 @Schema()
 export class Expense {
+  @Field(() => ID, { nullable: true })
+  _id: string;
+
   @Prop()
   @Field(() => String)
   title: string;

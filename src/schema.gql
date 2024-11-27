@@ -170,6 +170,7 @@ type ClientDataPagination {
 }
 
 type Expense {
+  _id: ID
   title: String!
   description: String!
   amount: Float!
@@ -702,8 +703,8 @@ type Mutation {
   createExpenseCalculation(input: ExpenseCalculationInput!): Boolean!
   updateExpenseCalculation(
     updateExpenseCalculationInput: UpdateExpenseCalculationInput!
-  ): Expense!
-  removeExpenseCalculation(_id: String!): Expense!
+  ): Boolean!
+  removeExpenseCalculation(_id: String!): Boolean!
   createMoneyReceipt(input: CreateMoneyReceiptInput!): MoneyReceipt!
   updateMoneyReceipt(input: UpdateMoneyReceiptInput!): MoneyReceipt!
   removeMoneyReceipt(input: CommonMatchInput!): Boolean
