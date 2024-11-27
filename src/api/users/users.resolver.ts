@@ -8,15 +8,22 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Args, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { TeamService } from '../team/team.service';
 import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import {
+  UpdateUserAndEmployeeRoleInput,
+  UpdateUserInput,
+} from './dto/update-user.input';
 import { UserListQueryDto } from './dto/user-list-query.dto';
 import { User, UserPagination } from './entities/user.entity';
 import { UsersService } from './users.service';
 
 @Resolver(() => User)
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private teamService: TeamService,
+  ) {}
 
   @Mutation(() => User)
   signUp(@Args('input') input: CreateUserInput) {
@@ -76,6 +83,21 @@ export class UsersResolver {
     try {
       await this.usersService.update(input._id, input);
       return this.usersService.findOne({ _id: input._id });
+    } catch (err) {
+      throw new BadRequestException(err.message);
+    }
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async updateUserAndEmployeeRole(
+    @Args('input')
+    input: UpdateUserAndEmployeeRoleInput,
+  ) {
+    try {
+      await this.usersService.roleUpdate(input);
+      await this.teamService.updateEmployeeRole(input);
+      return true;
     } catch (err) {
       throw new BadRequestException(err.message);
     }

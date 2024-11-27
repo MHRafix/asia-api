@@ -12,7 +12,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcryptjs';
 import { FilterQuery, Model } from 'mongoose';
 import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import {
+  UpdateUserAndEmployeeRoleInput,
+  UpdateUserInput,
+} from './dto/update-user.input';
 import { UserListQueryDto } from './dto/user-list-query.dto';
 import { User, USER_ROLE, UserDocument } from './entities/user.entity';
 
@@ -187,8 +190,20 @@ export class UsersService {
    * @param input update payload
    * @returns
    */
-  update(_id: string, updateUserInput: UpdateUserInput) {
+  async update(_id: string, updateUserInput: UpdateUserInput) {
     return this.userModel.findOneAndUpdate({ _id }, updateUserInput);
+  }
+
+  /**
+   * employee and user role update
+   * @param payload UpdateUserAndEmployeeRoleInput
+   * @returns
+   */
+  async roleUpdate(payload: UpdateUserAndEmployeeRoleInput) {
+    return this.userModel.findOneAndUpdate(
+      { _id: payload?.user_id },
+      { role: payload?.role },
+    );
   }
 
   /**

@@ -4,6 +4,7 @@ import { filterBuilder } from '@/src/shared/utils/filterBuilder';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
+import { UpdateUserAndEmployeeRoleInput } from '../users/dto/update-user.input';
 import { User } from '../users/entities/user.entity';
 import { CreateTeamInput } from './dto/create-team.input';
 import { TeamListQueryDto } from './dto/team-list-query-input.dto';
@@ -107,6 +108,18 @@ export class TeamService {
    */
   update(_id: string, payload: UpdateTeamInput) {
     return this.teamModel.findOneAndUpdate({ _id }, payload);
+  }
+
+  /**
+   * update employee role
+   * @param payload UpdateUserAndEmployeeRoleInput
+   * @returns
+   */
+  updateEmployeeRole(payload: UpdateUserAndEmployeeRoleInput) {
+    return this.teamModel.findOneAndUpdate(
+      { _id: payload?.employee_id },
+      { role: payload?.role },
+    );
   }
 
   /**

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
+import { TeamModule } from '../team/team.module';
 import { User, UserSchema } from './entities/user.entity';
 import { UsersResolver } from './users.resolver';
 import { UsersService } from './users.service';
@@ -20,6 +21,7 @@ import { UsersService } from './users.service';
       },
     }),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    TeamModule,
   ],
   providers: [UsersResolver, UsersService],
   exports: [UsersService],

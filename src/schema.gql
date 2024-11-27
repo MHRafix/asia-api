@@ -458,15 +458,15 @@ type VisaReqPagination {
 type Query {
   users(input: UserListQueryDto): UserPagination!
   user(input: CommonMatchInput!): User!
+  teams(input: TeamListQueryDto): TeamPagination!
+  allEmployeeIds: [String!]!
+  team(input: CommonMatchInput!): Team!
   travelPackages(input: TravelPackageListQueryDto): TravelPackagePagination!
   travelPackage(input: CommonMatchInput!): TravelPackage!
   appointments(input: AppointmentListQueryDto): AppointmentPagination!
   Appointment(input: CommonMatchInput!): Appointment!
   services(input: ServiceListQueryDto): ServicePagination!
   service(input: CommonMatchInput!): Service!
-  teams(input: TeamListQueryDto): TeamPagination!
-  allEmployeeIds: [String!]!
-  team(input: CommonMatchInput!): Team!
   allNews(input: NewsListQueryDto): NewsPagination!
   news(input: CommonMatchInput!): News!
   bookings(input: BookingPackageListQueryDto): PackageBookingPagination!
@@ -528,6 +528,15 @@ enum WHERE_OPERATOR {
   or
 }
 
+input TeamListQueryDto {
+  page: Int
+  limit: Int
+  sort: SortType
+  sortBy: String
+  where: [CommonMatchInput!]
+  whereOperator: WHERE_OPERATOR
+}
+
 input TravelPackageListQueryDto {
   page: Int
   limit: Int
@@ -547,15 +556,6 @@ input AppointmentListQueryDto {
 }
 
 input ServiceListQueryDto {
-  page: Int
-  limit: Int
-  sort: SortType
-  sortBy: String
-  where: [CommonMatchInput!]
-  whereOperator: WHERE_OPERATOR
-}
-
-input TeamListQueryDto {
   page: Int
   limit: Int
   sort: SortType
@@ -659,8 +659,13 @@ type Mutation {
   signIn(input: CreateUserInput!): User!
   adminSignIn(input: CreateUserInput!): User!
   updateUser(input: UpdateUserInput!): User!
+  updateUserAndEmployeeRole(input: UpdateUserAndEmployeeRoleInput!): Boolean!
   removeUser(input: CommonMatchInput!): Boolean
   bulkRemoveUser(uIds: [String!]!): Boolean
+  createTeam(input: CreateTeamInput!): Team!
+  updateTeam(input: UpdateTeamInput!): Team!
+  removeTeam(input: CommonMatchInput!): Boolean
+  bulkRemoveTeam(uIds: [String!]!): Boolean
   createTravelPackage(input: CreateTravelPackageInput!): TravelPackage!
   updateTravelPackage(input: UpdateTravelPackageInput!): TravelPackage!
   removeTravelPackage(input: CommonMatchInput!): Boolean
@@ -671,10 +676,6 @@ type Mutation {
   createService(input: CreateServiceInput!): Service!
   updateService(input: UpdateServiceInput!): Service!
   removeService(input: CommonMatchInput!): Boolean
-  createTeam(input: CreateTeamInput!): Team!
-  updateTeam(input: UpdateTeamInput!): Team!
-  removeTeam(input: CommonMatchInput!): Boolean
-  bulkRemoveTeam(uIds: [String!]!): Boolean
   createNews(input: CreateNewsInput!): News!
   updateNews(input: UpdateNewsInput!): News!
   removeNews(input: CommonMatchInput!): Boolean
@@ -770,6 +771,34 @@ input UpdateUserInput {
   avatar: String
   accessToken: String
   phone: String
+}
+
+input UpdateUserAndEmployeeRoleInput {
+  user_id: String
+  employee_id: String
+  role: String
+}
+
+input CreateTeamInput {
+  _id: ID
+  name: String!
+  post: String!
+  phone: String
+  role: USER_ROLE!
+  avatar: String!
+  email: String!
+  salary: Float
+}
+
+input UpdateTeamInput {
+  _id: String!
+  name: String
+  post: String
+  phone: String
+  role: USER_ROLE
+  avatar: String
+  email: String
+  salary: Float
 }
 
 input CreateTravelPackageInput {
@@ -905,28 +934,6 @@ input UpdateServiceInput {
   preRequirements: String
   price: Float
   author: String
-}
-
-input CreateTeamInput {
-  _id: ID
-  name: String!
-  post: String!
-  phone: String
-  role: USER_ROLE!
-  avatar: String!
-  email: String!
-  salary: Float
-}
-
-input UpdateTeamInput {
-  _id: String!
-  name: String
-  post: String
-  phone: String
-  role: USER_ROLE
-  avatar: String
-  email: String
-  salary: Float
 }
 
 input CreateNewsInput {
