@@ -76,7 +76,7 @@ export class ExpenseCalculationService {
   }
 
   update(_id: string, payload: UpdateExpenseCalculationInput) {
-    return `This action updates a #${_id} expenseCalculation`;
+    return this.expenseModel.findByIdAndUpdate({ _id }, payload);
   }
 
   remove(_id: string) {
