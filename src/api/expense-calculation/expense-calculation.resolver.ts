@@ -1,7 +1,11 @@
 import { CommonMatchInput } from '@/src/shared/dto/CommonFindOneDto';
 import { mongodbFindObjectBuilder } from '@/src/shared/utils/filterBuilder';
 import getGqlFields from '@/src/shared/utils/get-gql-fields';
-import { BadRequestException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  UseGuards,
+} from '@nestjs/common';
 import { Args, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ExpenseCalculationInput } from './dto/create-expense-calculation.input';
 import { ExpenseListQueryDto } from './dto/expense-list-query.dto';
@@ -11,6 +15,7 @@ import {
   ExpenseCalculationPagination,
 } from './entities/expense-calculation.entity';
 import { ExpenseCalculationService } from './expense-calculation.service';
+import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 
 @Resolver(() => Expense)
 export class ExpenseCalculationResolver {
@@ -66,15 +71,15 @@ export class ExpenseCalculationResolver {
     }
   }
 
-  @Mutation(() => Boolean)
-  async removeExpenseCalculation(
-    @Args('_id', { type: () => String }) _id: string,
-  ) {
+  @Mutation(() => Boolean, { nullable: true })
+  @UseGuards(GqlAuthGuard)
+  async removeNews(@Args('input') input: CommonMatchInput) {
     try {
-      await this.expenseCalculationService.remove(_id);
-      return true;
-    } catch (err) {
-      throw new BadRequestException(err.message);
+      const find = mongodbFindObjectBuilder(input);
+      const res = await this.expenseCalculationService.remove(find);
+      return res.deletedCount > 0;
+    } catch (error) {
+      throw new ForbiddenException(error.message);
     }
   }
 }

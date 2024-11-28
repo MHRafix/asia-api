@@ -4,6 +4,7 @@ import { filterBuilder } from '@/src/shared/utils/filterBuilder';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
+import { NewsDocument } from '../news/entities/news.entity';
 import { ExpenseCalculationInput } from './dto/create-expense-calculation.input';
 import { ExpenseListQueryDto } from './dto/expense-list-query.dto';
 import { UpdateExpenseCalculationInput } from './dto/update-expense-calculation.input';
@@ -79,7 +80,12 @@ export class ExpenseCalculationService {
     return this.expenseModel.findByIdAndUpdate({ _id }, payload);
   }
 
-  remove(_id: string) {
-    return `This action removes a #${_id} expenseCalculation`;
+  /**
+   * delete expense
+   * @param filter filter
+   * @returns
+   */
+  remove(filter: FilterQuery<NewsDocument>) {
+    return this.expenseModel.deleteOne(filter);
   }
 }
