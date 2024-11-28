@@ -1,3 +1,4 @@
+import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 import { CommonMatchInput } from '@/src/shared/dto/CommonFindOneDto';
 import { mongodbFindObjectBuilder } from '@/src/shared/utils/filterBuilder';
 import getGqlFields from '@/src/shared/utils/get-gql-fields';
@@ -15,7 +16,6 @@ import {
   ExpenseCalculationPagination,
 } from './entities/expense-calculation.entity';
 import { ExpenseCalculationService } from './expense-calculation.service';
-import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 
 @Resolver(() => Expense)
 export class ExpenseCalculationResolver {
@@ -73,7 +73,7 @@ export class ExpenseCalculationResolver {
 
   @Mutation(() => Boolean, { nullable: true })
   @UseGuards(GqlAuthGuard)
-  async removeNews(@Args('input') input: CommonMatchInput) {
+  async removeExpense(@Args('input') input: CommonMatchInput) {
     try {
       const find = mongodbFindObjectBuilder(input);
       const res = await this.expenseCalculationService.remove(find);
