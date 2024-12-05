@@ -54,6 +54,10 @@ export class Blog {
   description: string;
 
   @Prop()
+  @Field(() => String)
+  shortDescription: string;
+
+  @Prop()
   @Field(() => Number, { nullable: true })
   like: number;
 
