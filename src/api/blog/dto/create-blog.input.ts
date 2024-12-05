@@ -27,8 +27,8 @@ export class CreateBlogInput {
   @IsNotEmpty()
   description: string;
 
-  @Field(() => String)
-  @IsNotEmpty()
+  @Field(() => String, { nullable: true })
+  @IsOptional()
   shortDescription: string;
 
   @Field(() => Number, { nullable: true })

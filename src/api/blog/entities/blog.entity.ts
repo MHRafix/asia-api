@@ -54,7 +54,7 @@ export class Blog {
   description: string;
 
   @Prop()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   shortDescription: string;
 
   @Prop()
