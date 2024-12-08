@@ -27,22 +27,6 @@ export class CreateServiceInput {
   desc: string;
 
   @Field(() => String, { nullable: true })
-  @IsOptional()
-  country: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  visaCategory: string;
-
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  preRequirements: string;
-
-  @Field(() => Number, { nullable: true })
-  @IsNotEmpty()
-  price: number;
-
-  @Field(() => String, { nullable: true })
   @IsNotEmpty()
   @IsMongoId()
   author: string;

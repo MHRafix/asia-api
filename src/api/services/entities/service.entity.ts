@@ -32,22 +32,6 @@ export class Service {
   @Field(() => String)
   desc: string;
 
-  @Prop()
-  @Field(() => String, { nullable: true })
-  preRequirements: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  country: string;
-
-  @Prop()
-  @Field(() => String, { nullable: true })
-  visaCategory: string;
-
-  @Prop()
-  @Field(() => Number, { nullable: true })
-  price: number;
-
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   @Field(() => User, { nullable: true })
   author: string;
