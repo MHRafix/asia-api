@@ -1,3 +1,6 @@
+import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
+import { Roles } from '@/src/app/decorators/role.decorator';
+import { RolesGuard } from '@/src/app/guards/role.guard';
 import { CommonMatchInput } from '@/src/shared/dto/CommonFindOneDto';
 import { mongodbFindObjectBuilder } from '@/src/shared/utils/filterBuilder';
 import getGqlFields from '@/src/shared/utils/get-gql-fields';
@@ -7,12 +10,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Args, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { USER_ROLE } from '../users/entities/user.entity';
 import { CreateTeamInput } from './dto/create-team.input';
 import { TeamListQueryDto } from './dto/team-list-query-input.dto';
 import { UpdateTeamInput } from './dto/update-team.input';
 import { Team, TeamPagination } from './entities/team.entity';
 import { TeamService } from './team.service';
-import { GqlAuthGuard } from '@/src/app/config/jwtGqlGuard';
 
 @Resolver(() => Team)
 export class TeamResolver {
@@ -25,6 +28,8 @@ export class TeamResolver {
   }
 
   @Query(() => TeamPagination, { name: 'teams' })
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(USER_ROLE.ADMIN)
   findAll(
     @Args('input', { nullable: true }) input: TeamListQueryDto,
     @Info() info: any,

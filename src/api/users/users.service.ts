@@ -61,15 +61,15 @@ export class UsersService {
     const { email, password } = payload;
 
     // check is user exist
-    const isUserExist = await this.userModel.findOne({ email });
+    const user = await this.userModel.findOne({ email });
 
     // if user is not exist
-    if (!isUserExist) {
+    if (!user) {
       throw new UnauthorizedException('Email is not correct!');
     }
 
     // check is password matched
-    const isMatchedPass = await bcrypt.compare(password, isUserExist.password);
+    const isMatchedPass = await bcrypt.compare(password, user.password);
 
     // if password is incorrect
     if (!isMatchedPass) {
@@ -78,14 +78,15 @@ export class UsersService {
 
     // make token and return
     const token = this.jwtService.sign({
-      id: isUserExist._id,
-      email: isUserExist?.email,
+      // id: user._id,
+      role: user?.role,
+      email: user?.email,
     });
 
     // return { userId: isUserExist?._id, token };
 
-    isUserExist.accessToken = token;
-    return isUserExist;
+    user.accessToken = token;
+    return user;
   }
 
   async adminSignIn(payload: CreateUserInput) {

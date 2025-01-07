@@ -64,10 +64,6 @@ type Service {
   banner: String
   shortDesc: String!
   desc: String!
-  preRequirements: String
-  country: String
-  visaCategory: String
-  price: Float
   author: User
 }
 
@@ -139,6 +135,7 @@ type Blog {
   status: Blog_Status
   title: String!
   description: String!
+  shortDescription: String
   like: Float
   image: String
   cover: String
@@ -705,7 +702,7 @@ type Mutation {
   updateExpenseCalculation(
     updateExpenseCalculationInput: UpdateExpenseCalculationInput!
   ): Boolean!
-  removeExpenseCalculation(_id: String!): Boolean!
+  removeExpense(input: CommonMatchInput!): Boolean
   createMoneyReceipt(input: CreateMoneyReceiptInput!): MoneyReceipt!
   updateMoneyReceipt(input: UpdateMoneyReceiptInput!): MoneyReceipt!
   removeMoneyReceipt(input: CommonMatchInput!): Boolean
@@ -915,10 +912,6 @@ input CreateServiceInput {
   banner: String
   shortDesc: String
   desc: String!
-  country: String
-  visaCategory: String
-  preRequirements: String
-  price: Float
   author: String
 }
 
@@ -929,10 +922,6 @@ input UpdateServiceInput {
   banner: String
   shortDesc: String
   desc: String
-  country: String
-  visaCategory: String
-  preRequirements: String
-  price: Float
   author: String
 }
 
@@ -1087,6 +1076,7 @@ input CreateBlogInput {
   author: String!
   title: String!
   description: String!
+  shortDescription: String
   like: Float
   image: String
   cover: String
@@ -1100,6 +1090,7 @@ input UpdateBlogInput {
   author: String
   title: String
   description: String
+  shortDescription: String
   like: Float
   image: String
   cover: String
