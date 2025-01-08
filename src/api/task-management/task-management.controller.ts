@@ -4,9 +4,11 @@ import {
   ForbiddenException,
   Get,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { DashboardTaskRevinewInput } from '../package-booking/dto/dashboard-overview.input';
+import { DateRangeFilter } from './dto/filter-query.dto';
 import { TaskManagementService } from './task-management.service';
 
 @Controller('dashboard')
@@ -16,9 +18,13 @@ export class TaskManagementController {
 
   @Post('task-revinew-by-employee')
   // @UseGuards(AuthGuard())
-  async taskRevinewByEmployee(@Body() payload?: DashboardTaskRevinewInput) {
+  async taskRevinewByEmployee(
+    @Query() filter: DateRangeFilter,
+    @Body() payload?: DashboardTaskRevinewInput,
+  ) {
     try {
       return await this.taskManagementService.taskRevinewByEmployeeCalculation(
+        filter,
         payload || null,
       );
     } catch (error) {
@@ -28,7 +34,7 @@ export class TaskManagementController {
 
   @Get('task-grand-revinew')
   // @UseGuards(AuthGuard())
-  async taskGrandRevinew() {
+  async taskGrandRevinew(@Query() filter: DateRangeFilter) {
     try {
       return await this.taskManagementService.taskGrandRevinewCalculation();
     } catch (error) {
