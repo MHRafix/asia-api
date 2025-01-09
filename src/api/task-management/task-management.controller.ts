@@ -36,7 +36,9 @@ export class TaskManagementController {
   // @UseGuards(AuthGuard())
   async taskGrandRevinew(@Query() filter: DateRangeFilter) {
     try {
-      return await this.taskManagementService.taskGrandRevinewCalculation();
+      return await this.taskManagementService.taskGrandRevinewCalculation(
+        filter,
+      );
     } catch (error) {
       throw new ForbiddenException(error.message);
     }

@@ -5,7 +5,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 export type ExpenseDocument = Expense & Document;
 
 @ObjectType()
-@Schema()
+@Schema({ timestamps: true })
 export class Expense {
   @Field(() => ID, { nullable: true })
   _id: string;

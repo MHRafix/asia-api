@@ -30,6 +30,16 @@ export class ExpenseCalculationService {
   }
 
   /**
+   * filter - aggregation[]
+   * @returns [ExpenseCalculation]
+   */
+  async filterWithAggregate(filter: any[]) {
+    const res = await this.expenseModel.aggregate(filter);
+    // console.log({ filter: JSON.stringify(filter), res });
+    return res;
+  }
+
+  /**
    *
    * @param input ExpenseListQueryDto
    * @param fields string[] | string

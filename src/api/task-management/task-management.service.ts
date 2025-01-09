@@ -248,8 +248,41 @@ export class TaskManagementService {
   /**
    * return { name: string, totalAmount: number, paidAmount: number, dueAmount: number }
    */
-  async taskGrandRevinewCalculation() {
-    const allTask = await this.taskManagementModel.find({});
+  async taskGrandRevinewCalculation(filter: DateRangeFilter) {
+    const startDate = new Date(filter?.startDate);
+    const endDate = new Date(filter?.endDate);
+
+    const aggregationFilter = [];
+
+    if (filter?.startDate && filter?.endDate) {
+      aggregationFilter.push({
+        $match: {
+          createdAt: {
+            $gte: startDate,
+            $lte: endDate,
+          },
+        },
+      });
+    } else {
+      const date = new Date().toISOString().split('T')[0];
+      const newDate = new Date(date).toISOString();
+
+      let nextDate = new Date(date);
+
+      // add one day to the current date
+      nextDate.setDate(nextDate.getDate() + 1);
+
+      aggregationFilter.push({
+        $match: {
+          createdAt: {
+            $gte: new Date(newDate),
+            $lte: nextDate,
+          },
+        },
+      });
+    }
+
+    const allTask = await this.taskManagementModel.aggregate(aggregationFilter);
 
     // total amount
     const totalAmount = allTask?.reduce(
@@ -266,7 +299,9 @@ export class TaskManagementService {
     // due amount
     const dueAmount = totalAmount - paidAmount;
 
-    const expenseList = await this.expenseService.findAllExpense();
+    const expenseList = await this.expenseService.filterWithAggregate(
+      aggregationFilter,
+    );
 
     // total expence
     const totalExpense = expenseList?.reduce(
