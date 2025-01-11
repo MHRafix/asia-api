@@ -34,7 +34,7 @@ export class CreateAppointmentInput {
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
   @IsMongoId()
-  author: string;
+  service: string;
 
   @Field(() => APPOINTMENT_STATUS, {
     defaultValue: APPOINTMENT_STATUS.PENDING,

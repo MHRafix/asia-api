@@ -668,6 +668,7 @@ type Mutation {
   updateTravelPackage(input: UpdateTravelPackageInput!): TravelPackage!
   removeTravelPackage(input: CommonMatchInput!): Boolean
   createAppointment(input: CreateAppointmentInput!): Appointment!
+  sendAppointmentReply(input: ReplyAppointmentInput!): Boolean!
   updateAppointment(input: UpdateAppointmentInput!): Appointment!
   removeAppointment(input: CommonMatchInput!): Boolean
   bulkRemoveAppointment(uIds: [String!]!): Boolean
@@ -880,7 +881,7 @@ input CreateAppointmentInput {
   name: String!
   email: String!
   phone: String!
-  author: String
+  service: String
   status: APPOINTMENT_STATUS! = PENDING
   subService: String!
   profession: String!
@@ -893,12 +894,24 @@ input ClientQuestionsInput {
   qDesc: String
 }
 
+input ReplyAppointmentInput {
+  _id: String!
+  name: String!
+  email: String!
+  payload: [QuestionsAnswers!]!
+}
+
+input QuestionsAnswers {
+  question: String!
+  answer: String!
+}
+
 input UpdateAppointmentInput {
   _id: String
   name: String
   email: String
   phone: String
-  author: String
+  service: String
   status: APPOINTMENT_STATUS = PENDING
   subService: String
   profession: String

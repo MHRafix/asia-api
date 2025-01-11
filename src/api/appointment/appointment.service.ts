@@ -1,5 +1,6 @@
 import { AppPaginationResponse } from '@/src/shared/contracts/app-pagination-response';
 import { SortType } from '@/src/shared/dto/CommonPaginationDto';
+import { MailService } from '@/src/shared/mail-service/mail-sender';
 import { filterBuilder } from '@/src/shared/utils/filterBuilder';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -7,10 +8,12 @@ import { FilterQuery, Model } from 'mongoose';
 import { DashboardOverviewInput } from '../package-booking/dto/dashboard-overview.input';
 import { Service } from '../services/entities/service.entity';
 import { AppointmentListQueryDto } from './dto/appointment-list-query.dto';
+import { ReplyAppointmentInput } from './dto/appointment-reply.input';
 import { CreateAppointmentInput } from './dto/create-appointment.input';
 import { UpdateAppointmentInput } from './dto/update-appointment.input';
 import {
   Appointment,
+  APPOINTMENT_STATUS,
   AppointmentDocument,
 } from './entities/appointment.entity';
 
@@ -18,7 +21,8 @@ import {
 export class AppointmentService {
   constructor(
     @InjectModel(Appointment.name)
-    private appointmentModel: Model<AppointmentDocument>, // private customerService: CustomerService,
+    private appointmentModel: Model<AppointmentDocument>,
+    private mailService: MailService,
   ) {}
 
   /**
@@ -28,6 +32,58 @@ export class AppointmentService {
    */
   create(payload: CreateAppointmentInput) {
     return this.appointmentModel.create(payload);
+  }
+
+  /**
+   * send reply of appointment
+   * @param payload questions answer payload
+   * @returns
+   */
+  sendReply(payload: ReplyAppointmentInput) {
+    const qa = payload?.payload?.map(
+      (qa, idx) => `<div style="margin-bottom: 20px">
+    <p style="margin: 5px 0; font-size: 16px; color: #34495e">
+      Question ${idx}: ${qa?.question}?
+    </p>
+    <p style="margin: 5px 0; font-size: 16px; color: #7f8c8d">
+      Answer: ${qa?.answer}
+    </p>
+  </div>`,
+    );
+
+    const inboxContent = `<div
+	style="border: 1px solid #ccc; padding: 20px; font-family: Arial, sans-serif"
+>
+	<h2 style="color: #2c3e50; font-size: 24px; margin-bottom: 15px">
+		Hello ${payload?.name}
+	</h2>
+
+	<div
+		style="
+			border: 1px solid #ddd;
+			padding: 15px;
+			background-color: #f9f9f9;
+			margin-bottom: 15px;
+		"
+	>
+		${qa}
+	</div>
+
+	<p style="font-size: 14px; color: #2c3e50">Thanks</p>
+	<p
+		style="
+			font-size: 14px;
+			font-weight: bold;
+			color: #2980b9;
+			text-decoration: none;
+		"
+	>
+		<a href="https://exploreasiatours.net" target="_blank">Asia Tours</a>
+	</p>
+</div>
+`;
+
+    return this.mailService.sendMail(payload?.email, inboxContent);
   }
 
   /**
@@ -118,6 +174,10 @@ export class AppointmentService {
    */
   update(_id: string, payload: UpdateAppointmentInput) {
     return this.appointmentModel.findOneAndUpdate({ _id }, payload);
+  }
+
+  updateStatus(_id: string, status: APPOINTMENT_STATUS) {
+    return this.appointmentModel.findOneAndUpdate({ _id }, { status });
   }
 
   /**

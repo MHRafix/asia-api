@@ -10,10 +10,12 @@ import {
 import { Args, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AppointmentService } from './appointment.service';
 import { AppointmentListQueryDto } from './dto/appointment-list-query.dto';
+import { ReplyAppointmentInput } from './dto/appointment-reply.input';
 import { CreateAppointmentInput } from './dto/create-appointment.input';
 import { UpdateAppointmentInput } from './dto/update-appointment.input';
 import {
   Appointment,
+  APPOINTMENT_STATUS,
   AppointmentPagination,
 } from './entities/appointment.entity';
 
@@ -27,6 +29,23 @@ export class AppointmentResolver {
     input: CreateAppointmentInput,
   ) {
     return this.appointmentService.create(input);
+  }
+
+  @Mutation(() => Boolean)
+  async sendAppointmentReply(
+    @Args('input')
+    input: ReplyAppointmentInput,
+  ) {
+    try {
+      await this.appointmentService.sendReply(input);
+      await this.appointmentService.updateStatus(
+        input?._id,
+        APPOINTMENT_STATUS.COMPLETED,
+      );
+      return true;
+    } catch (error) {
+      return new ForbiddenException();
+    }
   }
 
   @Query(() => AppointmentPagination, { name: 'appointments' })

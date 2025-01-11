@@ -1,3 +1,4 @@
+import { MailService } from '@/src/shared/mail-service/mail-sender';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ServicesModule } from '../services/services.module';
@@ -13,7 +14,7 @@ import { Appointment, AppointmentSchema } from './entities/appointment.entity';
     ServicesModule,
   ],
 
-  providers: [AppointmentResolver, AppointmentService],
+  providers: [AppointmentResolver, AppointmentService, MailService],
   exports: [AppointmentService],
 })
 export class AppointmentModule {}
