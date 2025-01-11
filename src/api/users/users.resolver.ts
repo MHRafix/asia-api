@@ -96,7 +96,9 @@ export class UsersResolver {
   ) {
     try {
       await this.usersService.roleUpdate(input);
-      await this.teamService.updateEmployeeRole(input);
+      if (input?.employee_id) {
+        await this.teamService.updateEmployeeRole(input);
+      }
       return true;
     } catch (err) {
       throw new BadRequestException(err.message);

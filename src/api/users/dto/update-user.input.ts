@@ -1,5 +1,5 @@
 import { Field, InputType, PartialType } from '@nestjs/graphql';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { CreateUserInput } from './create-user.input';
 
 @InputType()
@@ -15,7 +15,7 @@ export class UpdateUserAndEmployeeRoleInput {
   user_id: string;
 
   @Field(() => String, { nullable: true })
-  @IsNotEmpty()
+  @IsOptional()
   employee_id: string;
 
   @Field(() => String, { nullable: true })
