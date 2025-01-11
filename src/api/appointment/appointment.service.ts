@@ -43,7 +43,7 @@ export class AppointmentService {
     const qa = payload?.payload?.map(
       (qa, idx) => `<div style="margin-bottom: 20px">
     <p style="margin: 5px 0; font-size: 16px; color: #34495e">
-      Question ${idx}: ${qa?.question}?
+      Question ${idx + 1}: ${qa?.question}?
     </p>
     <p style="margin: 5px 0; font-size: 16px; color: #7f8c8d">
       Answer: ${qa?.answer}
