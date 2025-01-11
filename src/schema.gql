@@ -171,6 +171,7 @@ type Expense {
   title: String!
   description: String!
   amount: Float!
+  createdAt: DateTime
 }
 
 type ExpenseCalculationPagination {
@@ -1158,16 +1159,19 @@ input UpdateTaskManagementInput {
 }
 
 input ExpenseCalculationInput {
+  _id: ID
   title: String!
   description: String
   amount: Float!
+  createdAt: DateTime
 }
 
 input UpdateExpenseCalculationInput {
+  _id: String!
   title: String
   description: String
   amount: Float
-  _id: String!
+  createdAt: DateTime
 }
 
 input CreateMoneyReceiptInput {

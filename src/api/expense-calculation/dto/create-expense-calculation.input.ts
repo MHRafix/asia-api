@@ -1,8 +1,11 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { Field, ID, InputType } from '@nestjs/graphql';
+import { IsDate, IsNotEmpty, IsOptional } from 'class-validator';
 
 @InputType()
 export class ExpenseCalculationInput {
+  @Field(() => ID, { nullable: true })
+  _id: string;
+
   @Field(() => String)
   @IsNotEmpty()
   title: string;
@@ -14,4 +17,9 @@ export class ExpenseCalculationInput {
   @Field(() => Number)
   @IsNotEmpty()
   amount: number;
+
+  @Field(() => Date, { nullable: true })
+  @IsOptional()
+  @IsDate()
+  createdAt: Date;
 }

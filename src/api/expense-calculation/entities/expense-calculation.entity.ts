@@ -21,6 +21,10 @@ export class Expense {
   @Prop()
   @Field(() => Number)
   amount: number;
+
+  @Prop()
+  @Field(() => Date, { nullable: true })
+  createdAt: Date;
 }
 
 export const ExpenseCalculationSchema = SchemaFactory.createForClass(Expense);

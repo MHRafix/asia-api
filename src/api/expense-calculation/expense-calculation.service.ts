@@ -35,7 +35,6 @@ export class ExpenseCalculationService {
    */
   async filterWithAggregate(filter: any[]) {
     const res = await this.expenseModel.aggregate(filter);
-    // console.log({ filter: JSON.stringify(filter), res });
     return res;
   }
 
@@ -86,8 +85,21 @@ export class ExpenseCalculationService {
     }
   }
 
-  update(_id: string, payload: UpdateExpenseCalculationInput) {
-    return this.expenseModel.findByIdAndUpdate({ _id }, payload);
+  async update(_id: string, payload: UpdateExpenseCalculationInput) {
+    try {
+      const result = await this.expenseModel.updateOne(
+        { _id },
+        {
+          ...(payload.title && { title: payload.title }),
+          ...(payload.description && { description: payload.description }),
+          ...(payload.amount && { amount: payload.amount }),
+        },
+      );
+      return result;
+    } catch (error) {
+      console.error('Error updating expense:', error);
+      throw error;
+    }
   }
 
   /**

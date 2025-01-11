@@ -35,7 +35,6 @@ export class AppSettingsService {
    * @returns
    */
   async findAll(input: AppSettingsListQueryDto, fields: string[] = []) {
-    console.log(input);
     const { page = 1, limit = 10 } = input;
     const where = filterBuilder(input.where, input.whereOperator);
 

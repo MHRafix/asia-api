@@ -67,7 +67,6 @@ export class TeamService {
 
     const employeesIds =
       employees?.map((employee: Team) => employee?._id) || [];
-    console.log(employeesIds);
     return employeesIds;
   }
 
