@@ -353,6 +353,31 @@ type PackageBookingPagination {
   meta: PagniationMeta
 }
 
+type Project {
+  _id: ID
+  title: String!
+  description: String!
+  avatar: String!
+  createAt: DateTime
+  updatedAt: DateTime
+}
+
+type ProjectTask {
+  _id: ID
+  title: String!
+  description: String
+  status: Project_Status
+  project: Project!
+  createAt: DateTime
+  updatedAt: DateTime
+}
+
+enum Project_Status {
+  Pending
+  Inprogress
+  Completed
+}
+
 type Team {
   _id: ID
   name: String!
@@ -486,6 +511,9 @@ type Query {
   expenseCalculation(input: CommonMatchInput!): Expense!
   moneyReceipts(input: MoneyReceiptListQueryDto): MoneyReceiptPagination!
   moneyReceipt(input: CommonMatchInput!): MoneyReceipt!
+  projects: [Project!]!
+  project(id: String!): Project!
+  tasksByProjects(projectId: String!): [ProjectTask!]!
 }
 
 input UserListQueryDto {
@@ -708,6 +736,11 @@ type Mutation {
   createMoneyReceipt(input: CreateMoneyReceiptInput!): MoneyReceipt!
   updateMoneyReceipt(input: UpdateMoneyReceiptInput!): MoneyReceipt!
   removeMoneyReceipt(input: CommonMatchInput!): Boolean
+  createProject(payload: CreateProjectInput!): Project!
+  removeProject(id: String!): Project!
+  addTask(payload: CreateProjectTaskInput!): ProjectTask!
+  updateProjectTask(payload: UpdateProjectTaskInput!): ProjectTask!
+  removeProjectTask(id: String!): Boolean!
 }
 
 input CreateUserInput {
@@ -1226,5 +1259,34 @@ input UpdateMoneyReceiptInput {
   deliveryDate: DateTime
   authorizeBy: String
   createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input CreateProjectInput {
+  _id: ID
+  title: String!
+  description: String!
+  avatar: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input CreateProjectTaskInput {
+  _id: ID
+  title: String!
+  description: String
+  status: Project_Status = Pending
+  project: String!
+  createAt: DateTime
+  updatedAt: DateTime
+}
+
+input UpdateProjectTaskInput {
+  _id: ID
+  title: String
+  description: String
+  status: Project_Status = Pending
+  project: String
+  createAt: DateTime
   updatedAt: DateTime
 }

@@ -14,6 +14,8 @@ import { ExpenseCalculationModule } from './api/expense-calculation/expense-calc
 import { MoneyReceiptModule } from './api/money-receipt/money-receipt.module';
 import { NewsModule } from './api/news/news.module';
 import { PackageBookingModule } from './api/package-booking/package-booking.module';
+import { ProjectTaskModule } from './api/project-task/project-task.module';
+import { ProjectModule } from './api/project/project.module';
 import { ServicesModule } from './api/services/services.module';
 import { TaskManagementModule } from './api/task-management/task-management.module';
 import { TeamModule } from './api/team/team.module';
@@ -73,6 +75,8 @@ import { JwtStrategy } from './app/config/jwtStrategy';
     TaskManagementModule,
     MoneyReceiptModule,
     ExpenseCalculationModule,
+    ProjectModule,
+    ProjectTaskModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],
