@@ -20,8 +20,14 @@ async function bootstrap() {
     }),
   );
 
-  // prevent cors err
-  app.enableCors();
+ // prevent cors err
+  app.enableCors({
+    origin: [
+      'https://studio.apollographql.com',
+      'http://localhost:5173'
+    ],
+    credentials: true,
+  });
 
   // swagger config
   const config = new DocumentBuilder()
