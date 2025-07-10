@@ -1,46 +1,27 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
-import { BadRequestException, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  ConfigModule.forRoot({
+    isGlobal: true,
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
       whitelist: true,
       forbidNonWhitelisted: true,
-      validateCustomDecorators: true,
-      exceptionFactory: (errors) => {
-        const formattedErrors = errors.map((err) => ({
-          field: err.property,
-          message: Object.values(err.constraints).join(', '),
-        }));
-
-        return new BadRequestException({
-          statusCode: 400,
-          errors: formattedErrors,
-        });
-      },
-
-      validationError: {
-        target: false,
-        value: true,
-      },
     }),
   );
 
   // prevent cors err
-  app.enableCors({
-    origin: [
-      'https://studio.apollographql.com',
-      'http://localhost:5173',
-      'https://flowtrack365.vercel.app',
-    ],
-    credentials: true,
-  });
+  app.enableCors();
 
   // swagger config
   const config = new DocumentBuilder()

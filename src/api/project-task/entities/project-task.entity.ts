@@ -42,7 +42,7 @@ export class ProjectTask {
   project: string;
 
   @Field(() => Date, { nullable: true })
-  createAt: Date;
+  createdAt: Date;
 
   @Field(() => Date, { nullable: true })
   updatedAt: Date;

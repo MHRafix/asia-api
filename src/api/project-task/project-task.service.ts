@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Project } from '../project/entities/project.entity';
 import { CreateProjectTaskInput } from './dto/create-project-task.input';
 import { UpdateProjectTaskInput } from './dto/update-project-task.input';
 import {
@@ -19,8 +20,16 @@ export class ProjectTaskService {
     return this.taskModel.create(payload);
   }
 
-  findAll(projectId: string) {
-    return this.taskModel.find({ project: projectId });
+  async findAll(projectId: string) {
+    const cursor = this.taskModel.find({ project: projectId });
+
+    cursor.populate({
+      path: 'project',
+      model: Project.name,
+    });
+
+    const res = await cursor;
+    return res;
   }
 
   update(_id: string, payload: UpdateProjectTaskInput) {

@@ -358,7 +358,7 @@ type Project {
   title: String!
   description: String!
   avatar: String!
-  createAt: DateTime
+  createdAt: DateTime
   updatedAt: DateTime
 }
 
@@ -368,7 +368,7 @@ type ProjectTask {
   description: String
   status: Project_Status
   project: Project!
-  createAt: DateTime
+  createdAt: DateTime
   updatedAt: DateTime
 }
 
